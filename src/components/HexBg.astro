@@ -8,7 +8,7 @@ interface Props {
 }
 const {
   id = "hex",
-  opacity = 0.18,
+  opacity = 0.22,
   accented = true,
   masked = true,
   class: className = "",
@@ -40,7 +40,7 @@ const maskStyle = masked
         d="M28 66 L0 50 L0 16 L28 0 L56 16 L56 50 Z M28 100 L0 84 L0 50 L28 34 L56 50 L56 84 Z"
         fill="none"
         stroke={`rgba(127, 232, 214, ${opacity})`}
-        stroke-width="1"
+        stroke-width="1.2"
       />
     </pattern>
     <radialGradient id={`${id}-glow`} cx="50%" cy="50%" r="50%">
