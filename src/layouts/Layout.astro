@@ -9,16 +9,17 @@ interface Props {
   image?: string;
 }
 
-const { locale, title, description, image = "/logo.png" } = Astro.props;
+const { locale, title, description, image = "/og-image.jpg" } = Astro.props;
 const c = content[locale];
 
 const pageTitle = title ?? `${c.siteMeta.fullName} — ${c.siteMeta.tagline}`;
-const pageDescription = description ?? c.siteMeta.description;
+const pageDescription = description ?? c.siteMeta.metaDescription;
 
 const site = Astro.site?.toString() ?? "https://www.moleculesai.app/";
 const currentPath = localePaths[locale];
 const canonical = new URL(currentPath, site).toString();
 const imgUrl = new URL(image, site).toString();
+const imgType = image.endsWith(".jpg") || image.endsWith(".jpeg") ? "image/jpeg" : "image/png";
 
 const ogLocale = locale === "zh" ? "zh_CN" : "en_US";
 const ogAlt = locale === "zh" ? "en_US" : "zh_CN";
@@ -35,29 +36,43 @@ const jsonLd = {
     {
       "@type": "Organization",
       "@id": `${site}#org`,
-      name: "Molecule-AI",
+      name: "Molecule AI",
+      alternateName: "Molecule-AI",
       url: site,
-      logo: new URL("/logo.png", site).toString(),
-      sameAs: [c.siteMeta.github],
+      logo: {
+        "@type": "ImageObject",
+        url: new URL("/logo.png", site).toString(),
+        width: 256,
+        height: 256,
+      },
+      sameAs: [
+        c.siteMeta.github,
+        c.siteMeta.monorepo,
+        c.siteMeta.docs,
+      ],
     },
     {
       "@type": "WebSite",
       "@id": `${site}#site`,
       url: site,
-      name: "Molecule-AI",
+      name: "Molecule AI",
       description: c.siteMeta.description,
       publisher: { "@id": `${site}#org` },
       inLanguage: locale === "zh" ? "zh-CN" : "en-US",
     },
     {
       "@type": "SoftwareApplication",
-      name: "Molecule",
+      name: "Molecule AI",
       applicationCategory: "DeveloperApplication",
-      operatingSystem: "Cross-platform",
+      operatingSystem: "Linux, macOS, Windows, Docker",
       description: c.siteMeta.description,
       url: site,
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       author: { "@id": `${site}#org` },
+      license: "https://mariadb.com/bsl11/",
+      softwareVersion: "main",
+      keywords:
+        "AI agents, multi-agent systems, agent orchestration, LangGraph, CrewAI, AutoGen, Claude Code, DeepAgents, control plane, MCP",
     },
     {
       "@type": "WebPage",
@@ -107,12 +122,15 @@ const jsonLd = {
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Molecule-AI" />
+    <meta property="og:site_name" content="Molecule AI" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={imgUrl} />
-    <meta property="og:image:alt" content="Molecule-AI logo" />
+    <meta property="og:image:type" content={imgType} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Molecule AI — the org-native control plane for heterogeneous AI agent teams" />
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:locale:alternate" content={ogAlt} />
 
@@ -121,18 +139,29 @@ const jsonLd = {
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={imgUrl} />
+    <meta name="twitter:image:alt" content="Molecule AI — the org-native control plane for heterogeneous AI agent teams" />
 
     <!-- Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link rel="preload" as="image" href="/logo.png" />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   </head>
   <body>
+    <a href="#main" class="mol-skip-link">
+      {locale === "zh" ? "跳转到主内容" : "Skip to main content"}
+    </a>
     <slot />
     <script>
       import "../scripts/site";

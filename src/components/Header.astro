@@ -13,7 +13,7 @@ const c = content[locale];
     <a
       href={locale === "zh" ? "/zh/" : "/"}
       class="flex items-center gap-2.5"
-      aria-label="Molecule-AI home"
+      aria-label="Molecule AI home"
     >
       <img
         src="/logo.png"
@@ -23,24 +23,30 @@ const c = content[locale];
         class="rounded-lg"
         loading="eager"
         decoding="async"
+        fetchpriority="high"
       />
       <span class="text-base font-semibold tracking-tight text-white">
-        Molecule<span class="text-[color:var(--color-mint)]">-AI</span>
+        Molecule<span class="text-[color:var(--color-mint)]"> AI</span>
       </span>
     </a>
 
     <ul class="hidden items-center gap-7 md:flex">
       {
-        c.nav.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              class="text-sm font-medium text-[color:var(--color-fg-muted)] transition-colors hover:text-white"
-            >
-              {item.label}
-            </a>
-          </li>
-        ))
+        c.nav.map((item) => {
+          const external = item.href.startsWith("http");
+          return (
+            <li>
+              <a
+                href={item.href}
+                class="text-sm font-medium text-[color:var(--color-fg-muted)] transition-colors hover:text-white"
+                rel={external ? "noopener" : undefined}
+                target={external ? "_blank" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })
       }
     </ul>
 

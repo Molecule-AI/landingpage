@@ -107,6 +107,7 @@ export interface ContentShape {
     fullName: string;
     tagline: string;
     description: string;
+    metaDescription: string;
     github: string;
     monorepo: string;
     docs: string;

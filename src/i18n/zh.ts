@@ -9,6 +9,8 @@ export const zh: ContentShape = {
     tagline: "面向异构 AI 智能体团队的组织级控制平面。",
     description:
       "Molecule AI 是面向异构 AI 智能体团队的 open-core 控制平面。工作空间即组织角色,组织架构即拓扑,治理开箱即用 —— 七种运行时、分层内存、技能进化、零锁定。",
+    metaDescription:
+      "Molecule AI 是面向异构 AI 智能体团队的 open-core 控制平面。七种运行时、分层内存、技能进化 —— 主分支已发布,采用 BSL 1.1 许可证。",
     github: "https://github.com/Molecule-AI",
     monorepo: "https://github.com/Molecule-AI/molecule-monorepo",
     docs: "https://doc.moleculesai.app",

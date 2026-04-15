@@ -9,6 +9,8 @@ export const en: ContentShape = {
     tagline: "The org-native control plane for heterogeneous AI agent teams.",
     description:
       "Molecule AI is the open-core control plane for heterogeneous AI agent teams. Workspaces are org roles, the org chart is topology, governance is built in — seven runtimes, hierarchical memory, skill evolution, zero lock-in.",
+    metaDescription:
+      "Molecule AI is the open-core control plane for heterogeneous AI agent teams. Seven runtimes, hierarchical memory, skill evolution — shipping on main under BSL 1.1.",
     github: "https://github.com/Molecule-AI",
     monorepo: "https://github.com/Molecule-AI/molecule-monorepo",
     docs: "https://doc.moleculesai.app",
