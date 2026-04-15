@@ -1,0 +1,75 @@
+---
+import { content, type Locale } from "../i18n";
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = content[locale].faq;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: c.items.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
+---
+
+<section id="faq" class="py-24 sm:py-32">
+  <div class="mx-auto max-w-4xl px-6">
+    <div class="text-center" data-reveal>
+      <span class="mol-eyebrow">{c.eyebrow}</span>
+      <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
+        {c.title}
+      </h2>
+      <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+        {c.subtitle}
+      </p>
+    </div>
+
+    <div
+      class="mt-14 divide-y divide-[color:var(--color-ink-border)]/70 rounded-2xl border border-[color:var(--color-ink-border)] bg-[color:var(--color-ink-soft)]/40 backdrop-blur-sm"
+      data-reveal
+    >
+      {
+        c.items.map((item, i) => (
+          <details
+            class="mol-faq-item group"
+            name="mol-faq"
+            open={i === 0}
+          >
+            <summary class="mol-faq-summary">
+              <span class="mol-faq-q">{item.q}</span>
+              <svg
+                class="mol-faq-chevron"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </summary>
+            <div class="mol-faq-answer">
+              <p>{item.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+
+  <script
+    type="application/ld+json"
+    set:html={JSON.stringify(faqSchema)}
+    is:inline
+  />
+</section>

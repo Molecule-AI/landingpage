@@ -24,6 +24,7 @@ export const en: ContentShape = {
     { label: "Adapters", href: "#adapters" },
     { label: "Ships", href: "#ships" },
     { label: "Platform", href: "#platform" },
+    { label: "FAQ", href: "#faq" },
     { label: "Docs", href: "https://doc.moleculesai.app" },
   ],
   hero: {
@@ -396,6 +397,54 @@ export const en: ContentShape = {
     ],
     columns: { bestAt: "Best at", gap: "Where it breaks", edge: "What Molecule adds" },
   },
+  faq: {
+    eyebrow: "Frequently Asked Questions",
+    title: "Questions teams ask before adopting Molecule AI.",
+    subtitle:
+      "Short answers to the questions that come up most. If yours isn't here, open a discussion on the monorepo.",
+    items: [
+      {
+        q: "What is Molecule AI, in one sentence?",
+        a: "Molecule AI is the open-core control plane that lets heterogeneous AI agents — LangGraph, Claude Code, CrewAI, AutoGen, DeepAgents, OpenClaw — run as governed, memory-scoped teams instead of disconnected demos.",
+      },
+      {
+        q: "How is it different from agent frameworks like LangGraph or CrewAI?",
+        a: "Those frameworks solve the execution layer — how an agent runs, calls tools, and hands off. Molecule AI solves the organizing layer above them: durable workspace roles, hierarchy-aware memory, governance, and operations. Many agent runtimes, one organizational operating system.",
+      },
+      {
+        q: "Which runtimes are supported today?",
+        a: "Six adapters are shipping on the main branch of the monorepo: LangGraph, DeepAgents, Claude Code, CrewAI, AutoGen, and OpenClaw. NemoClaw (NVIDIA-oriented) is work in progress on a feature branch and will land in main once merged.",
+      },
+      {
+        q: "Is it really open source?",
+        a: "Yes. The core monorepo is licensed under the Business Source License 1.1 (BSL 1.1). The source is public, you can read it, fork it, self-host it, and modify it. BSL 1.1 converts to an open-source license (Apache 2.0) after the change date, and the only usage restriction is commercial resale as a competing hosted service.",
+      },
+      {
+        q: "Can I self-host the whole thing?",
+        a: "Yes. The public monorepo runs one organization per instance and has no hidden dependency on the SaaS control plane. Clone it, set your environment variables, and run the platform and workspace runtime together. Railway and Render templates are linked in the monorepo README.",
+      },
+      {
+        q: "What is Hierarchical Memory (HMA) and why does it matter?",
+        a: "HMA gives every workspace three memory scopes — LOCAL (private to one workspace), TEAM (shared within a parent-child hierarchy), and GLOBAL (org-wide, write-only from the root). Memory sharing follows the org chart instead of leaking across the whole system, so sibling teams stay isolated by default and escalation paths mirror the real hierarchy.",
+      },
+      {
+        q: "What is Hermes and how do skills work?",
+        a: "Awareness stores what happened across sessions. Hermes reads that memory back, identifies repeatable patterns, and promotes the ones that work into reusable skills. Skills hot-reload into the live workspace runtime, so the next task benefits from prior success without restarting. This is the self-improving flywheel in the architecture section.",
+      },
+      {
+        q: "What stack is Molecule AI built on?",
+        a: "The control plane is Go 1.25 + Gin + Postgres. Workspace runtimes are Python 3.11. The Canvas (the visual org chart + 10-tab ops panel) is Next.js 15 + React Flow + Zustand + Tailwind v4. Secure sandboxing uses four tiers from T1 sandbox through T4 full-host, per workspace.",
+      },
+      {
+        q: "How do I get started?",
+        a: "Read the quickstart at doc.moleculesai.app, then clone github.com/Molecule-AI/molecule-monorepo. The README walks through provisioning the first workspace, picking a runtime adapter, and wiring up your first team. Expect to have a running workspace in under ten minutes.",
+      },
+      {
+        q: "What does it cost?",
+        a: "The open-core monorepo is free under BSL 1.1 — you can self-host it forever without paying anyone. A hosted SaaS control plane is planned at moleculesai.app, which will add signup, orgs, billing, and multi-tenant provisioning on top of the same open core. Pricing will be published before launch.",
+      },
+    ],
+  },
   finalCta: {
     vision:
       "From AI agent teams to autonomous bot teams to self-organizing digital workforces — Molecule AI is building the infrastructure for what comes after the single-agent era.",
@@ -435,6 +484,7 @@ export const en: ContentShape = {
         links: [
           { label: "Why Now", href: "#why-now" },
           { label: "Use Cases", href: "#use-cases" },
+          { label: "FAQ", href: "#faq" },
           { label: "Issues", href: "https://github.com/Molecule-AI/molecule-monorepo/issues" },
           { label: "Discussions", href: "https://github.com/Molecule-AI/molecule-monorepo/discussions" },
         ],

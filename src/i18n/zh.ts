@@ -24,6 +24,7 @@ export const zh: ContentShape = {
     { label: "适配生态", href: "#adapters" },
     { label: "产品交付", href: "#ships" },
     { label: "平台护城河", href: "#platform" },
+    { label: "常见问题", href: "#faq" },
     { label: "文档", href: "https://doc.moleculesai.app" },
   ],
   hero: {
@@ -396,6 +397,54 @@ export const zh: ContentShape = {
     ],
     columns: { bestAt: "擅长", gap: "不足在哪", edge: "Molecule 补上什么" },
   },
+  faq: {
+    eyebrow: "常见问题",
+    title: "团队在采用 Molecule AI 之前常问的问题。",
+    subtitle:
+      "最常被问到问题的简短回答。如果没有覆盖你的问题,欢迎到 monorepo 开一个 discussion。",
+    items: [
+      {
+        q: "一句话说,Molecule AI 是什么?",
+        a: "Molecule AI 是一个 open-core 控制平面,让异构 AI 智能体 —— LangGraph、Claude Code、CrewAI、AutoGen、DeepAgents、OpenClaw —— 作为受治理、内存隔离的团队运行,而不是一堆彼此割裂的 demo。",
+      },
+      {
+        q: "它和 LangGraph、CrewAI 这类 agent 框架有什么不同?",
+        a: "那些框架解决的是执行层 —— 单个 agent 怎么运行、怎么调用工具、怎么交接。Molecule AI 解决的是执行层之上的组织层:持久的工作空间角色、层级感知的内存、治理与运维。多种 agent 运行时,一套组织级操作系统。",
+      },
+      {
+        q: "目前支持哪些运行时?",
+        a: "Monorepo 主分支已发布六种适配器:LangGraph、DeepAgents、Claude Code、CrewAI、AutoGen、OpenClaw。面向 NVIDIA 的 NemoClaw 正在 feature 分支上开发,合并后将进入主分支。",
+      },
+      {
+        q: "它是真的开源吗?",
+        a: "是的。核心 monorepo 采用 Business Source License 1.1(BSL 1.1)。源码公开,可阅读、可 fork、可自部署、可修改。BSL 1.1 会在变更日期后自动转为开源许可证(Apache 2.0),唯一的使用限制是不能作为竞品托管服务对外商业转售。",
+      },
+      {
+        q: "我能完整自部署吗?",
+        a: "可以。公开 monorepo 每个实例承载一个组织,不依赖任何隐藏的 SaaS 控制平面。clone 下来、配好环境变量、启动平台与工作空间运行时即可。README 里有 Railway 和 Render 的一键模板。",
+      },
+      {
+        q: "什么是分层内存(HMA)?为什么重要?",
+        a: "HMA 给每个工作空间三个内存作用域 —— LOCAL(该工作空间私有)、TEAM(在父子层级内共享)、GLOBAL(组织级,只由根节点写)。内存共享严格跟随组织架构,而不是在整个系统里扩散;兄弟团队默认隔离,升级路径与真实的层级一致。",
+      },
+      {
+        q: "Hermes 是什么?技能机制是怎么运作的?",
+        a: "Awareness 存储跨会话的事实。Hermes 读回这些内存、识别可重复的模式,然后把有效的那些提炼为可复用技能。技能会热加载回正在运行的工作空间,因此下一个任务可以直接复用之前成功的经验而不必重启。这就是架构小节里的那个自我进化飞轮。",
+      },
+      {
+        q: "Molecule AI 用什么技术栈构建?",
+        a: "控制平面是 Go 1.25 + Gin + Postgres。工作空间运行时是 Python 3.11。画布(可视化组织架构 + 10 个运维标签)是 Next.js 15 + React Flow + Zustand + Tailwind v4。安全沙箱按工作空间划分为四档:从 T1 沙箱到 T4 全主机。",
+      },
+      {
+        q: "如何开始?",
+        a: "先看 doc.moleculesai.app 上的 Quickstart,然后 clone github.com/Molecule-AI/molecule-monorepo。README 会引导你开通第一个工作空间、选择一个运行时适配器、组建第一支团队。预计 10 分钟内就能跑起一个工作空间。",
+      },
+      {
+        q: "价格是怎样的?",
+        a: "Open-core monorepo 在 BSL 1.1 下免费 —— 你可以永久自部署,不需要向任何人付费。托管版 SaaS 控制平面正在规划中,会在 moleculesai.app 上提供注册、组织、计费与多租户发放功能,底层仍是同一份 open core。价格将在上线前公布。",
+      },
+    ],
+  },
   finalCta: {
     vision:
       "从 AI 智能体团队,到自主机器人团队,再到自组织的数字劳动力 —— Molecule AI 正在构建单智能体时代之后的基础设施。",
@@ -435,6 +484,7 @@ export const zh: ContentShape = {
         links: [
           { label: "当下价值", href: "#why-now" },
           { label: "应用场景", href: "#use-cases" },
+          { label: "常见问题", href: "#faq" },
           { label: "Issues", href: "https://github.com/Molecule-AI/molecule-monorepo/issues" },
           { label: "讨论区", href: "https://github.com/Molecule-AI/molecule-monorepo/discussions" },
         ],

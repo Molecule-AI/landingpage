@@ -89,6 +89,11 @@ export interface FlywheelStep {
   label: string;
 }
 
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
 export interface FooterLink {
   label: string;
   href: string;
@@ -186,6 +191,12 @@ export interface ContentShape {
     closing: string;
     competitors: Competitor[];
     columns: { bestAt: string; gap: string; edge: string };
+  };
+  faq: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    items: FaqItem[];
   };
   finalCta: {
     vision: string;
