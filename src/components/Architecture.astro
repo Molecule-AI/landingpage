@@ -1,0 +1,78 @@
+---
+import { architecture } from "../data/content";
+---
+
+<section id="architecture" class="border-y border-[color:var(--color-ink-border)]/50 py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mx-auto max-w-3xl text-center">
+      <span class="mol-eyebrow">{architecture.eyebrow}</span>
+      <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
+        {architecture.title}
+      </h2>
+      <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+        {architecture.description}
+      </p>
+    </div>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-3">
+      {
+        architecture.scopes.map((scope) => (
+          <div class="mol-panel mol-panel-hover overflow-hidden rounded-2xl">
+            <div class="h-1" style={`background: linear-gradient(90deg, ${scope.accent}, transparent);`} />
+            <div class="p-7">
+              <div class="font-mono text-xs font-bold tracking-[0.2em]" style={`color: ${scope.accent};`}>
+                {scope.name}
+              </div>
+              <h3 class="mt-3 text-lg font-semibold text-white">{scope.summary}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-[color:var(--color-fg-muted)]">
+                {scope.detail}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Hermes -->
+    <div class="mol-panel mt-10 rounded-2xl p-8 sm:p-10">
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+        <div class="max-w-xl">
+          <h3 class="text-xl font-semibold text-white sm:text-2xl">
+            {architecture.hermesTitle}
+          </h3>
+          <p class="mt-3 text-sm leading-relaxed text-[color:var(--color-fg-muted)] sm:text-base">
+            {architecture.hermesSubtitle}
+          </p>
+        </div>
+        <ol class="grid flex-1 gap-4 sm:grid-cols-3">
+          {
+            architecture.hermesSteps.map((step, i) => (
+              <li class="rounded-xl border border-[color:var(--color-ink-border-strong)] bg-[color:var(--color-ink-soft)]/40 p-4">
+                <div class="font-mono text-xs font-bold" style="color: var(--color-mint);">
+                  STEP {i + 1}
+                </div>
+                <p class="mt-2 text-sm text-white">{step}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+
+    <!-- Outcomes -->
+    <ul class="mt-10 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+      {
+        architecture.outcomes.map((outcome) => (
+          <li class="flex items-center gap-3 text-sm text-[color:var(--color-fg)]">
+            <span
+              class="h-1.5 w-1.5 flex-shrink-0 rounded-full"
+              style="background: var(--color-mint); box-shadow: 0 0 8px var(--color-mint);"
+              aria-hidden="true"
+            />
+            {outcome}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

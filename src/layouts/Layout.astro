@@ -1,0 +1,108 @@
+---
+import "../styles/global.css";
+import { siteMeta } from "../data/content";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+}
+
+const {
+  title = `${siteMeta.fullName} — ${siteMeta.tagline}`,
+  description = siteMeta.description,
+  image = "/logo.png",
+  canonical,
+} = Astro.props;
+
+const site = Astro.site?.toString() ?? `${siteMeta.url}/`;
+const url = canonical ?? new URL(Astro.url.pathname, site).toString();
+const imgUrl = new URL(image, site).toString();
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${site}#org`,
+      name: "Molecule-AI",
+      url: site,
+      logo: new URL("/logo.png", site).toString(),
+      sameAs: [siteMeta.github],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site}#site`,
+      url: site,
+      name: "Molecule-AI",
+      description: siteMeta.description,
+      publisher: { "@id": `${site}#org` },
+      inLanguage: "en",
+    },
+    {
+      "@type": "SoftwareApplication",
+      name: "Molecule",
+      applicationCategory: "DeveloperApplication",
+      operatingSystem: "Cross-platform",
+      description: siteMeta.description,
+      url: site,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#050912" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="canonical" href={url} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="AI agents, multi-agent systems, AI orchestration, agent framework, LangGraph, CrewAI, AutoGen, Claude Code, MCP, open source, agent control plane, AI teams"
+    />
+    <meta name="author" content="Molecule-AI" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Molecule-AI" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={imgUrl} />
+    <meta property="og:image:alt" content="Molecule-AI logo" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imgUrl} />
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

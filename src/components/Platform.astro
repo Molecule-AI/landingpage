@@ -1,0 +1,65 @@
+---
+import { platform } from "../data/content";
+---
+
+<section id="platform" class="border-y border-[color:var(--color-ink-border)]/50 py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mx-auto max-w-3xl text-center">
+      <span class="mol-eyebrow">{platform.eyebrow}</span>
+      <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
+        {platform.title}
+      </h2>
+      <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+        {platform.description}
+      </p>
+    </div>
+
+    <ul class="mt-16 grid gap-6 md:grid-cols-2">
+      {
+        platform.moats.map((moat, i) => (
+          <li class="mol-panel mol-panel-hover rounded-2xl p-7">
+            <div class="flex items-start gap-4">
+              <div
+                class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg font-mono text-sm font-bold"
+                style="background: rgba(127,232,214,0.12); color: var(--color-mint); border: 1px solid rgba(127,232,214,0.3);"
+              >
+                {i + 1}
+              </div>
+              <div>
+                <h3 class="text-base font-semibold text-white">{moat.title}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-[color:var(--color-fg-muted)]">
+                  {moat.detail}
+                </p>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-12">
+      <div class="mb-6 text-center">
+        <p class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--color-fg-dim)]">
+          Current Product Proof
+        </p>
+      </div>
+      <dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          platform.proofs.map((proof) => (
+            <div class="mol-panel rounded-xl p-6">
+              <dt class="flex items-baseline gap-3">
+                <span class="mol-gradient-text text-4xl font-bold tracking-tight">
+                  {proof.metric}
+                </span>
+                <span class="text-sm font-semibold text-white">{proof.label}</span>
+              </dt>
+              <dd class="mt-2 text-xs leading-relaxed text-[color:var(--color-fg-muted)]">
+                {proof.detail}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
