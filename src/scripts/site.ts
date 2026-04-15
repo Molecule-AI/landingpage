@@ -115,9 +115,23 @@ function initShapeGrid(
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(1, Math.floor(rect.width * dpr));
-    canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+    if (rect.width < 1 || rect.height < 1) return;
+    const nextDpr = Math.min(window.devicePixelRatio || 1, 2);
+    const nextW = Math.max(1, Math.floor(rect.width * nextDpr));
+    const nextH = Math.max(1, Math.floor(rect.height * nextDpr));
+    // Skip if nothing changed — avoids clearing the canvas on every RO tick
+    if (
+      canvas.width === nextW &&
+      canvas.height === nextH &&
+      dpr === nextDpr
+    ) {
+      w = rect.width;
+      h = rect.height;
+      return;
+    }
+    dpr = nextDpr;
+    canvas.width = nextW;
+    canvas.height = nextH;
     ctx!.setTransform(1, 0, 0, 1, 0, 0);
     ctx!.scale(dpr, dpr);
     w = rect.width;
@@ -195,16 +209,36 @@ function initShapeGrid(
 
   window.addEventListener("pointermove", onMove, { passive: true });
   window.addEventListener("pointerleave", onLeave);
-  window.addEventListener("resize", resize);
+
+  // ResizeObserver catches every size change: viewport resize, orientation
+  // change, fonts loading, data-reveal elements appearing, accordion opens,
+  // parent section growing. Strictly better than window.resize.
+  const ro = new ResizeObserver(() => resize());
+  ro.observe(canvas);
+
+  // Fonts can change section height after initial paint, especially on
+  // mobile where the canvas is parented to a tall stacked section.
+  if (typeof document !== "undefined" && (document as any).fonts?.ready) {
+    (document as any).fonts.ready.then(() => resize());
+  }
+
+  // Re-check size whenever dpr changes (e.g. window dragged to a different
+  // monitor, pinch zoom on some mobile browsers).
+  if (typeof window !== "undefined" && window.matchMedia) {
+    const mq = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+    mq.addEventListener?.("change", () => resize());
+  }
 
   resize();
   draw();
 
-  // pause when not visible
+  // pause when not visible; resize on re-entry in case the layout shifted
+  // while we were off-screen
   const io = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
         if (e.isIntersecting) {
+          resize();
           if (!raf) draw();
         } else {
           cancelAnimationFrame(raf);
