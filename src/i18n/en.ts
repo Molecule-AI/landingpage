@@ -120,12 +120,19 @@ export const en: ContentShape = {
   },
   useCases: {
     eyebrow: "What You Can Build",
-    title: "AI teams for every layer of the org.",
+    titleLead: "AI agent teams for",
+    rotatingTexts: [
+      "Research Organizations",
+      "Engineering Delivery",
+      "Operations Automation",
+      "Executive Control",
+    ],
     subtitle:
       "One workspace becomes a role. A group of workspaces becomes a team. Teams compose into organizations — fractally, without drift.",
     items: [
       {
-        tag: "Research",
+        key: "research",
+        tag: "Research Orgs",
         title: "Parallel research with isolated memory",
         description:
           "Sibling workspaces explore independently under LOCAL scope; the parent synthesizes via TEAM memory.",
@@ -134,8 +141,10 @@ export const en: ContentShape = {
           "Parent synthesis through TEAM memory",
           "Per-workspace trace chains via Langfuse",
         ],
+        capabilities: ["HMA", "DeepAgents", "Langfuse", "A2A"],
       },
       {
+        key: "engineering",
         tag: "Engineering",
         title: "Multi-runtime teams that self-coordinate",
         description:
@@ -145,9 +154,11 @@ export const en: ContentShape = {
           "Human approval for deploy and merge",
           "Recursive team expansion, zero drift",
         ],
+        capabilities: ["Claude Code", "LangGraph", "OpenClaw", "HITL"],
       },
       {
-        tag: "Operations",
+        key: "operations",
+        tag: "Ops Automation",
         title: "Governance-first automation",
         description:
           "RBAC-scoped authority, hierarchy-routed approvals, and audit-ready event streams — per workspace, per role.",
@@ -156,8 +167,10 @@ export const en: ContentShape = {
           "Approval routing follows org topology",
           "JSON Lines audit + global secrets",
         ],
+        capabilities: ["RBAC", "Audit", "Secrets", "CrewAI"],
       },
       {
+        key: "executive",
         tag: "Executive View",
         title: "Live control from one canvas",
         description:
@@ -167,6 +180,7 @@ export const en: ContentShape = {
           "10-tab ops panel per workspace",
           "Pause / resume / restart any agent",
         ],
+        capabilities: ["WebSocket", "Canvas", "Ops Panel", "MCP"],
       },
     ],
   },

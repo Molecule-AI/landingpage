@@ -3,17 +3,23 @@ import { content, type Locale } from "../i18n";
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = content[locale].socialProof;
-const items = [...c.logos, ...c.logos];
+const row1 = [...c.logos, ...c.logos];
+const row2 = [...c.logos.slice().reverse(), ...c.logos.slice().reverse()];
 ---
 
-<section class="border-y border-[color:var(--color-ink-border)]/50 bg-[color:var(--color-ink-soft)]/40 py-10">
+<section class="border-y border-[color:var(--color-ink-border)]/50 bg-[color:var(--color-ink-soft)]/40 py-12">
   <div class="mx-auto max-w-7xl px-6">
-    <p class="mb-6 text-center text-xs font-medium uppercase tracking-[0.2em] text-[color:var(--color-fg-dim)]">
+    <p class="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-[color:var(--color-fg-dim)]">
       {c.label}
     </p>
     <div class="mol-marquee">
       <div class="mol-marquee-track" aria-hidden="true">
-        {items.map((logo) => <span class="mol-marquee-item">{logo}</span>)}
+        {row1.map((logo) => <span class="mol-marquee-item">{logo}</span>)}
+      </div>
+    </div>
+    <div class="mol-marquee mt-4">
+      <div class="mol-marquee-track mol-marquee-track--right" aria-hidden="true">
+        {row2.map((logo) => <span class="mol-marquee-item">{logo}</span>)}
       </div>
     </div>
   </div>

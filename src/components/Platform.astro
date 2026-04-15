@@ -7,7 +7,7 @@ const c = content[locale].platform;
 
 <section id="platform" class="border-y border-[color:var(--color-ink-border)]/50 py-24 sm:py-32">
   <div class="mx-auto max-w-7xl px-6">
-    <div class="mx-auto max-w-3xl text-center">
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
       <span class="mol-eyebrow">{c.eyebrow}</span>
       <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
         {c.title}
@@ -17,10 +17,10 @@ const c = content[locale].platform;
       </p>
     </div>
 
-    <ul class="mt-16 grid gap-6 md:grid-cols-2">
+    <ul class="mt-16 grid gap-6 md:grid-cols-2" data-reveal="stagger">
       {
         c.moats.map((moat, i) => (
-          <li class="mol-panel mol-panel-hover rounded-2xl p-7">
+          <li class="mol-panel mol-panel-hover rounded-2xl p-7" style={`--i: ${i}`}>
             <div class="flex items-start gap-4">
               <div
                 class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg font-mono text-sm font-bold"
@@ -46,10 +46,10 @@ const c = content[locale].platform;
           {c.proofTitle}
         </p>
       </div>
-      <dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal="stagger">
         {
-          c.proofs.map((proof) => (
-            <div class="mol-panel rounded-xl p-6">
+          c.proofs.map((proof, i) => (
+            <div class="mol-panel rounded-xl p-6" style={`--i: ${i}`}>
               <dt class="flex items-baseline gap-3">
                 <span class="mol-gradient-text text-4xl font-bold tracking-tight">
                   {proof.metric}

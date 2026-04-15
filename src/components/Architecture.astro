@@ -1,16 +1,16 @@
 ---
 import { content, type Locale } from "../i18n";
-import HexBg from "./HexBg.astro";
+import ShapeGrid from "./ShapeGrid.astro";
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = content[locale].architecture;
 ---
 
 <section id="architecture" class="relative isolate overflow-hidden border-y border-[color:var(--color-ink-border)]/50 py-24 sm:py-32">
-  <HexBg id="hex-arch" opacity={0.12} class="-z-10 opacity-70" />
+  <ShapeGrid class="-z-10 opacity-60" />
 
   <div class="mx-auto max-w-7xl px-6">
-    <div class="mx-auto max-w-3xl text-center">
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
       <span class="mol-eyebrow">{c.eyebrow}</span>
       <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
         {c.title}
@@ -20,10 +20,10 @@ const c = content[locale].architecture;
       </p>
     </div>
 
-    <div class="mt-16 grid gap-6 md:grid-cols-3">
+    <div class="mt-16 grid gap-6 md:grid-cols-3" data-reveal="stagger">
       {
-        c.scopes.map((scope) => (
-          <div class="mol-panel mol-panel-hover overflow-hidden rounded-2xl">
+        c.scopes.map((scope, i) => (
+          <div class="mol-panel mol-panel-hover overflow-hidden rounded-2xl" style={`--i: ${i}`}>
             <div class="h-1" style={`background: linear-gradient(90deg, ${scope.accent}, transparent);`} />
             <div class="p-7">
               <div class="font-mono text-xs font-bold tracking-[0.2em]" style={`color: ${scope.accent};`}>
@@ -39,7 +39,7 @@ const c = content[locale].architecture;
       }
     </div>
 
-    <div class="mol-panel mt-10 rounded-2xl p-8 sm:p-10">
+    <div class="mol-panel mt-10 rounded-2xl p-8 sm:p-10" data-reveal>
       <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
         <div class="max-w-xl">
           <h3 class="text-xl font-semibold text-white sm:text-2xl">

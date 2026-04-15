@@ -7,7 +7,7 @@ const c = content[locale].whyNow;
 
 <section id="why-now" class="border-b border-[color:var(--color-ink-border)]/50 py-24 sm:py-32">
   <div class="mx-auto max-w-7xl px-6">
-    <div class="mx-auto max-w-3xl text-center">
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
       <span class="mol-eyebrow">{c.eyebrow}</span>
       <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
         {c.title}
@@ -17,10 +17,10 @@ const c = content[locale].whyNow;
       </p>
     </div>
 
-    <ul class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <ul class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal="stagger">
       {
         c.signals.map((signal, i) => (
-          <li class="mol-panel mol-panel-hover relative rounded-2xl p-6">
+          <li class="mol-panel mol-panel-hover relative rounded-2xl p-6" style={`--i: ${i}`}>
             <div
               class="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-lg font-mono text-sm font-bold"
               style="background: rgba(127,232,214,0.1); color: var(--color-mint); border: 1px solid rgba(127,232,214,0.25);"

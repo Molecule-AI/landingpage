@@ -1,0 +1,12 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<canvas
+  data-hex-grid
+  class={`pointer-events-none absolute inset-0 h-full w-full ${className}`}
+  aria-hidden="true"
+></canvas>

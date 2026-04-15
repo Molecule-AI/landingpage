@@ -45,10 +45,12 @@ export interface Signal {
 }
 
 export interface UseCaseItem {
+  key: string;
   tag: string;
   title: string;
   description: string;
   bullets: string[];
+  capabilities: string[];
 }
 
 export interface Scope {
@@ -123,7 +125,8 @@ export interface ContentShape {
   };
   useCases: {
     eyebrow: string;
-    title: string;
+    titleLead: string;
+    rotatingTexts: string[];
     subtitle: string;
     items: UseCaseItem[];
   };

@@ -120,12 +120,19 @@ export const zh: ContentShape = {
   },
   useCases: {
     eyebrow: "可以构建什么",
-    title: "面向组织每一层的 AI 团队。",
+    titleLead: "AI 智能体团队服务于",
+    rotatingTexts: [
+      "研究型组织",
+      "工程交付团队",
+      "运营自动化",
+      "管理层控制台",
+    ],
     subtitle:
       "一个工作空间即一个角色。一组工作空间即一个团队。团队分形地组合成组织 —— 没有漂移。",
     items: [
       {
-        tag: "研究",
+        key: "research",
+        tag: "研究型组织",
         title: "内存隔离下的并行研究",
         description:
           "兄弟工作空间在 LOCAL 作用域下独立探索,父节点通过 TEAM 内存进行综合。",
@@ -134,9 +141,11 @@ export const zh: ContentShape = {
           "父节点通过 TEAM 内存进行综合",
           "每个工作空间独立的 Langfuse 追踪链",
         ],
+        capabilities: ["HMA", "DeepAgents", "Langfuse", "A2A"],
       },
       {
-        tag: "工程",
+        key: "engineering",
+        tag: "工程交付",
         title: "多运行时团队的自我协调",
         description:
           "Claude Code、LangGraph、OpenClaw 在同一团队工作空间中并行,配合 A2A 路由与人工审核门。",
@@ -145,9 +154,11 @@ export const zh: ContentShape = {
           "部署与合并需人工审批",
           "递归式团队扩展,零漂移",
         ],
+        capabilities: ["Claude Code", "LangGraph", "OpenClaw", "HITL"],
       },
       {
-        tag: "运维",
+        key: "operations",
+        tag: "运营自动化",
         title: "治理优先的运维自动化",
         description:
           "RBAC 作用域的权限、按层级路由的审批、可审计的事件流 —— 按工作空间、按角色划分。",
@@ -156,9 +167,11 @@ export const zh: ContentShape = {
           "审批路由跟随组织拓扑",
           "JSON Lines 审计 + 全局密钥",
         ],
+        capabilities: ["RBAC", "审计", "密钥", "CrewAI"],
       },
       {
-        tag: "高管视图",
+        key: "executive",
+        tag: "管理层视图",
         title: "一块画布,实时掌控",
         description:
           "跨所有团队监控健康状态、任务与升级 —— 每个工作空间带 10 个运维面板标签。",
@@ -167,6 +180,7 @@ export const zh: ContentShape = {
           "每个工作空间 10 个运维标签",
           "随时暂停 / 恢复 / 重启任意智能体",
         ],
+        capabilities: ["WebSocket", "Canvas", "Ops Panel", "MCP"],
       },
     ],
   },
