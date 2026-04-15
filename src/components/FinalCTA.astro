@@ -1,5 +1,6 @@
 ---
 import { content, type Locale } from "../i18n";
+import HexBg from "./HexBg.astro";
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = content[locale].finalCta;
@@ -12,7 +13,7 @@ const c = content[locale].finalCta;
     aria-hidden="true"
   >
   </div>
-  <div class="mol-hex absolute inset-0 -z-10" aria-hidden="true"></div>
+  <HexBg id="hex-cta" class="-z-10" />
 
   <div class="mx-auto max-w-4xl px-6 text-center">
     <p class="mb-8 text-pretty text-xs font-medium italic text-[color:var(--color-fg-dim)] sm:text-sm">

@@ -64,24 +64,21 @@ body {
 }
 
 /* ============= hex honeycomb background ============= */
-.mol-hex {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'><path d='M28 66 L0 50 L0 16 L28 0 L56 16 L56 50 Z M28 100 L0 84 L0 50 L28 34 L56 50 L56 84 Z' fill='none' stroke='%237fe8d6' stroke-opacity='0.13' stroke-width='1'/></svg>");
-  background-size: 56px 100px;
-  mask-image: radial-gradient(
-    ellipse 65% 55% at 50% 35%,
-    #000 20%,
-    transparent 85%
-  );
-  -webkit-mask-image: radial-gradient(
-    ellipse 65% 55% at 50% 35%,
-    #000 20%,
-    transparent 85%
-  );
+.mol-hex-glow {
+  animation: mol-hex-pulse 5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
-.mol-hex-dense {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'><path d='M28 66 L0 50 L0 16 L28 0 L56 16 L56 50 Z M28 100 L0 84 L0 50 L28 34 L56 50 L56 84 Z' fill='none' stroke='%237fe8d6' stroke-opacity='0.2' stroke-width='1'/></svg>");
-  background-size: 56px 100px;
+.mol-hex-glow-1 { animation-delay: 0s; }
+.mol-hex-glow-2 { animation-delay: 0.9s; }
+.mol-hex-glow-3 { animation-delay: 1.8s; }
+.mol-hex-glow-4 { animation-delay: 2.7s; }
+.mol-hex-glow-5 { animation-delay: 3.6s; }
+
+@keyframes mol-hex-pulse {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
 }
 
 .mol-orb {
