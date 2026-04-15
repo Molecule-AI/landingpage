@@ -64,7 +64,7 @@ const c = content[locale].architecture;
       </div>
     </div>
 
-    <div class="mt-12">
+    <div class="mt-12" data-reveal>
       <h3 class="text-center font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--color-fg-dim)]">
         {c.outcomesTitle}
       </h3>
@@ -82,6 +82,22 @@ const c = content[locale].architecture;
           ))
         }
       </ul>
+    </div>
+
+    <div class="mol-flywheel mt-14" data-reveal>
+      <h3 class="text-center font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--color-fg-dim)]">
+        {c.flywheelTitle}
+      </h3>
+      <ol class="mol-flywheel-steps mt-8">
+        {
+          c.flywheelSteps.map((step, i) => (
+            <li class="mol-flywheel-step">
+              <span class="mol-flywheel-num">{String(i + 1).padStart(2, "0")}</span>
+              <span class="mol-flywheel-label">{step.label}</span>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </div>
 </section>

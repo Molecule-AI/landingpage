@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://molecule-ai.vercel.app/sitemap-index.xml
+Sitemap: https://www.moleculesai.app/sitemap-index.xml

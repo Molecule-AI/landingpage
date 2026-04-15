@@ -655,6 +655,70 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ============= flywheel ============= */
+.mol-flywheel-steps {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .mol-flywheel-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .mol-flywheel-steps {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.mol-flywheel-step {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--color-ink-border);
+  border-radius: 0.75rem;
+  background: rgba(13, 23, 41, 0.55);
+  position: relative;
+  transition: border-color 220ms ease, transform 220ms ease;
+}
+
+.mol-flywheel-step:hover {
+  border-color: rgba(127, 232, 214, 0.35);
+  transform: translateY(-2px);
+}
+
+@media (min-width: 1024px) {
+  .mol-flywheel-step:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    right: -0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(127, 232, 214, 0.55);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+}
+
+.mol-flywheel-num {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--color-mint);
+}
+
+.mol-flywheel-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.35;
+}
+
 /* ============= competitor table ============= */
 .mol-compare {
   overflow-x: auto;

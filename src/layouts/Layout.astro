@@ -15,7 +15,7 @@ const c = content[locale];
 const pageTitle = title ?? `${c.siteMeta.fullName} — ${c.siteMeta.tagline}`;
 const pageDescription = description ?? c.siteMeta.description;
 
-const site = Astro.site?.toString() ?? "https://molecule-ai.vercel.app/";
+const site = Astro.site?.toString() ?? "https://www.moleculesai.app/";
 const currentPath = localePaths[locale];
 const canonical = new URL(currentPath, site).toString();
 const imgUrl = new URL(image, site).toString();

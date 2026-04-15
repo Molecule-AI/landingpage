@@ -35,8 +35,23 @@ const d = c.dashboard;
       {h.description}
     </p>
 
+    <ul class="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-x-5 gap-y-2 mol-entrance mol-entrance-4">
+      {
+        h.pillars.map((pillar, i) => (
+          <>
+            {i > 0 && (
+              <li aria-hidden="true" class="hidden h-1 w-1 rounded-full bg-[color:var(--color-fg-dim)] sm:block" />
+            )}
+            <li class="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--color-mint)]">
+              {pillar}
+            </li>
+          </>
+        ))
+      }
+    </ul>
+
     <div class="mt-10 flex flex-wrap items-center justify-center gap-4 mol-entrance mol-entrance-5">
-      <a href={h.primaryCta.href} class="mol-btn-primary">
+      <a href={h.primaryCta.href} class="mol-btn-primary" rel={h.primaryCta.href.startsWith("http") ? "noopener" : undefined}>
         {h.primaryCta.label}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M5 12h14M13 5l7 7-7 7"/>
@@ -45,6 +60,13 @@ const d = c.dashboard;
       <a href={h.secondaryCta.href} class="mol-btn-secondary" rel="noopener">
         {h.secondaryCta.label}
       </a>
+      {
+        h.tertiaryCta && (
+          <a href={h.tertiaryCta.href} class="text-sm font-medium text-[color:var(--color-fg-muted)] underline underline-offset-4 transition-colors hover:text-white">
+            {h.tertiaryCta.label}
+          </a>
+        )
+      }
     </div>
 
     <!-- Control Plane dashboard mockup -->

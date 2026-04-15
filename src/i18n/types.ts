@@ -85,6 +85,10 @@ export interface Competitor {
   edge: string;
 }
 
+export interface FlywheelStep {
+  label: string;
+}
+
 export interface FooterLink {
   label: string;
   href: string;
@@ -104,6 +108,9 @@ export interface ContentShape {
     tagline: string;
     description: string;
     github: string;
+    monorepo: string;
+    docs: string;
+    license: string;
     localeSwitch: { label: string; href: string };
   };
   nav: NavItem[];
@@ -112,8 +119,21 @@ export interface ContentShape {
     titleLead: string;
     titleHighlight: string;
     description: string;
+    pillars: string[];
     primaryCta: CTA;
     secondaryCta: CTA;
+    tertiaryCta?: CTA;
+  };
+  whatShips: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    columns: {
+      label: string;
+      name: string;
+      stack: string;
+      items: string[];
+    }[];
   };
   dashboard: DashboardContent;
   socialProof: SocialProofContent;
@@ -141,6 +161,8 @@ export interface ContentShape {
     scopes: Scope[];
     outcomesTitle: string;
     outcomes: string[];
+    flywheelTitle: string;
+    flywheelSteps: FlywheelStep[];
   };
   adapters: {
     eyebrow: string;
