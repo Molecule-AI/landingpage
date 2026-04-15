@@ -1,35 +1,38 @@
 ---
-import { finalCta } from "../data/content";
+import { content, type Locale } from "../i18n";
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = content[locale].finalCta;
 ---
 
 <section class="relative overflow-hidden py-28 sm:py-36">
   <div
     class="absolute inset-0 -z-10"
-    style="background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(127,232,214,0.12), transparent 70%);"
+    style="background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(127,232,214,0.14), transparent 70%);"
     aria-hidden="true"
   >
   </div>
-  <div class="mol-grid absolute inset-0 -z-10" aria-hidden="true"></div>
+  <div class="mol-hex absolute inset-0 -z-10" aria-hidden="true"></div>
 
   <div class="mx-auto max-w-4xl px-6 text-center">
     <p class="mb-8 text-pretty text-xs font-medium italic text-[color:var(--color-fg-dim)] sm:text-sm">
-      {finalCta.vision}
+      {c.vision}
     </p>
 
-    <span class="mol-eyebrow">{finalCta.eyebrow}</span>
+    <span class="mol-eyebrow">{c.eyebrow}</span>
 
     <h2 class="mt-6 text-balance text-4xl font-bold tracking-tight text-white sm:text-6xl">
-      {finalCta.titleTop}
-      <span class="mol-gradient-text block pt-2">{finalCta.titleBottom}</span>
+      {c.titleTop}
+      <span class="mol-gradient-text block pt-2">{c.titleBottom}</span>
     </h2>
 
     <p class="mx-auto mt-6 max-w-xl text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
-      {finalCta.subtitle}
+      {c.subtitle}
     </p>
 
     <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
       {
-        finalCta.actions.map((action) => (
+        c.actions.map((action) => (
           <a
             href={action.href}
             class={action.primary ? "mol-btn-primary" : "mol-btn-secondary"}

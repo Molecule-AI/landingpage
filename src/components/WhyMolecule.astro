@@ -1,0 +1,49 @@
+---
+import { content, type Locale } from "../i18n";
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = content[locale].whyMolecule;
+---
+
+<section id="why-molecule" class="py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mx-auto max-w-3xl text-center">
+      <span class="mol-eyebrow">{c.eyebrow}</span>
+      <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
+        {c.title}
+      </h2>
+      <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+        {c.subtitle}
+      </p>
+    </div>
+
+    <div class="mol-compare mt-14">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">{c.columns.bestAt}</th>
+            <th scope="col">{c.columns.gap}</th>
+            <th scope="col">{c.columns.edge}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            c.competitors.map((comp) => (
+              <tr>
+                <td>{comp.name}</td>
+                <td class="text-[color:var(--color-fg)]">{comp.bestAt}</td>
+                <td class="text-[color:var(--color-fg-muted)]">{comp.gap}</td>
+                <td class="mol-compare-edge">{comp.edge}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-10 text-center text-sm font-medium italic text-[color:var(--color-fg-muted)]">
+      {c.closing}
+    </p>
+  </div>
+</section>

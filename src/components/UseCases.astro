@@ -1,26 +1,29 @@
 ---
-import { useCases } from "../data/content";
+import { content, type Locale } from "../i18n";
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = content[locale].useCases;
 ---
 
 <section id="use-cases" class="py-24 sm:py-32">
   <div class="mx-auto max-w-7xl px-6">
     <div class="mx-auto max-w-3xl text-center">
-      <span class="mol-eyebrow">{useCases.eyebrow}</span>
+      <span class="mol-eyebrow">{c.eyebrow}</span>
       <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
-        {useCases.title}
+        {c.title}
       </h2>
       <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
-        {useCases.subtitle}
+        {c.subtitle}
       </p>
     </div>
 
     <div class="mt-16 grid gap-6 md:grid-cols-2">
       {
-        useCases.items.map((item) => (
+        c.items.map((item) => (
           <article class="mol-panel mol-panel-hover rounded-2xl p-8">
             <div class="mb-4 flex items-center justify-between">
               <span
-                class="rounded-md px-2.5 py-1 font-mono text-xs font-semibold tracking-wider uppercase"
+                class="rounded-md px-2.5 py-1 font-mono text-xs font-semibold uppercase tracking-wider"
                 style="background: rgba(127,232,214,0.08); color: var(--color-mint); border: 1px solid rgba(127,232,214,0.2);"
               >
                 {item.tag}
