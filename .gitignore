@@ -23,3 +23,18 @@ pnpm-debug.log*
 
 # astro
 .astro/
+
+# Credentials — added by chore/credentials-gitignore batch
+.env.local
+.env.*.local
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+.secrets/
+.auth-token
+.auth_token
