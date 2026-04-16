@@ -116,6 +116,9 @@ export interface ContentShape {
     github: string;
     monorepo: string;
     docs: string;
+    app: string;
+    api: string;
+    status: string;
     license: string;
     localeSwitch: { label: string; href: string };
   };
