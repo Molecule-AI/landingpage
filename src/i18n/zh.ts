@@ -14,6 +14,9 @@ export const zh: ContentShape = {
     github: "https://github.com/Molecule-AI",
     monorepo: "https://github.com/Molecule-AI/molecule-monorepo",
     docs: "https://doc.moleculesai.app",
+    app: "https://app.moleculesai.app",
+    api: "https://api.moleculesai.app",
+    status: "https://status.moleculesai.app",
     license: "BSL 1.1",
     localeSwitch: { label: "EN", href: "/" },
   },
@@ -26,9 +29,10 @@ export const zh: ContentShape = {
     { label: "平台护城河", href: "#platform" },
     { label: "常见问题", href: "#faq" },
     { label: "文档", href: "https://doc.moleculesai.app" },
+    { label: "控制台", href: "https://app.moleculesai.app" },
   ],
   hero: {
-    badge: "Open core · BSL 1.1 · 主分支已发布",
+    badge: "Open core · BSL 1.1 · SaaS 已上线",
     titleLead: "让 AI 智能体组成",
     titleHighlight: "可投入生产的团队。",
     description:
@@ -40,9 +44,9 @@ export const zh: ContentShape = {
       "技能进化",
       "运维护栏",
     ],
-    primaryCta: { label: "阅读文档", href: "https://doc.moleculesai.app" },
-    secondaryCta: { label: "查看 GitHub", href: "https://github.com/Molecule-AI/molecule-monorepo" },
-    tertiaryCta: { label: "了解架构", href: "#architecture" },
+    primaryCta: { label: "打开控制台", href: "https://app.moleculesai.app" },
+    secondaryCta: { label: "阅读文档", href: "https://doc.moleculesai.app" },
+    tertiaryCta: { label: "查看 GitHub", href: "https://github.com/Molecule-AI/molecule-monorepo" },
   },
   whatShips: {
     eyebrow: "主分支已交付",
@@ -441,7 +445,7 @@ export const zh: ContentShape = {
       },
       {
         q: "价格是怎样的?",
-        a: "Open-core monorepo 在 BSL 1.1 下免费 —— 你可以永久自部署,不需要向任何人付费。托管版 SaaS 控制平面正在规划中,会在 moleculesai.app 上提供注册、组织、计费与多租户发放功能,底层仍是同一份 open core。价格将在上线前公布。",
+        a: "Open-core monorepo 在 BSL 1.1 下免费 —— 你可以永久自部署,不需要向任何人付费。托管版 SaaS 已在 app.moleculesai.app 上线,提供注册、组织与多租户发放功能,底层仍是同一份 open core。API 在 api.moleculesai.app,文档在 doc.moleculesai.app。",
       },
     ],
   },
@@ -454,8 +458,8 @@ export const zh: ContentShape = {
     subtitle:
       "一个工作空间变成一个团队。一个团队变成一个组织。现在开始。",
     actions: [
-      { label: "阅读文档", href: "https://doc.moleculesai.app", primary: true },
-      { label: "克隆 Monorepo", href: "https://github.com/Molecule-AI/molecule-monorepo", primary: false },
+      { label: "打开控制台", href: "https://app.moleculesai.app", primary: true },
+      { label: "阅读文档", href: "https://doc.moleculesai.app", primary: false },
     ],
   },
   footer: {
@@ -471,12 +475,21 @@ export const zh: ContentShape = {
         ],
       },
       {
+        title: "平台",
+        links: [
+          { label: "控制台", href: "https://app.moleculesai.app" },
+          { label: "API", href: "https://api.moleculesai.app" },
+          { label: "文档", href: "https://doc.moleculesai.app" },
+          { label: "状态", href: "https://status.moleculesai.app" },
+        ],
+      },
+      {
         title: "资源",
         links: [
-          { label: "文档", href: "https://doc.moleculesai.app" },
-          { label: "Monorepo", href: "https://github.com/Molecule-AI/molecule-monorepo" },
-          { label: "官网仓库", href: "https://github.com/Molecule-AI/landingpage" },
           { label: "GitHub 组织", href: "https://github.com/Molecule-AI" },
+          { label: "Core 仓库", href: "https://github.com/Molecule-AI/molecule-monorepo" },
+          { label: "MCP Server", href: "https://www.npmjs.com/package/@molecule-ai/mcp-server" },
+          { label: "Python SDK", href: "https://pypi.org/project/molecule-ai-sdk" },
         ],
       },
       {

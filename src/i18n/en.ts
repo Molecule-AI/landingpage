@@ -14,6 +14,9 @@ export const en: ContentShape = {
     github: "https://github.com/Molecule-AI",
     monorepo: "https://github.com/Molecule-AI/molecule-monorepo",
     docs: "https://doc.moleculesai.app",
+    app: "https://app.moleculesai.app",
+    api: "https://api.moleculesai.app",
+    status: "https://status.moleculesai.app",
     license: "BSL 1.1",
     localeSwitch: { label: "中文", href: "/zh/" },
   },
@@ -26,9 +29,10 @@ export const en: ContentShape = {
     { label: "Platform", href: "#platform" },
     { label: "FAQ", href: "#faq" },
     { label: "Docs", href: "https://doc.moleculesai.app" },
+    { label: "Dashboard", href: "https://app.moleculesai.app" },
   ],
   hero: {
-    badge: "Open core · BSL 1.1 · Shipping on main",
+    badge: "Open core · BSL 1.1 · SaaS now live",
     titleLead: "Bond AI agents into",
     titleHighlight: "production-grade teams.",
     description:
@@ -40,9 +44,9 @@ export const en: ContentShape = {
       "Skill Evolution",
       "Operational Guardrails",
     ],
-    primaryCta: { label: "Read the docs", href: "https://doc.moleculesai.app" },
-    secondaryCta: { label: "View on GitHub", href: "https://github.com/Molecule-AI/molecule-monorepo" },
-    tertiaryCta: { label: "Architecture", href: "#architecture" },
+    primaryCta: { label: "Open Dashboard", href: "https://app.moleculesai.app" },
+    secondaryCta: { label: "Read the docs", href: "https://doc.moleculesai.app" },
+    tertiaryCta: { label: "View on GitHub", href: "https://github.com/Molecule-AI/molecule-monorepo" },
   },
   whatShips: {
     eyebrow: "What Ships in Main",
@@ -441,7 +445,7 @@ export const en: ContentShape = {
       },
       {
         q: "What does it cost?",
-        a: "The open-core monorepo is free under BSL 1.1 — you can self-host it forever without paying anyone. A hosted SaaS control plane is planned at moleculesai.app, which will add signup, orgs, billing, and multi-tenant provisioning on top of the same open core. Pricing will be published before launch.",
+        a: "The open-core monorepo is free under BSL 1.1 — you can self-host it forever without paying anyone. The hosted SaaS is live at app.moleculesai.app with signup, orgs, and multi-tenant provisioning on top of the same open core. API available at api.moleculesai.app. Documentation at doc.moleculesai.app.",
       },
     ],
   },
@@ -454,8 +458,8 @@ export const en: ContentShape = {
     subtitle:
       "One workspace becomes a team. One team becomes an organization. Start now.",
     actions: [
-      { label: "Read the docs", href: "https://doc.moleculesai.app", primary: true },
-      { label: "Clone the monorepo", href: "https://github.com/Molecule-AI/molecule-monorepo", primary: false },
+      { label: "Open Dashboard", href: "https://app.moleculesai.app", primary: true },
+      { label: "Read the docs", href: "https://doc.moleculesai.app", primary: false },
     ],
   },
   footer: {
@@ -471,12 +475,21 @@ export const en: ContentShape = {
         ],
       },
       {
+        title: "Platform",
+        links: [
+          { label: "Dashboard", href: "https://app.moleculesai.app" },
+          { label: "API", href: "https://api.moleculesai.app" },
+          { label: "Documentation", href: "https://doc.moleculesai.app" },
+          { label: "Status", href: "https://status.moleculesai.app" },
+        ],
+      },
+      {
         title: "Resources",
         links: [
-          { label: "Documentation", href: "https://doc.moleculesai.app" },
-          { label: "Monorepo", href: "https://github.com/Molecule-AI/molecule-monorepo" },
-          { label: "Landing Page", href: "https://github.com/Molecule-AI/landingpage" },
           { label: "GitHub Org", href: "https://github.com/Molecule-AI" },
+          { label: "Core Repo", href: "https://github.com/Molecule-AI/molecule-monorepo" },
+          { label: "MCP Server", href: "https://www.npmjs.com/package/@molecule-ai/mcp-server" },
+          { label: "Python SDK", href: "https://pypi.org/project/molecule-ai-sdk" },
         ],
       },
       {
