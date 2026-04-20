@@ -34,7 +34,7 @@ export const zh: ContentShape = {
   hero: {
     badge: "Open core · BSL 1.1 · SaaS 已上线",
     titleLead: "让 AI 智能体组成",
-    titleHighlight: "可投入生产的团队。",
+    titleHighlight: "可投入生产的团队",
     description:
       "Molecule AI 是面向异构 AI 智能体团队的组织级控制平面。工作空间即角色,组织架构即拓扑。七种运行时、分层内存、技能进化、生产级治理 —— 开箱即用。",
     pillars: [

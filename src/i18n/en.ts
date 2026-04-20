@@ -34,7 +34,7 @@ export const en: ContentShape = {
   hero: {
     badge: "Open core · BSL 1.1 · SaaS now live",
     titleLead: "Bond AI agents into",
-    titleHighlight: "production-grade teams.",
+    titleHighlight: "production-grade teams",
     description:
       "Molecule AI is the org-native control plane for heterogeneous AI agent teams. Workspaces are roles. The org chart is topology. Seven runtimes, hierarchical memory, skill evolution, and operational guardrails — out of the box.",
     pillars: [
