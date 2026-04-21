@@ -218,8 +218,8 @@ function initShapeGrid(
 
   // Fonts can change section height after initial paint, especially on
   // mobile where the canvas is parented to a tall stacked section.
-  if (typeof document !== "undefined" && (document as any).fonts?.ready) {
-    (document as any).fonts.ready.then(() => resize());
+  if (typeof document !== "undefined" && document.fonts?.ready) {
+    document.fonts.ready.then(() => resize());
   }
 
   // Re-check size whenever dpr changes (e.g. window dragged to a different
