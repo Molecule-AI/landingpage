@@ -1,0 +1,80 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+interface Props { locale?: "en" | "zh" }
+const { locale = "en" } = Astro.props;
+---
+
+<Layout locale={locale} title="Terms of Service — Molecule AI" description="Molecule AI Terms of Service.">
+  <main class="relative">
+    <section class="mx-auto max-w-3xl px-6 py-24 sm:py-32">
+      <p class="mol-eyebrow">Terms of Service</p>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">Terms of Service</h1>
+      <p class="mt-4 text-sm text-[color:var(--color-fg-muted)]">Effective date: April 21, 2026 · Molecule AI, Inc.</p>
+
+      <div class="mt-10 space-y-8 text-sm leading-relaxed text-[color:var(--color-fg-muted)]">
+        <section>
+          <h2 class="text-lg font-semibold text-white">1. Acceptance</h2>
+          <p class="mt-2">By accessing or using Molecule AI's platform, API, documentation, or hosted services (collectively, the "Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">2. Description of Service</h2>
+          <p class="mt-2">Molecule AI provides an open-core control plane for orchestrating heterogeneous AI agent teams. The Service includes: a hosted SaaS dashboard, API endpoints, documentation, and the open-source monorepo licensed under BSL 1.1. Self-hosted deployments are governed by the BSL 1.1 license, not these terms.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">3. Account & Eligibility</h2>
+          <p class="mt-2">You must register an account to use the hosted SaaS. You are responsible for keeping your credentials secure and for all activity under your account. The Service is available only to users who are at least 18 years old and not subject to any export restrictions.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">4. Acceptable Use</h2>
+          <p class="mt-2">You may not use the Service to: (a) violate any applicable law or regulation; (b) infringe the rights of any third party; (c) use the Service to build a competing product or service; (d) attempt to gain unauthorized access to any system or data; (e) resell the hosted SaaS as a standalone offering. The BSL 1.1 source code license has no usage restriction except commercial resale as a competing hosted service.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">5. Data & Privacy</h2>
+          <p class="mt-2">Molecule AI processes data in accordance with its <a href="/legal/privacy" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Privacy Policy</a>. You retain all rights to your data. We do not use your content to train models without explicit consent.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">6. Service Levels</h2>
+          <p class="mt-2">The hosted SaaS aims for 99.9% uptime but does not guarantee uninterrupted availability. Planned maintenance windows will be communicated in advance when feasible. Self-hosted deployments are the user's sole responsibility.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">7. Fees & Billing</h2>
+          <p class="mt-2">Team plan fees are billed per workspace per month. All fees are non-refundable except as required by applicable law. We reserve the right to change pricing with 30 days' notice.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">8. Intellectual Property</h2>
+          <p class="mt-2">Molecule AI retains all rights to the platform, branding, and documentation. The open-source monorepo is licensed under BSL 1.1 — see the LICENSE file for details. You retain all rights to content you submit through the Service.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">9. Disclaimer & Limitation of Liability</h2>
+          <p class="mt-2">The Service is provided "as is" without warranties of any kind. Molecule AI is not liable for any indirect, incidental, special, or consequential damages arising from your use of the Service. Our total liability shall not exceed the fees paid by you in the 12 months preceding the claim.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">10. Termination</h2>
+          <p class="mt-2">You may terminate your account at any time via the dashboard. We may suspend or terminate your access if you breach these terms. Upon termination, we will delete your account data within 90 days unless legally required to retain it.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-white">11. Contact</h2>
+          <p class="mt-2">For questions about these terms, contact <a href="mailto:hello@moleculesai.app" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">hello@moleculesai.app</a>.</p>
+        </section>
+      </div>
+    </section>
+
+    <footer class="border-t border-[color:var(--color-ink-border)]/60 py-8 text-center">
+      <p class="text-xs text-[color:var(--color-fg-dim)]">
+        © {new Date().getFullYear()} Molecule AI — <a href="/" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Home</a>
+        · <a href="/pricing" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Pricing</a>
+      </p>
+    </footer>
+  </main>
+</Layout>

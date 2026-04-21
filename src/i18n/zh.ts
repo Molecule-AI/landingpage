@@ -468,6 +468,7 @@ export const zh: ContentShape = {
       {
         title: "产品",
         links: [
+          { label: "定价", href: "/pricing" },
           { label: "架构", href: "#architecture" },
           { label: "运行时适配器", href: "#adapters" },
           { label: "产品交付", href: "#ships" },
@@ -490,6 +491,13 @@ export const zh: ContentShape = {
           { label: "Core 仓库", href: "https://github.com/Molecule-AI/molecule-monorepo" },
           { label: "MCP Server", href: "https://www.npmjs.com/package/@molecule-ai/mcp-server" },
           { label: "Python SDK", href: "https://pypi.org/project/molecule-ai-sdk" },
+        ],
+      },
+      {
+        title: "法律",
+        links: [
+          { label: "服务条款", href: "/legal/terms" },
+          { label: "隐私政策", href: "/legal/privacy" },
         ],
       },
       {

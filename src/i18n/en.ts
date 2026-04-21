@@ -468,6 +468,7 @@ export const en: ContentShape = {
       {
         title: "Product",
         links: [
+          { label: "Pricing", href: "/pricing" },
           { label: "Architecture", href: "#architecture" },
           { label: "Runtime Adapters", href: "#adapters" },
           { label: "What Ships", href: "#ships" },
@@ -490,6 +491,13 @@ export const en: ContentShape = {
           { label: "Core Repo", href: "https://github.com/Molecule-AI/molecule-monorepo" },
           { label: "MCP Server", href: "https://www.npmjs.com/package/@molecule-ai/mcp-server" },
           { label: "Python SDK", href: "https://pypi.org/project/molecule-ai-sdk" },
+        ],
+      },
+      {
+        title: "Legal",
+        links: [
+          { label: "Terms of Service", href: "/legal/terms" },
+          { label: "Privacy Policy", href: "/legal/privacy" },
         ],
       },
       {
