@@ -14,6 +14,7 @@ export default function ShinyText({
 }: ShinyTextProps) {
   return (
     <span
+      data-shiny-text
       className={className}
       style={{
         display: "inline-block",
