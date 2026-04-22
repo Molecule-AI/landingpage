@@ -22,7 +22,7 @@ export default function SpotlightCard({
   const [isHovered, setIsHovered] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  // Detect reduced-motion preference once on mount.
+  // Detect reduced-motion preference once on mount and subscribe to changes.
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReducedMotion(mq.matches);
@@ -32,8 +32,7 @@ export default function SpotlightCard({
   }, []);
 
   function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
-    // Freeze spotlight at center when reduced-motion is requested.
-    if (reducedMotion) return;
+    if (prefersReducedMotion()) return;
     const rect = cardRef.current?.getBoundingClientRect();
     if (!rect) return;
     setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
