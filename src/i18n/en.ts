@@ -468,6 +468,7 @@ export const en: ContentShape = {
       {
         title: "Product",
         links: [
+          { label: "Pricing", href: "/pricing" },
           { label: "Architecture", href: "#architecture" },
           { label: "Runtime Adapters", href: "#adapters" },
           { label: "What Ships", href: "#ships" },
@@ -500,6 +501,13 @@ export const en: ContentShape = {
           { label: "FAQ", href: "#faq" },
           { label: "Issues", href: "https://github.com/Molecule-AI/molecule-monorepo/issues" },
           { label: "Discussions", href: "https://github.com/Molecule-AI/molecule-monorepo/discussions" },
+        ],
+      },
+      {
+        title: "Legal",
+        links: [
+          { label: "Terms of Service", href: "/legal/terms" },
+          { label: "Privacy Policy", href: "/legal/privacy" },
         ],
       },
     ],
