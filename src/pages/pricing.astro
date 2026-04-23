@@ -1,0 +1,142 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ShapeGrid from "../components/ShapeGrid.astro";
+
+interface Props { locale?: "en" | "zh" }
+const { locale = "en" } = Astro.props;
+---
+
+<Layout locale={locale} title="Pricing — Molecule AI" description="Simple, transparent pricing for AI agent team orchestration.">
+  <main class="relative">
+    <ShapeGrid class="-z-10 opacity-60" />
+
+    <!-- Hero -->
+    <section class="relative pt-24 pb-16 sm:pt-32 sm:pb-20">
+      <div class="mol-orb mol-orb--mint -z-10" style="width:480px;height:480px;top:-180px;left:50%;transform:translateX(-50%);" aria-hidden="true"></div>
+      <div class="mx-auto max-w-7xl px-6 text-center">
+        <p class="mol-eyebrow">Pricing</p>
+        <h1 class="mt-6 text-balance text-4xl font-bold tracking-tight text-white sm:text-6xl">
+          One platform,<br/><span class="mol-gradient-text">every runtime.</span>
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+          Molecule AI is the open-core control plane for heterogeneous AI agent teams.
+          Self-host the monorepo for free, or use the hosted SaaS with zero ops overhead.
+        </p>
+      </div>
+    </section>
+
+    <!-- Pricing Tiers -->
+    <section class="py-16 sm:py-24">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="grid gap-8 md:grid-cols-3">
+
+          <!-- Free / Self-hosted -->
+          <div class="rounded-2xl border border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink-soft)]/40 p-8">
+            <div class="mol-eyebrow mb-4">Open Core</div>
+            <h2 class="text-3xl font-bold text-white">Free</h2>
+            <p class="mt-3 text-sm text-[color:var(--color-fg-muted)]">Self-host the monorepo. Full source. No limits.</p>
+            <p class="mt-6 text-4xl font-bold text-white">$0<span class="text-base font-normal text-[color:var(--color-fg-muted)]">/mo</span></p>
+            <ul class="mt-8 space-y-3">
+              {[
+                "Full monorepo (Go + Python + Next.js)",
+                "Up to 5 workspaces",
+                "All 6 runtime adapters",
+                "Hierarchical memory (LOCAL/TEAM/GLOBAL)",
+                "Canvas UI + 10-tab ops panel",
+                "MCP tools & A2A routing",
+                "Community support on GitHub",
+              ].map(item => (
+                <li class="flex items-start gap-2 text-sm text-[color:var(--color-fg-muted)]">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <a
+              href="https://github.com/Molecule-AI/molecule-monorepo"
+              class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[color:var(--color-ink-border)] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-[color:var(--color-mint)] hover:text-[color:var(--color-mint)]"
+              rel="noopener"
+            >
+              Clone on GitHub
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            </a>
+          </div>
+
+          <!-- Team / SaaS -->
+          <div class="rounded-2xl border border-[color:var(--color-mint)] bg-[color:var(--color-mint)]/10 p-8 ring-1 ring-[color:var(--color-mint)]/30">
+            <div class="mol-eyebrow mb-4 text-[color:var(--color-mint)]">Hosted SaaS</div>
+            <h2 class="text-3xl font-bold text-white">Team</h2>
+            <p class="mt-3 text-sm text-[color:var(--color-fg-muted)]">Zero ops. Auto-scaling. Full platform, managed for you.</p>
+            <p class="mt-6 text-4xl font-bold text-white">$29<span class="text-base font-normal text-[color:var(--color-fg-muted)]">/workspace/mo</span></p>
+            <ul class="mt-8 space-y-3">
+              {[
+                "Everything in Free",
+                "Unlimited workspaces",
+                "Auto-provisioning on Fly Machines",
+                "Real-time topology over WebSocket",
+                "Org-scoped secrets & RBAC",
+                "JSON Lines audit trail",
+                "Email & Slack support",
+              ].map(item => (
+                <li class="flex items-start gap-2 text-sm text-[color:var(--color-fg-muted)]">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <a
+              href="https://app.moleculesai.app"
+              class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[color:var(--color-mint)] px-4 py-2.5 text-sm font-semibold text-[color:var(--color-ink-deep)] transition-opacity hover:opacity-85"
+            >
+              Start free
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+
+          <!-- Enterprise -->
+          <div class="rounded-2xl border border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink-soft)]/40 p-8">
+            <div class="mol-eyebrow mb-4">Enterprise</div>
+            <h2 class="text-3xl font-bold text-white">Custom</h2>
+            <p class="mt-3 text-sm text-[color:var(--color-fg-muted)]">Private deployment, custom runtimes, dedicated support.</p>
+            <p class="mt-6 text-4xl font-bold text-white">Custom<span class="text-base font-normal text-[color:var(--color-fg-muted)]"></span></p>
+            <ul class="mt-8 space-y-3">
+              {[
+                "Everything in Team",
+                "Private cloud or on-prem",
+                "Custom runtime adapter development",
+                "SSO / SAML integration",
+                "SLA & dedicated support",
+                "Source code license available",
+              ].map(item => (
+                <li class="flex items-start gap-2 text-sm text-[color:var(--color-fg-muted)]">
+                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <a
+              href="mailto:hello@moleculesai.app"
+              class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[color:var(--color-ink-border)] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-[color:var(--color-mint)] hover:text-[color:var(--color-mint)]"
+            >
+              Contact sales
+            </a>
+          </div>
+        </div>
+
+        <!-- FAQ note -->
+        <p class="mt-12 text-center text-sm text-[color:var(--color-fg-dim)]">
+          All plans include the open-core monorepo license under BSL 1.1. No seat limits on self-host.
+          <a href="https://github.com/Molecule-AI/molecule-monorepo/blob/main/LICENSE" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]" rel="noopener">Read the license</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer stub (re-use the site footer) -->
+    <footer class="border-t border-[color:var(--color-ink-border)]/60 py-8 text-center">
+      <p class="text-xs text-[color:var(--color-fg-dim)]">
+        © {new Date().getFullYear()} Molecule AI — <a href="/" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Home</a>
+        · <a href="/legal/terms" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Terms</a>
+      </p>
+    </footer>
+  </main>
+</Layout>
