@@ -57,7 +57,7 @@ export default function CountUp({
       className={className}
       role="status"
       aria-live="polite"
-      aria-label={`Counter value: ${display}`}
+      aria-label={`Counting up to ${prefix}${to}${suffix}`}
     >
       {display}
     </span>

@@ -18,6 +18,7 @@ export default function BlurText({ text, delay = 80, className = "" }: BlurTextP
       {words.map((word, i) => (
         <motion.span
           key={i}
+          aria-hidden="true"
           initial={{ filter: "blur(12px)", opacity: 0, y: 8 }}
           animate={
             isInView
