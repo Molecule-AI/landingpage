@@ -66,6 +66,12 @@ export default function DecryptedText({
   }, [text, speed, chars]);
 
   useEffect(() => {
+    // Respect prefers-reduced-motion: skip animation, show text immediately
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) {
+      setDisplay(text);
+      return;
+    }
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(

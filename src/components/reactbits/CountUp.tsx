@@ -52,7 +52,13 @@ export default function CountUp({
   }, [animate]);
 
   return (
-    <span ref={ref} className={className}>
+    <span
+      ref={ref}
+      className={className}
+      role="status"
+      aria-live="polite"
+      aria-label={`Counting up to ${prefix}${to}${suffix}`}
+    >
       {display}
     </span>
   );

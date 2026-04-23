@@ -14,7 +14,8 @@ export default function ShinyText({
 }: ShinyTextProps) {
   return (
     <span
-      className={className}
+      data-shiny-text
+      className={`shiny-text-animated ${className}`}
       style={{
         display: "inline-block",
         backgroundImage:
@@ -31,6 +32,12 @@ export default function ShinyText({
         @keyframes shiny-sweep {
           0% { background-position: 200% center; }
           100% { background-position: -200% center; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .shiny-text-animated {
+            background-image: none !important;
+            animation: none !important;
+          }
         }
       `}</style>
     </span>

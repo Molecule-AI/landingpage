@@ -980,4 +980,12 @@ img, canvas, video, svg {
     transform: none;
     animation: none;
   }
+  /* ShinyText: the shiny sweep background-image animation is controlled by
+     animation-duration (not a separate property), so it is already killed by
+     the * rule above. We additionally zero the background-image so the text
+     renders without any shimmer effect residue. */
+  [data-shiny-text] {
+    background-image: none !important;
+    animation: none !important;
+  }
 }

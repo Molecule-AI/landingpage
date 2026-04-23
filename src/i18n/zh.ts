@@ -440,6 +440,14 @@ export const zh: ContentShape = {
         a: "控制平面是 Go 1.25 + Gin + Postgres。工作空间运行时是 Python 3.11。画布(可视化组织架构 + 10 个运维标签)是 Next.js 15 + React Flow + Zustand + Tailwind v4。安全沙箱按工作空间划分为四档:从 T1 沙箱到 T4 全主机。",
       },
       {
+        q: "是否可以通过 API 程序化地创建和管理组织?",
+        a: "可以。Partner API Keys(2026 年 4 月 30 日 GA)允许任何 CI/CD 流水线、市场集成或自动化工具通过类型化的 REST API 创建和管理 Molecule AI 组织——无需浏览器会话。密钥绑定到其创建的组织,有速率限制、可撤销、有审计记录。临时测试组织:POST 创建 → 运行测试 → DELETE 清理。详见 docs.molecule.ai/architecture/partner-api-keys。",
+      },
+      {
+        q: "Molecule AI 内置治理是什么意思?",
+        a: "两个 Phase 34 功能在平台层面提供治理:Tool Trace 记录每个工具调用——名称、输入、输出预览、run_id 配对并行跟踪——以便验证实际运行了什么。Platform Instructions 允许组织管理员编写系统级规则(如「写入外部工具前先脱敏 PII」),在启动时注入到每个 agent 的系统提示词中,在第一个 token 生成之前就已生效。作为一等平台能力的治理,不是事后过滤器。",
+      },
+      {
         q: "如何开始?",
         a: "先看 doc.moleculesai.app 上的 Quickstart,然后 clone github.com/Molecule-AI/molecule-monorepo。README 会引导你开通第一个工作空间、选择一个运行时适配器、组建第一支团队。预计 10 分钟内就能跑起一个工作空间。",
       },
@@ -494,6 +502,13 @@ export const zh: ContentShape = {
         ],
       },
       {
+        title: "法律",
+        links: [
+          { label: "服务条款", href: "/legal/terms" },
+          { label: "隐私政策", href: "/legal/privacy" },
+        ],
+      },
+      {
         title: "社区",
         links: [
           { label: "当下价值", href: "#why-now" },
@@ -501,13 +516,6 @@ export const zh: ContentShape = {
           { label: "常见问题", href: "#faq" },
           { label: "Issues", href: "https://github.com/Molecule-AI/molecule-monorepo/issues" },
           { label: "讨论区", href: "https://github.com/Molecule-AI/molecule-monorepo/discussions" },
-        ],
-      },
-      {
-        title: "法律",
-        links: [
-          { label: "服务条款", href: "/legal/terms" },
-          { label: "隐私政策", href: "/legal/privacy" },
         ],
       },
     ],
