@@ -447,6 +447,14 @@ export const zh: ContentShape = {
         q: "价格是怎样的?",
         a: "Open-core monorepo 在 BSL 1.1 下免费 —— 你可以永久自部署,不需要向任何人付费。托管版 SaaS 已在 app.moleculesai.app 上线,提供注册、组织与多租户发放功能,底层仍是同一份 open core。API 在 api.moleculesai.app,文档在 doc.moleculesai.app。",
       },
+      {
+        q: "Molecule AI 如何保证生产环境的 AI 智能体可观测性?",
+        a: "Tool Trace 在每次 A2A 响应中嵌入完整的执行记录 —— 每次工具调用、输入参数和输出预览均记录在案。无需集成额外的可观测性工具,无采样。对于企业治理场景,Platform Instructions 让组织管理员可以在每个 agent 首轮执行前,将治理规则注入其系统提示词 —— 在平台层强制执行,而非事后过滤。",
+      },
+      {
+        q: "合作伙伴或 CI/CD 流水线能否通过 API 程序化管理 Molecule AI 组织?",
+        a: "可以。Partner API Keys (mol_pk_*) 支持通过 API 程序化创建和管理 Molecule AI 组织 —— 无需浏览器会话,无需人工介入。合作伙伴可通过 POST 创建新组织、通过 API 管理,并在完成后 DELETE 释放;删除同时立即停止计费。密钥按组织范围隔离设计:被泄露的密钥无法超出其所属组织边界。",
+      },
     ],
   },
   finalCta: {

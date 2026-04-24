@@ -447,6 +447,14 @@ export const en: ContentShape = {
         q: "What does it cost?",
         a: "The open-core monorepo is free under BSL 1.1 — you can self-host it forever without paying anyone. The hosted SaaS is live at app.moleculesai.app with signup, orgs, and multi-tenant provisioning on top of the same open core. API available at api.moleculesai.app. Documentation at doc.moleculesai.app.",
       },
+      {
+        q: "How does Molecule AI handle agent observability in production?",
+        a: "Tool Trace embeds a full execution record — every tool call, input, and output preview — in every A2A response. No separate observability stack to integrate, no sampling. For enterprise governance, Platform Instructions lets org admins prepend rules to every agent's system prompt before the first turn — enforced at the platform level, not applied as a post-hoc filter.",
+      },
+      {
+        q: "Can partners or CI/CD pipelines programmatically manage Molecule AI organizations?",
+        a: "Yes. Partner API Keys (mol_pk_*) enable programmatic org provisioning and lifecycle management via API — no browser sessions, no manual handoffs. Partners can POST a new org, manage it via API, and DELETE it when done; billing stops immediately on teardown. Keys are org-scoped by design: a compromised key cannot escape its org boundary.",
+      },
     ],
   },
   finalCta: {
