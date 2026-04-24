@@ -22,7 +22,7 @@ const c = content[locale].finalCta;
 
     <span class="mol-eyebrow">{c.eyebrow}</span>
 
-    <h2 class="mt-6 text-balance text-4xl font-bold tracking-tight text-white sm:text-6xl">
+    <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-6xl">
       {c.titleTop}
       <span class="mol-gradient-text block pt-2">{c.titleBottom}</span>
     </h2>
@@ -31,7 +31,7 @@ const c = content[locale].finalCta;
       {c.subtitle}
     </p>
 
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+    <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
       {
         c.actions.map((action) => (
           <a

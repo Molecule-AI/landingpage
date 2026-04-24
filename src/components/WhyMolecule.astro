@@ -1,5 +1,6 @@
 ---
 import { content, type Locale } from "../i18n";
+import SplitText from "./reactbits/SplitText";
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = content[locale].whyMolecule;
@@ -10,7 +11,7 @@ const c = content[locale].whyMolecule;
     <div class="mx-auto max-w-3xl text-center" data-reveal>
       <span class="mol-eyebrow">{c.eyebrow}</span>
       <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
-        {c.title}
+        <SplitText client:visible text={c.title} delay={30} animateBy="words" />
       </h2>
       <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
         {c.subtitle}

@@ -77,6 +77,9 @@ export const en: ContentShape = {
           "Team expansion / collapse (fractal recursion)",
           "Global secrets with per-workspace override",
           "JSON Lines audit trail",
+          "Tool Trace: every A2A call records tool name, input, output preview",
+          "Platform Instructions: org-wide rules injected at system prompt",
+          "Partner API Keys: programmatic org provisioning via REST API",
         ],
       },
     ],
@@ -440,12 +443,28 @@ export const en: ContentShape = {
         a: "The control plane is Go 1.25 + Gin + Postgres. Workspace runtimes are Python 3.11. The Canvas (the visual org chart + 10-tab ops panel) is Next.js 15 + React Flow + Zustand + Tailwind v4. Secure sandboxing uses four tiers from T1 sandbox through T4 full-host, per workspace.",
       },
       {
+        q: "Can I programmatically create and manage orgs via API?",
+        a: "Yes. Partner API Keys (GA April 30, 2026) let any CI/CD pipeline, marketplace integration, or automation tool create and manage Molecule AI orgs via a typed REST API — no browser session required. Keys are scoped to the org they create, rate-limited, revocable, and audited. Ephemeral test orgs: POST to create, run your tests, DELETE to clean up. See docs.molecule.ai/architecture/partner-api-keys.",
+      },
+      {
+        q: "What does it mean that Molecule AI has a governance built in?",
+        a: "Two Phase 34 features ship governance at the platform level: Tool Trace records every tool call your agents make — name, inputs, output previews, run_id-paired for parallel traces — so you can verify what actually ran. Platform Instructions lets org admins write system-level rules (e.g. 'redact PII before writing to external tools') that are injected into every agent's system prompt at startup, before the first turn. Governance as a first-class platform concern, not a post-hoc filter.",
+      },
+      {
         q: "How do I get started?",
         a: "Read the quickstart at doc.moleculesai.app, then clone github.com/Molecule-AI/molecule-monorepo. The README walks through provisioning the first workspace, picking a runtime adapter, and wiring up your first team. Expect to have a running workspace in under ten minutes.",
       },
       {
         q: "What does it cost?",
         a: "The open-core monorepo is free under BSL 1.1 — you can self-host it forever without paying anyone. The hosted SaaS is live at app.moleculesai.app with signup, orgs, and multi-tenant provisioning on top of the same open core. API available at api.moleculesai.app. Documentation at doc.moleculesai.app.",
+      },
+      {
+        q: "How does Molecule AI handle agent observability in production?",
+        a: "Tool Trace embeds a full execution record — every tool call, input, and output preview — in every A2A response. No separate observability stack to integrate, no sampling. For enterprise governance, Platform Instructions lets org admins prepend rules to every agent's system prompt before the first turn — enforced at the platform level, not applied as a post-hoc filter.",
+      },
+      {
+        q: "Can partners or CI/CD pipelines programmatically manage Molecule AI organizations?",
+        a: "Yes. Partner API Keys (mol_pk_*) enable programmatic org provisioning and lifecycle management via API — no browser sessions, no manual handoffs. Partners can POST a new org, manage it via API, and DELETE it when done; billing stops immediately on teardown. Keys are org-scoped by design: a compromised key cannot escape its org boundary.",
       },
     ],
   },

@@ -1,5 +1,7 @@
 ---
 import { content, type Locale } from "../i18n";
+import SpotlightCard from "./reactbits/SpotlightCard";
+import SplitText from "./reactbits/SplitText";
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = content[locale].whyNow;
@@ -10,7 +12,7 @@ const c = content[locale].whyNow;
     <div class="mx-auto max-w-3xl text-center" data-reveal>
       <span class="mol-eyebrow">{c.eyebrow}</span>
       <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
-        {c.title}
+        <SplitText client:visible text={c.title} delay={25} animateBy="words" />
       </h2>
       <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
         {c.subtitle}
@@ -20,17 +22,19 @@ const c = content[locale].whyNow;
     <ul class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal="stagger">
       {
         c.signals.map((signal, i) => (
-          <li class="mol-panel mol-panel-hover relative rounded-2xl p-6" style={`--i: ${i}`}>
-            <div
-              class="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-lg font-mono text-sm font-bold"
-              style="background: rgba(127,232,214,0.1); color: var(--color-mint); border: 1px solid rgba(127,232,214,0.25);"
-            >
-              0{i + 1}
-            </div>
-            <h3 class="text-base font-semibold text-white">{signal.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-[color:var(--color-fg-muted)]">
-              {signal.detail}
-            </p>
+          <li style={`--i: ${i}`}>
+            <SpotlightCard client:visible className="mol-panel mol-panel-hover relative rounded-2xl p-6 h-full" spotlightColor="rgba(127,232,214,0.12)">
+              <div
+                class="mb-4 inline-flex h-8 w-8 items-center justify-center rounded-lg font-mono text-sm font-bold"
+                style="background: rgba(127,232,214,0.1); color: var(--color-mint); border: 1px solid rgba(127,232,214,0.25);"
+              >
+                0{i + 1}
+              </div>
+              <h3 class="text-base font-semibold text-white">{signal.title}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-[color:var(--color-fg-muted)]">
+                {signal.detail}
+              </p>
+            </SpotlightCard>
           </li>
         ))
       }

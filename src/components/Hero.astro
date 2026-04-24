@@ -1,6 +1,10 @@
 ---
 import { content, type Locale } from "../i18n";
 import ShapeGrid from "./ShapeGrid.astro";
+import Aurora from "./reactbits/Aurora";
+import BlurText from "./reactbits/BlurText";
+import ShinyText from "./reactbits/ShinyText";
+import CountUp from "./reactbits/CountUp";
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = content[locale];
@@ -9,6 +13,7 @@ const d = c.dashboard;
 ---
 
 <section class="relative isolate overflow-hidden pt-20 pb-20 sm:pt-28 sm:pb-28">
+  <Aurora client:visible className="-z-10 opacity-70" />
   <ShapeGrid class="-z-10 opacity-80" />
 
   <div class="mol-orb mol-orb--mint -z-10" style="width:560px;height:560px;top:-220px;left:50%;transform:translateX(-50%);" aria-hidden="true"></div>
@@ -19,14 +24,18 @@ const d = c.dashboard;
     <p class="mol-wordmark mol-entrance mol-entrance-1" aria-hidden="true">Molecule</p>
 
     <div class="mt-6 mb-7 inline-flex mol-entrance mol-entrance-2">
-      <span class="mol-eyebrow">{h.badge}</span>
+      <span class="mol-eyebrow">
+        <ShinyText client:visible text={h.badge} speed="3s" />
+      </span>
     </div>
 
     <h1
       class="mx-auto max-w-4xl text-balance text-[2.25rem] font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl mol-entrance mol-entrance-3"
     >
-      {h.titleLead}
-      <span class="mol-gradient-text block pt-2">{h.titleHighlight}</span>
+      <BlurText client:visible text={h.titleLead} delay={80} className="justify-center" />
+      <span class="mol-gradient-text block pt-2">
+        <BlurText client:visible text={h.titleHighlight} delay={80} className="justify-center" />
+      </span>
     </h1>
 
     <p
@@ -50,7 +59,7 @@ const d = c.dashboard;
       }
     </ul>
 
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-4 mol-entrance mol-entrance-5">
+    <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row mol-entrance mol-entrance-5">
       <a href={h.primaryCta.href} class="mol-btn-primary" rel={h.primaryCta.href.startsWith("http") ? "noopener" : undefined}>
         {h.primaryCta.label}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -70,7 +79,7 @@ const d = c.dashboard;
     </div>
 
     <!-- Control Plane dashboard mockup -->
-    <div class="relative mx-auto mt-16 max-w-5xl text-left mol-entrance mol-entrance-6">
+    <div class="relative mx-auto mt-16 hidden max-w-5xl text-left sm:block mol-entrance mol-entrance-6">
       <div class="mol-dashboard">
         <div class="mol-dashboard-chrome">
           <div class="flex items-center gap-4">
@@ -130,12 +139,22 @@ const d = c.dashboard;
 
           <div class="mol-stats">
             {
-              d.footerStats.map((stat) => (
-                <div class="mol-stat">
-                  <div class="mol-stat-val">{stat.value}</div>
-                  <div class="mol-stat-label">{stat.label}</div>
-                </div>
-              ))
+              d.footerStats.map((stat) => {
+                const num = parseInt(stat.value, 10);
+                const isNumeric = !isNaN(num) && String(num) === stat.value;
+                return (
+                  <div class="mol-stat">
+                    <div class="mol-stat-val">
+                      {isNumeric ? (
+                        <CountUp client:visible to={num} duration={2000} />
+                      ) : (
+                        stat.value
+                      )}
+                    </div>
+                    <div class="mol-stat-label">{stat.label}</div>
+                  </div>
+                );
+              })
             }
           </div>
         </div>

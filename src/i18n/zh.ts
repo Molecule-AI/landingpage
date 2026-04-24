@@ -77,6 +77,9 @@ export const zh: ContentShape = {
           "团队扩展 / 收起(分形递归)",
           "全局密钥 + 工作空间级覆盖",
           "JSON Lines 审计轨迹",
+          "Tool Trace: 每个 A2A 调用记录工具名、输入、输出预览",
+          "Platform Instructions: 组织级规则在系统提示词中注入",
+          "Partner API Keys: 程序化组织配置 via REST API",
         ],
       },
     ],
@@ -440,12 +443,28 @@ export const zh: ContentShape = {
         a: "控制平面是 Go 1.25 + Gin + Postgres。工作空间运行时是 Python 3.11。画布(可视化组织架构 + 10 个运维标签)是 Next.js 15 + React Flow + Zustand + Tailwind v4。安全沙箱按工作空间划分为四档:从 T1 沙箱到 T4 全主机。",
       },
       {
+        q: "是否可以通过 API 程序化地创建和管理组织?",
+        a: "可以。Partner API Keys(2026 年 4 月 30 日 GA)允许任何 CI/CD 流水线、市场集成或自动化工具通过类型化的 REST API 创建和管理 Molecule AI 组织——无需浏览器会话。密钥绑定到其创建的组织,有速率限制、可撤销、有审计记录。临时测试组织:POST 创建 → 运行测试 → DELETE 清理。详见 docs.molecule.ai/architecture/partner-api-keys。",
+      },
+      {
+        q: "Molecule AI 内置治理是什么意思?",
+        a: "两个 Phase 34 功能在平台层面提供治理:Tool Trace 记录每个工具调用——名称、输入、输出预览、run_id 配对并行跟踪——以便验证实际运行了什么。Platform Instructions 允许组织管理员编写系统级规则(如「写入外部工具前先脱敏 PII」),在启动时注入到每个 agent 的系统提示词中,在第一个 token 生成之前就已生效。作为一等平台能力的治理,不是事后过滤器。",
+      },
+      {
         q: "如何开始?",
         a: "先看 doc.moleculesai.app 上的 Quickstart,然后 clone github.com/Molecule-AI/molecule-monorepo。README 会引导你开通第一个工作空间、选择一个运行时适配器、组建第一支团队。预计 10 分钟内就能跑起一个工作空间。",
       },
       {
         q: "价格是怎样的?",
         a: "Open-core monorepo 在 BSL 1.1 下免费 —— 你可以永久自部署,不需要向任何人付费。托管版 SaaS 已在 app.moleculesai.app 上线,提供注册、组织与多租户发放功能,底层仍是同一份 open core。API 在 api.moleculesai.app,文档在 doc.moleculesai.app。",
+      },
+      {
+        q: "Molecule AI 如何保证生产环境的 AI 智能体可观测性?",
+        a: "Tool Trace 在每次 A2A 响应中嵌入完整的执行记录 —— 每次工具调用、输入参数和输出预览均记录在案。无需集成额外的可观测性工具,无采样。对于企业治理场景,Platform Instructions 让组织管理员可以在每个 agent 首轮执行前,将治理规则注入其系统提示词 —— 在平台层强制执行,而非事后过滤。",
+      },
+      {
+        q: "合作伙伴或 CI/CD 流水线能否通过 API 程序化管理 Molecule AI 组织?",
+        a: "可以。Partner API Keys (mol_pk_*) 支持通过 API 程序化创建和管理 Molecule AI 组织 —— 无需浏览器会话,无需人工介入。合作伙伴可通过 POST 创建新组织、通过 API 管理,并在完成后 DELETE 释放;删除同时立即停止计费。密钥按组织范围隔离设计:被泄露的密钥无法超出其所属组织边界。",
       },
     ],
   },
