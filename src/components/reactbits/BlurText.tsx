@@ -14,7 +14,7 @@ export default function BlurText({ text, delay = 80, className = "" }: BlurTextP
   const words = text.split(" ");
 
   return (
-    <span ref={ref} className={`inline-flex flex-wrap gap-x-[0.25em] ${className}`}>
+    <span ref={ref} aria-label={text} className={`inline-flex flex-wrap gap-x-[0.25em] ${className}`}>
       {words.map((word, i) => (
         <motion.span
           key={i}
