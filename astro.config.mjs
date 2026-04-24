@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
 
 export default defineConfig({
   site: 'https://www.moleculesai.app',
@@ -12,6 +13,7 @@ export default defineConfig({
     },
   },
   integrations: [
+    react(),
     sitemap({
       changefreq: 'weekly',
       priority: 0.8,

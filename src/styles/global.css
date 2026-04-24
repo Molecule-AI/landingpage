@@ -35,6 +35,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 html:lang(zh-CN),
@@ -61,6 +62,12 @@ body {
 ::selection {
   background: rgba(127, 232, 214, 0.3);
   color: #fff;
+}
+
+/* ============= responsive images/canvases ============= */
+img, canvas, video, svg {
+  max-width: 100%;
+  height: auto;
 }
 
 /* ============= skip-to-content link (a11y) ============= */
@@ -161,6 +168,7 @@ body {
 .mol-btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   border-radius: 0.625rem;
@@ -173,6 +181,13 @@ body {
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
+@media (max-width: 639px) {
+  .mol-btn-primary,
+  .mol-btn-secondary {
+    width: 100%;
+  }
+}
+
 .mol-btn-primary:hover {
   transform: translateY(-1px);
   box-shadow: 0 14px 48px -14px rgba(127, 232, 214, 0.75);
@@ -181,6 +196,7 @@ body {
 .mol-btn-secondary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   border-radius: 0.625rem;
@@ -292,9 +308,16 @@ body {
 }
 
 .mol-dashboard-body {
-  padding: 1.25rem;
+  padding: 0.75rem;
   display: grid;
-  gap: 1rem;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .mol-dashboard-body {
+    padding: 1.25rem;
+    gap: 1rem;
+  }
 }
 
 .mol-root-card {
@@ -469,12 +492,18 @@ body {
 
 .mol-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   border: 1px solid var(--color-ink-border);
   border-radius: 10px;
   background: rgba(5, 11, 22, 0.6);
+}
+
+@media (min-width: 640px) {
+  .mol-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 .mol-stat {
@@ -637,14 +666,29 @@ body {
 /* ============= use case tabs ============= */
 .mol-tabs {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
   gap: 0.5rem;
   padding: 0.35rem;
   border-radius: 999px;
   background: rgba(10, 17, 32, 0.6);
   border: 1px solid var(--color-ink-border);
   backdrop-filter: blur(8px);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.mol-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mol-tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+  }
 }
 
 .mol-tab {
@@ -656,6 +700,8 @@ body {
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition:
     background 220ms ease,
     color 220ms ease,
@@ -701,12 +747,19 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1.25rem;
-  padding: 1.25rem 1.5rem;
+  gap: 1rem;
+  padding: 1rem;
   cursor: pointer;
   list-style: none;
   user-select: none;
   transition: color 180ms ease;
+}
+
+@media (min-width: 640px) {
+  .mol-faq-summary {
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+  }
 }
 
 .mol-faq-summary::-webkit-details-marker {
@@ -739,11 +792,18 @@ body {
 }
 
 .mol-faq-answer {
-  padding: 0 1.5rem 1.4rem 1.5rem;
-  font-size: 0.92rem;
+  padding: 0 1rem 1.2rem 1rem;
+  font-size: 0.875rem;
   line-height: 1.7;
   color: var(--color-fg-muted);
   max-width: 56rem;
+}
+
+@media (min-width: 640px) {
+  .mol-faq-answer {
+    padding: 0 1.5rem 1.4rem 1.5rem;
+    font-size: 0.92rem;
+  }
 }
 
 .mol-faq-answer p {
@@ -831,9 +891,29 @@ body {
 /* ============= competitor table ============= */
 .mol-compare {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--color-ink-border);
   border-radius: 14px;
   background: rgba(10, 17, 32, 0.5);
+  position: relative;
+}
+
+/* Scroll hint gradient on mobile */
+@media (max-width: 767px) {
+  .mol-compare {
+    mask-image: linear-gradient(90deg, #000 0%, #000 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 85%, transparent 100%);
+  }
+  .mol-compare::-webkit-scrollbar {
+    height: 4px;
+  }
+  .mol-compare::-webkit-scrollbar-track {
+    background: rgba(10, 17, 32, 0.3);
+  }
+  .mol-compare::-webkit-scrollbar-thumb {
+    background: rgba(127, 232, 214, 0.3);
+    border-radius: 4px;
+  }
 }
 
 .mol-compare table {
@@ -899,5 +979,13 @@ body {
     opacity: 1;
     transform: none;
     animation: none;
+  }
+  /* ShinyText: the shiny sweep background-image animation is controlled by
+     animation-duration (not a separate property), so it is already killed by
+     the * rule above. We additionally zero the background-image so the text
+     renders without any shimmer effect residue. */
+  [data-shiny-text] {
+    background-image: none !important;
+    animation: none !important;
   }
 }

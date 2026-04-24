@@ -77,6 +77,9 @@ export const en: ContentShape = {
           "Team expansion / collapse (fractal recursion)",
           "Global secrets with per-workspace override",
           "JSON Lines audit trail",
+          "Tool Trace: every A2A call records tool name, input, output preview",
+          "Platform Instructions: org-wide rules injected at system prompt",
+          "Partner API Keys: programmatic org provisioning via REST API",
         ],
       },
     ],
@@ -438,6 +441,14 @@ export const en: ContentShape = {
       {
         q: "What stack is Molecule AI built on?",
         a: "The control plane is Go 1.25 + Gin + Postgres. Workspace runtimes are Python 3.11. The Canvas (the visual org chart + 10-tab ops panel) is Next.js 15 + React Flow + Zustand + Tailwind v4. Secure sandboxing uses four tiers from T1 sandbox through T4 full-host, per workspace.",
+      },
+      {
+        q: "Can I programmatically create and manage orgs via API?",
+        a: "Yes. Partner API Keys (GA April 30, 2026) let any CI/CD pipeline, marketplace integration, or automation tool create and manage Molecule AI orgs via a typed REST API — no browser session required. Keys are scoped to the org they create, rate-limited, revocable, and audited. Ephemeral test orgs: POST to create, run your tests, DELETE to clean up. See docs.molecule.ai/architecture/partner-api-keys.",
+      },
+      {
+        q: "What does it mean that Molecule AI has a governance built in?",
+        a: "Two Phase 34 features ship governance at the platform level: Tool Trace records every tool call your agents make — name, inputs, output previews, run_id-paired for parallel traces — so you can verify what actually ran. Platform Instructions lets org admins write system-level rules (e.g. 'redact PII before writing to external tools') that are injected into every agent's system prompt at startup, before the first turn. Governance as a first-class platform concern, not a post-hoc filter.",
       },
       {
         q: "How do I get started?",
