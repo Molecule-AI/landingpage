@@ -404,6 +404,86 @@ export const en: ContentShape = {
     ],
     columns: { bestAt: "Best at", gap: "Where it breaks", edge: "What Molecule adds" },
   },
+  marketplace: {
+    eyebrow: "Marketplace",
+    title: "A growing library of plugins, agents, and bundles you can drop into your org.",
+    subtitle:
+      "Three tiers, one governance model. Browse vetted MCP plugins, prebuilt agents, and full team bundles — all running on the same workspace, memory, and audit substrate.",
+    tiers: [
+      {
+        level: "L1",
+        name: "Plugins",
+        description:
+          "MCP servers and tool packs. Wire a Postgres, Slack, or Linear plugin to any agent in minutes — credentials stay scoped to the workspace that mounts it.",
+        count: "120+ plugins",
+        href: "https://moleculesai.app/plugins",
+        example: "postgres · slack · linear · gh-actions · sentry",
+      },
+      {
+        level: "L2",
+        name: "Agents",
+        description:
+          "Prebuilt single-agent skills — code-review, on-call triage, churn analysis. Mount as a Workspace member with prompts, tools, and policy already wired.",
+        count: "40+ agents",
+        href: "https://moleculesai.app/agents",
+        example: "code-reviewer · oncall-triager · churn-analyst",
+      },
+      {
+        level: "L3",
+        name: "Bundles",
+        description:
+          "Full team topologies — root + children with their own tools, memory scopes, and approvals. Forkable; tune to your org's processes without rewiring.",
+        count: "12+ bundles",
+        href: "https://moleculesai.app/bundles",
+        example: "growth-team · platform-ops · revenue-pod",
+      },
+    ],
+    cta: { label: "Browse the Marketplace", href: "https://moleculesai.app" },
+  },
+  runtimeMarquee: {
+    eyebrow: "Runtime-agnostic",
+    title: "Bring the runtime you trust. We bring the org.",
+    subtitle:
+      "Molecule talks to every major agent runtime over A2A — same workspace, memory, and audit semantics whether the agent is Claude Code, LangGraph, CrewAI, or your own.",
+    chips: [
+      { label: "Claude Code", detail: "First-class — native A2A" },
+      { label: "LangGraph", detail: "Adapter — graph wrapped as a workspace agent" },
+      { label: "CrewAI", detail: "Adapter — crew mounted as a team scope" },
+      { label: "AutoGen", detail: "Adapter — multi-agent group as scope" },
+      { label: "DeepAgents", detail: "Adapter — deep planner with our memory" },
+      { label: "OpenClaw", detail: "Adapter — tool-using agent with our policy" },
+      { label: "Hermes (OSS)", detail: "Reference runtime — own it end-to-end" },
+      { label: "Custom", detail: "A2A-compatible — bring your own" },
+    ],
+  },
+  creatorCta: {
+    eyebrow: "For Builders",
+    title: "Ship a plugin, agent, or bundle. Reach every Molecule org.",
+    subtitle:
+      "If you've built reusable agent infrastructure, list it on the Marketplace. We handle distribution, billing, and policy — you keep the IP and the upgrade cadence.",
+    steps: [
+      {
+        number: "01",
+        title: "Build",
+        description:
+          "Author your plugin, agent, or bundle against the open SDK. Same primitives we use internally — workspace, memory, A2A, audit.",
+      },
+      {
+        number: "02",
+        title: "List",
+        description:
+          "Submit through the creator portal. We review for safety, sandbox the runtime, and validate against the trust tiers.",
+      },
+      {
+        number: "03",
+        title: "Earn",
+        description:
+          "Per-seat or usage-based pricing — you set it. Built-in billing, enterprise policy, and audit visibility ship for free.",
+      },
+    ],
+    primaryCta: { label: "List on the Marketplace", href: "https://moleculesai.app/creators" },
+    secondaryCta: { label: "Read the SDK docs", href: "https://doc.moleculesai.app/docs" },
+  },
   faq: {
     eyebrow: "Frequently Asked Questions",
     title: "Questions teams ask before adopting Molecule AI.",

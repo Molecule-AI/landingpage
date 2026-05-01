@@ -94,6 +94,26 @@ export interface FaqItem {
   a: string;
 }
 
+export interface MarketplaceTier {
+  level: string;
+  name: string;
+  description: string;
+  count: string;
+  href: string;
+  example: string;
+}
+
+export interface RuntimeChip {
+  label: string;
+  detail: string;
+}
+
+export interface CreatorStep {
+  number: string;
+  title: string;
+  description: string;
+}
+
 export interface FooterLink {
   label: string;
   href: string;
@@ -194,6 +214,27 @@ export interface ContentShape {
     closing: string;
     competitors: Competitor[];
     columns: { bestAt: string; gap: string; edge: string };
+  };
+  marketplace: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    tiers: MarketplaceTier[];
+    cta: CTA;
+  };
+  runtimeMarquee: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    chips: RuntimeChip[];
+  };
+  creatorCta: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    steps: CreatorStep[];
+    primaryCta: CTA;
+    secondaryCta: CTA;
   };
   faq: {
     eyebrow: string;
