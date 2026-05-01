@@ -41,6 +41,32 @@ export interface LandingTier {
   glyph: "plugin" | "agent" | "org";
 }
 
+export interface LandingMemoryScope {
+  name: string;
+  summary: string;
+  detail: string;
+}
+
+export interface LandingAdapterCard {
+  title: string;
+  headline: string;
+  detail: string;
+  items: string[];
+}
+
+export interface LandingShipColumn {
+  label: string;
+  name: string;
+  stack: string;
+  items: string[];
+}
+
+export interface LandingCreatorStep {
+  number: string;
+  title: string;
+  description: string;
+}
+
 export interface LandingFooterSection {
   heading: string;
   items: string[];
@@ -90,10 +116,32 @@ export interface LandingContent {
     deploySteps: [string, string, string];
     cases: LandingUseCase[];
   };
+  architecture: {
+    kicker: string;
+    title: string;
+    description: string;
+    scopeLabel: string;
+    scopes: LandingMemoryScope[];
+    hermesTitle: string;
+    hermesSubtitle: string;
+    hermesSteps: [string, string, string];
+  };
+  adapters: {
+    kicker: string;
+    title: string;
+    subtitle: string;
+    cards: [LandingAdapterCard, LandingAdapterCard, LandingAdapterCard];
+  };
   pillars: {
     kicker: string;
     title: string;
     items: LandingPillar[];
+  };
+  whatShips: {
+    kicker: string;
+    title: string;
+    subtitle: string;
+    columns: [LandingShipColumn, LandingShipColumn];
   };
   marketplace: {
     kicker: string;
@@ -108,6 +156,14 @@ export interface LandingContent {
     capability: string;
     cols: [string, string, string, string];
     rows: Array<[string, string, string, string, string]>;
+  };
+  creator: {
+    kicker: string;
+    title: string;
+    subtitle: string;
+    steps: [LandingCreatorStep, LandingCreatorStep, LandingCreatorStep];
+    primaryCta: { label: string; href: string };
+    secondaryCta: { label: string; href: string };
   };
   faq: {
     kicker: string;
@@ -214,13 +270,13 @@ export const enContent: LandingContent = {
     links: [
       { label: "Platform" },
       { label: "Marketplace", scrollTo: "marketplace" },
-      { label: "Runtimes" },
+      { label: "Runtimes", scrollTo: "adapters" },
       { label: "Docs", href: "https://doc.moleculesai.app" },
       { label: "Pricing", href: "/pricing" },
       { label: "Company" },
     ],
-    signIn: "Sign in",
-    openCanvas: "Open Canvas",
+    signIn: "Sign In",
+    openCanvas: "Sign In",
   },
   hero: {
     eyebrow: "Phase 35 · Marketplace public beta is live",
@@ -284,6 +340,78 @@ export const enContent: LandingContent = {
       { id: "creator", label: "Solo creator", kicker: "4 agents · 8 plugins", yaml: USECASE_YAMLS.creator },
     ],
   },
+  architecture: {
+    kicker: "Architecture",
+    title: "Memory follows the org shape, not the request.",
+    description:
+      "LOCAL is what an agent saw. TEAM is what the squad agreed. GLOBAL is what the org learned. Three scopes, one continuous memory — versioned, scoped, and cross-runtime.",
+    scopeLabel: "Scope",
+    scopes: [
+      {
+        name: "LOCAL",
+        summary: "What I saw",
+        detail:
+          "Per-agent, per-thread. Working memory for the active task. Auto-distilled into TEAM at thread close.",
+      },
+      {
+        name: "TEAM",
+        summary: "What we agreed",
+        detail:
+          "Workspace-scoped. Decisions, conventions, runbooks. Visible to teammates with the matching role.",
+      },
+      {
+        name: "GLOBAL",
+        summary: "What the org learned",
+        detail:
+          "Cross-workspace lessons. Curated by Hermes. Searchable; never written without policy.",
+      },
+    ],
+    hermesTitle: "Hermes — the skill distillation layer",
+    hermesSubtitle: "A learning layer between the runtime and the org.",
+    hermesSteps: [
+      "Watches every successful trajectory across runtimes",
+      "Distills repeated patterns into typed skills",
+      "Publishes them back as plugins, agents, or org templates",
+    ],
+  },
+  adapters: {
+    kicker: "Runtimes",
+    title: "Pluggable, not picky.",
+    subtitle:
+      "Bring the runtime, model, and tooling you already trust. The control plane is the only constant.",
+    cards: [
+      {
+        title: "Model providers",
+        headline: "Any model, scoped per role.",
+        detail:
+          "Pick per-role; switch without touching topology. Roles inherit a default; override per call.",
+        items: ["Anthropic Claude", "OpenAI", "NVIDIA Nemotron", "Local · Ollama / vLLM"],
+      },
+      {
+        title: "Runtime adapters",
+        headline: "Any agent runtime, A2A in front.",
+        detail:
+          "Adapters wrap each runtime in the same JSON-RPC envelope so a Claude Code agent can call a CrewAI agent calls a LangGraph agent.",
+        items: [
+          "Claude Code",
+          "OpenClaw",
+          "LangGraph",
+          "CrewAI",
+          "AutoGen",
+          "DeepAgents",
+          "Hermes",
+          "+ bring-your-own",
+        ],
+      },
+      {
+        title: "Tools · Eval · Observability",
+        headline: "Standards-first plumbing.",
+        detail:
+          "MCP for tools. OpenTelemetry for traces. Langfuse for prompt-level eval. NeMo Guardrails for policy.",
+        items: ["MCP tools", "OpenTelemetry", "Langfuse", "NeMo Guardrails"],
+      },
+    ],
+  },
   pillars: {
     kicker: "Platform",
     title: "Eight pillars we wrote into the PRD.",
@@ -298,6 +426,36 @@ export const enContent: LandingContent = {
       { k: "F8", title: "3-layer Marketplace", body: "Plugin · Agent · Org. Two layers more than GitHub Actions, two more than GPT Store." },
     ],
   },
+  whatShips: {
+    kicker: "What ships",
+    title: "Open-core stack, production-grade.",
+    subtitle:
+      "The Canvas runs in your browser. The Platform runs on your tenant. Both are open-core.",
+    columns: [
+      {
+        label: "Canvas",
+        name: "moleculesai.app",
+        stack: "Next.js 15 · React Flow · Zustand",
+        items: [
+          "Topology editor with diff/branch/merge",
+          "Live A2A trace overlay on the canvas",
+          "Marketplace install in two clicks",
+          "Roles · HITL · audit configured visually",
+        ],
+      },
+      {
+        label: "Platform",
+        name: "Control Plane",
+        stack: "Go 1.25 · Gin · Postgres · Python 3.11 · Fly Machines",
+        items: [
+          "JSON-RPC 2.0 A2A router with backpressure",
+          "Three-tier memory store (LOCAL/TEAM/GLOBAL)",
+          "WorkOS OAuth · AES-256-GCM secret envelopes",
+          "OpenTelemetry pipeline + Langfuse adapter",
+        ],
+      },
+    ],
+  },
   marketplace: {
     kicker: "Marketplace",
     title: "Buy a tool. Hire an Agent. Or import an entire department.",
@@ -308,6 +466,34 @@ export const enContent: LandingContent = {
       { tag: "L2", title: "Agent", desc: "A pre-trained role: tax CPA, SOC analyst, PM, QA. Hire, don't train.", count: "8 verified roles in beta", glyph: "agent" },
       { tag: "L3", title: "Org Bundle", desc: "A whole department: agents, plugins, topology, HITL ladder.", count: "6 templates published", glyph: "org" },
     ],
+  },
+  creator: {
+    kicker: "For creators",
+    title: "Build it. List it. Earn from it.",
+    subtitle:
+      "Plugins, agents, and org bundles ship as signed manifests. Stripe Connect handles payouts. Authors keep 80%.",
+    steps: [
+      {
+        number: "01",
+        title: "Build",
+        description:
+          "Author against the same SDK we ship the first-party catalog with. Tests included.",
+      },
+      {
+        number: "02",
+        title: "List",
+        description:
+          "Sign the manifest, set a price, pick a tier. Verified review for L2 and L3.",
+      },
+      {
+        number: "03",
+        title: "Earn",
+        description:
+          "80% revenue share. Paid out via Stripe Connect. Re-publish a new version any time.",
+      },
+    ],
+    primaryCta: { label: "Publish on the Marketplace →", href: "https://marketplace.moleculesai.app" },
+    secondaryCta: { label: "Read the Author Guide", href: "https://doc.moleculesai.app/marketplace" },
   },
   comparison: {
     kicker: "Where we sit",
@@ -387,13 +573,13 @@ export const zhContent: LandingContent = {
     links: [
       { label: "平台" },
       { label: "市场", scrollTo: "marketplace" },
-      { label: "运行时" },
+      { label: "运行时", scrollTo: "adapters" },
       { label: "文档", href: "https://doc.moleculesai.app" },
       { label: "定价", href: "/pricing" },
       { label: "公司" },
     ],
     signIn: "登录",
-    openCanvas: "打开画布",
+    openCanvas: "登录",
   },
   hero: {
     eyebrow: "Phase 35 · 市场公测已上线",
@@ -457,6 +643,78 @@ export const zhContent: LandingContent = {
       { id: "creator", label: "独立创作者", kicker: "4 个智能体 · 8 插件", yaml: USECASE_YAMLS.creator },
     ],
   },
+  architecture: {
+    kicker: "架构",
+    title: "内存随组织形态生长,不随单次请求消亡。",
+    description:
+      "LOCAL 是“我看到的”,TEAM 是“我们达成的共识”,GLOBAL 是“组织习得的”。三层范围、一份连续内存 —— 版本化、按域隔离、跨运行时。",
+    scopeLabel: "范围",
+    scopes: [
+      {
+        name: "LOCAL",
+        summary: "我看到的",
+        detail:
+          "按智能体、按线程隔离。当前任务的工作记忆。线程关闭时自动蒸馏进 TEAM。",
+      },
+      {
+        name: "TEAM",
+        summary: "我们的共识",
+        detail:
+          "工作空间范围。决策、约定、Runbook。同角色的队友可见。",
+      },
+      {
+        name: "GLOBAL",
+        summary: "组织的沉淀",
+        detail:
+          "跨工作空间的经验。由 Hermes 策展。可检索;从不绕过策略写入。",
+      },
+    ],
+    hermesTitle: "Hermes —— 技能蒸馏层",
+    hermesSubtitle: "运行时与组织之间的学习层。",
+    hermesSteps: [
+      "观察跨运行时的每一条成功轨迹",
+      "把反复出现的模式蒸馏为类型化技能",
+      "再以插件、智能体或组织模板形式回流到市场",
+    ],
+  },
+  adapters: {
+    kicker: "运行时",
+    title: "可插拔,不挑食。",
+    subtitle:
+      "继续用你已经信任的运行时、模型与工具链。控制平面是唯一的恒量。",
+    cards: [
+      {
+        title: "模型提供方",
+        headline: "任何模型,按角色配置。",
+        detail:
+          "按角色选型,切换时不动拓扑。角色继承默认模型,可逐次调用覆盖。",
+        items: ["Anthropic Claude", "OpenAI", "NVIDIA Nemotron", "本地 · Ollama / vLLM"],
+      },
+      {
+        title: "运行时适配器",
+        headline: "任何智能体运行时,前置 A2A。",
+        detail:
+          "适配器把每种运行时包装成相同的 JSON-RPC 信封 —— Claude Code 调 CrewAI、CrewAI 调 LangGraph,毫无障碍。",
+        items: [
+          "Claude Code",
+          "OpenClaw",
+          "LangGraph",
+          "CrewAI",
+          "AutoGen",
+          "DeepAgents",
+          "Hermes",
+          "+ 自带运行时",
+        ],
+      },
+      {
+        title: "工具 · 评估 · 可观测",
+        headline: "面向标准的管道。",
+        detail:
+          "MCP 接工具,OpenTelemetry 收追踪,Langfuse 做 Prompt 级评估,NeMo Guardrails 落地策略。",
+        items: ["MCP 工具", "OpenTelemetry", "Langfuse", "NeMo Guardrails"],
+      },
+    ],
+  },
   pillars: {
     kicker: "平台",
     title: "我们写进 PRD 的八根支柱。",
@@ -471,6 +729,35 @@ export const zhContent: LandingContent = {
       { k: "F8", title: "三层市场", body: "插件 · 智能体 · 组织。比 GitHub Actions 多两层,比 GPT Store 多两层。" },
     ],
   },
+  whatShips: {
+    kicker: "我们交付什么",
+    title: "开源核心,生产级。",
+    subtitle: "Canvas 跑在你浏览器里,Platform 跑在你的租户里。两者都开源核心。",
+    columns: [
+      {
+        label: "画布",
+        name: "moleculesai.app",
+        stack: "Next.js 15 · React Flow · Zustand",
+        items: [
+          "拓扑编辑器,支持 diff / 分支 / 合并",
+          "画布上叠加 A2A 实时追踪",
+          "两步安装来自市场的组件",
+          "角色 · HITL · 审计,可视化配置",
+        ],
+      },
+      {
+        label: "平台",
+        name: "控制平面",
+        stack: "Go 1.25 · Gin · Postgres · Python 3.11 · Fly Machines",
+        items: [
+          "带背压的 JSON-RPC 2.0 A2A 路由",
+          "三层内存存储(LOCAL / TEAM / GLOBAL)",
+          "WorkOS OAuth · AES-256-GCM 密钥信封",
+          "OpenTelemetry 管道 + Langfuse 适配器",
+        ],
+      },
+    ],
+  },
   marketplace: {
     kicker: "市场",
     title: "买一个工具。雇一个智能体。或导入整建制部门。",
@@ -481,6 +768,34 @@ export const zhContent: LandingContent = {
       { tag: "L2", title: "智能体", desc: "已训练好的角色:税务 CPA、SOC 分析师、PM、QA。雇用,无需自训。", count: "8 个已认证角色,公测中", glyph: "agent" },
       { tag: "L3", title: "组织包", desc: "整建制部门:智能体、插件、拓扑、HITL 阶梯。", count: "已发布 6 套模板", glyph: "org" },
     ],
+  },
+  creator: {
+    kicker: "创作者",
+    title: "做一个。上架。变现。",
+    subtitle:
+      "插件、智能体、组织包以带签名的 manifest 发布。Stripe Connect 自动结算。作者拿走 80%。",
+    steps: [
+      {
+        number: "01",
+        title: "构建",
+        description:
+          "用我们交付首方目录所用的同一套 SDK。测试齐备。",
+      },
+      {
+        number: "02",
+        title: "上架",
+        description:
+          "签 manifest、定价、选层级。L2 与 L3 走人工复核。",
+      },
+      {
+        number: "03",
+        title: "变现",
+        description:
+          "80% 分成,通过 Stripe Connect 结算,新版本随时再发布。",
+      },
+    ],
+    primaryCta: { label: "去市场发布 →", href: "https://marketplace.moleculesai.app" },
+    secondaryCta: { label: "阅读作者指南", href: "https://doc.moleculesai.app/marketplace" },
   },
   comparison: {
     kicker: "我们的位置",
