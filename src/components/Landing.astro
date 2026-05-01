@@ -41,8 +41,7 @@ const tierGlyphs: Record<string, string> = {
       ))}
     </nav>
     <div class="v2-nav-cta">
-      <a class="v2-btn v2-btn-ghost" href="https://app.moleculesai.app">{c.nav.signIn}</a>
-      <a class="v2-btn v2-btn-primary" href="https://app.moleculesai.app">{c.nav.openCanvas}</a>
+      <a class="v2-btn v2-btn-primary" href="https://app.moleculesai.app">{c.nav.signIn}</a>
     </div>
   </div>
 </header>
@@ -178,6 +177,74 @@ const tierGlyphs: Record<string, string> = {
     ))}
   </section>
 
+  {/* ARCHITECTURE — three-tier memory + Hermes */}
+  <section class="v2-section">
+    <div class="v2-container">
+      <div class="v2-section-head" data-reveal>
+        <div>
+          <div class="v2-kicker">{c.architecture.kicker}</div>
+          <h2 class="v2-h2">{c.architecture.title}</h2>
+          <p class="v2-section-lede">{c.architecture.description}</p>
+        </div>
+      </div>
+      <div class="v2-grid-3">
+        {c.architecture.scopes.map((s, i) => (
+          <div class="v2-scope-card" data-reveal data-delay={i * 90}>
+            <div class="v2-scope-head">
+              <span class="v2-scope-tag">{c.architecture.scopeLabel}</span>
+              <span class="v2-scope-name">{s.name}</span>
+            </div>
+            <h3 class="v2-scope-title">{s.summary}</h3>
+            <p class="v2-card-body">{s.detail}</p>
+          </div>
+        ))}
+      </div>
+      <div class="v2-hermes" data-reveal data-delay="120">
+        <div class="v2-hermes-head">
+          <h3 class="v2-card-title">{c.architecture.hermesTitle}</h3>
+          <p class="v2-card-body">{c.architecture.hermesSubtitle}</p>
+        </div>
+        <ol class="v2-hermes-steps">
+          {c.architecture.hermesSteps.map((step, i) => (
+            <li>
+              <span class="v2-hermes-num">{String(i + 1).padStart(2, "0")}</span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  {/* ADAPTERS — runtime/model/observability cards */}
+  <section id="adapters" class="v2-section v2-section-ink">
+    <div class="v2-container">
+      <div class="v2-section-head" data-reveal>
+        <div>
+          <div class="v2-kicker">{c.adapters.kicker}</div>
+          <h2 class="v2-h2">{c.adapters.title}</h2>
+          <p class="v2-section-lede">{c.adapters.subtitle}</p>
+        </div>
+      </div>
+      <div class="v2-grid-3">
+        {c.adapters.cards.map((card, i) => (
+          <div class="v2-adapter-card" data-reveal data-delay={i * 100}>
+            <div class="v2-adapter-head">
+              <h3 class="v2-card-title">{card.title}</h3>
+              <p class="v2-adapter-headline">{card.headline}</p>
+            </div>
+            <p class="v2-card-body">{card.detail}</p>
+            <ul class="v2-adapter-list">
+              {card.items.map((item) => (
+                <li><i class="dot dot-accent"></i>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   {/* PLATFORM PILLARS */}
   <section class="v2-section">
     <div class="v2-container">
@@ -193,6 +260,35 @@ const tierGlyphs: Record<string, string> = {
             <div class="v2-keynum v2-keynum-warm">{p.k}</div>
             <h3 class="v2-card-title v2-card-title-sm">{p.title}</h3>
             <p class="v2-card-body v2-card-body-sm">{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* WHAT SHIPS — Canvas + Platform open-core columns */}
+  <section class="v2-section v2-section-ink">
+    <div class="v2-container">
+      <div class="v2-section-head" data-reveal>
+        <div>
+          <div class="v2-kicker">{c.whatShips.kicker}</div>
+          <h2 class="v2-h2">{c.whatShips.title}</h2>
+          <p class="v2-section-lede">{c.whatShips.subtitle}</p>
+        </div>
+      </div>
+      <div class="v2-ships-grid">
+        {c.whatShips.columns.map((col, i) => (
+          <div class="v2-ship-card" data-reveal data-delay={i * 120}>
+            <div class="v2-ship-head">
+              <span class="v2-kicker v2-kicker-accent">{col.label}</span>
+              <h3 class="v2-card-title">{col.name}</h3>
+              <p class="v2-ship-stack">{col.stack}</p>
+            </div>
+            <ul class="v2-ship-list">
+              {col.items.map((item) => (
+                <li><span class="check">✓</span>{item}</li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
@@ -228,6 +324,32 @@ const tierGlyphs: Record<string, string> = {
             </div>
           </a>
         ))}
+      </div>
+    </div>
+  </section>
+
+  {/* CREATOR — Build / List / Earn */}
+  <section class="v2-section">
+    <div class="v2-container">
+      <div class="v2-section-head" data-reveal>
+        <div>
+          <div class="v2-kicker">{c.creator.kicker}</div>
+          <h2 class="v2-h2">{c.creator.title}</h2>
+          <p class="v2-section-lede">{c.creator.subtitle}</p>
+        </div>
+      </div>
+      <div class="v2-grid-3">
+        {c.creator.steps.map((step, i) => (
+          <div class="v2-creator-step" data-reveal data-delay={i * 100}>
+            <div class="v2-creator-num">{step.number}</div>
+            <h3 class="v2-card-title">{step.title}</h3>
+            <p class="v2-card-body">{step.description}</p>
+          </div>
+        ))}
+      </div>
+      <div class="v2-cta-row v2-cta-center" data-reveal data-delay="300">
+        <a class="v2-btn v2-btn-primary" href={c.creator.primaryCta.href}>{c.creator.primaryCta.label}</a>
+        <a class="v2-btn v2-btn-ghost" href={c.creator.secondaryCta.href}>{c.creator.secondaryCta.label}</a>
       </div>
     </div>
   </section>
@@ -832,6 +954,190 @@ const tierGlyphs: Record<string, string> = {
   }
   body[data-theme="light"] .v2-tier-foot .browse { color: var(--ink); }
 
+  /* Section lede — sits under the kicker+title pair */
+  body[data-theme="light"] .v2-section-lede {
+    margin: 14px 0 0;
+    max-width: 720px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--inkMid);
+  }
+
+  /* Architecture — three-tier memory scopes */
+  body[data-theme="light"] .v2-scope-card {
+    padding: 24px;
+    background: var(--bgElev);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  body[data-theme="light"] .v2-scope-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  body[data-theme="light"] .v2-scope-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  body[data-theme="light"] .v2-scope-tag {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--inkSoft);
+  }
+  body[data-theme="light"] .v2-scope-name {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  body[data-theme="light"] .v2-scope-title {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+  }
+  body[data-theme="light"] .v2-hermes {
+    margin-top: 32px;
+    padding: 28px 32px;
+    background: var(--bgInk);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 32px;
+    align-items: start;
+  }
+  body[data-theme="light"] .v2-hermes-head h3 { margin-bottom: 8px; }
+  body[data-theme="light"] .v2-hermes-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  body[data-theme="light"] .v2-hermes-steps li {
+    display: flex;
+    gap: 14px;
+    font-size: 13.5px;
+    color: var(--inkMid);
+    line-height: 1.55;
+  }
+  body[data-theme="light"] .v2-hermes-num {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--accent);
+    flex-shrink: 0;
+    padding-top: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Adapters — runtime/model/observability cards */
+  body[data-theme="light"] .v2-adapter-card {
+    padding: 26px;
+    background: var(--bgElev);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  body[data-theme="light"] .v2-adapter-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  body[data-theme="light"] .v2-adapter-head h3 { margin-bottom: 6px; }
+  body[data-theme="light"] .v2-adapter-headline {
+    margin: 0;
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  body[data-theme="light"] .v2-adapter-list {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 14px 0 0;
+    border-top: 1px solid var(--lineSoft);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--inkMid);
+  }
+  body[data-theme="light"] .v2-adapter-list li {
+    display: flex;
+    align-items: center;
+  }
+
+  /* What ships — Canvas + Platform open-core columns */
+  body[data-theme="light"] .v2-ships-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  body[data-theme="light"] .v2-ship-card {
+    padding: 28px;
+    background: var(--bgElev);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  body[data-theme="light"] .v2-ship-head h3 { margin: 6px 0 4px; font-size: 22px; letter-spacing: -0.014em; }
+  body[data-theme="light"] .v2-ship-stack {
+    margin: 0;
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--inkSoft);
+    letter-spacing: 0.02em;
+  }
+  body[data-theme="light"] .v2-ship-list {
+    list-style: none;
+    margin: 0;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--lineSoft);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--inkMid);
+    line-height: 1.5;
+  }
+  body[data-theme="light"] .v2-ship-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  body[data-theme="light"] .v2-ship-list .check { color: var(--good); flex-shrink: 0; padding-top: 2px; }
+
+  /* Creator — Build / List / Earn */
+  body[data-theme="light"] .v2-creator-step {
+    padding: 26px;
+    background: var(--bgElev);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  body[data-theme="light"] .v2-creator-step:hover {
+    border-color: var(--warm);
+    transform: translateY(-2px);
+  }
+  body[data-theme="light"] .v2-creator-num {
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--warm);
+    margin-bottom: 14px;
+    letter-spacing: 0.04em;
+  }
+
   /* Comparison */
   body[data-theme="light"] .v2-compare {
     background: var(--bgElev);
@@ -1001,6 +1307,8 @@ const tierGlyphs: Record<string, string> = {
     body[data-theme="light"] .v2-grid-4 { grid-template-columns: repeat(2, 1fr); }
     body[data-theme="light"] .v2-grid-3 { grid-template-columns: 1fr; }
     body[data-theme="light"] .v2-usecase-grid { grid-template-columns: 1fr; }
+    body[data-theme="light"] .v2-hermes { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
+    body[data-theme="light"] .v2-ships-grid { grid-template-columns: 1fr; }
     body[data-theme="light"] .v2-h1 { font-size: 44px; }
     body[data-theme="light"] .v2-final-h2 { font-size: 36px; }
     body[data-theme="light"] .v2-footer-grid { grid-template-columns: 1fr 1fr; }
