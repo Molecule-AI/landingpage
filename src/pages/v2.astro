@@ -1,0 +1,1633 @@
+---
+// New landing design — warm-paper light theme + governance-blue accent.
+// Ported from Molecule Landing.html design bundle (Claude Design handoff).
+// Lives at /v2 for review. The current dark/mint landing remains at /.
+
+const runtimes = [
+  "LangGraph",
+  "Claude Code",
+  "CrewAI",
+  "AutoGen",
+  "DeepAgents",
+  "Hermes",
+  "Gemini CLI",
+  "OpenClaw",
+  "LangChain",
+  "Pydantic AI",
+  "Bedrock Agents",
+  "Vercel AI",
+];
+
+const reasons = [
+  {
+    k: "01",
+    title: "Agent count is exploding",
+    body: "Teams have 1 agent today, 10+ next year. The bottleneck is no longer the model — it's how agents coordinate.",
+  },
+  {
+    k: "02",
+    title: "A2A & MCP became standards",
+    body: "Cross-agent protocols are stabilizing. Multi-agent stops being an engineering problem and becomes a product problem.",
+  },
+  {
+    k: "03",
+    title: "Governance is now a buying gate",
+    body: "EU AI Act, OWASP Agentic Top 10. Audit, HITL, RBAC are no longer optional.",
+  },
+  {
+    k: "04",
+    title: "Runtimes are commoditizing",
+    body: "Every quarter, a new \"best\" runtime ships. The platform layer wins — runtime-portable is the only safe bet.",
+  },
+];
+
+const useCases = [
+  {
+    id: "fintech",
+    label: "Fintech · Series A",
+    kicker: "9 agents · 14 plugins",
+    yaml: `org: fintech-startup
+agents:
+  - role: cfo
+    runtime: langgraph
+    tools: [ledger, stripe]
+  - role: compliance
+    runtime: claude-code
+    plugins: [eu-ai-act, owasp-top-10]
+  - role: senior-swe
+    runtime: claude-code
+    plugins: [pr-7gate, review-16d]
+hitl:
+  - amount > 10_000 → dual_review`,
+  },
+  {
+    id: "soc",
+    label: "Security Ops Center",
+    kicker: "8 agents · 21 plugins",
+    yaml: `org: soc-team
+agents:
+  - role: l1-triage
+    runtime: hermes
+  - role: l2-investigator
+    runtime: deepagents
+    tools: [virustotal, mitre]
+  - role: l3-analyst
+    runtime: claude-code
+  - role: ir-lead
+    runtime: langgraph
+hitl:
+  - severity >= high → l3 + ir-lead`,
+  },
+  {
+    id: "lab",
+    label: "Research Lab",
+    kicker: "6 agents · 9 plugins",
+    yaml: `org: med-research-lab
+agents:
+  - role: pi
+    runtime: langgraph
+  - role: postdoc
+    count: 2
+    runtime: deepagents
+    tools: [pubmed, cochrane]
+  - role: stats
+    runtime: claude-code
+  - role: irb-liaison
+    runtime: hermes
+memory:
+  global: { scope: lab-corpus }`,
+  },
+  {
+    id: "creator",
+    label: "Solo creator",
+    kicker: "4 agents · 8 plugins",
+    yaml: `org: creator-studio
+agents:
+  - role: editor
+    runtime: claude-code
+  - role: researcher
+    runtime: deepagents
+  - role: social
+    runtime: hermes
+    tools: [twitter, linkedin]
+  - role: analytics
+    runtime: langgraph`,
+  },
+];
+
+const pillars = [
+  { k: "F1", title: "Role > Task", body: "Model the org chart, not the workflow. Roles inherit tools, memory scope, HITL ladder." },
+  { k: "F2", title: "Recursive teams", body: "Agents can spin up sub-teams within their permission envelope. Org grows like a living tree." },
+  { k: "F3", title: "Org = Topology", body: "Every workspace is a versioned graph. Diff it, branch it, share it, sell it." },
+  { k: "F4", title: "Distributed A2A", body: "Agents speak JSON-RPC 2.0 directly. Platform routes; never a single bottleneck." },
+  { k: "F5", title: "4-layer security", body: "Identity · permission · audit · encryption. AES-256-GCM envelopes, WorkOS OAuth." },
+  { k: "F6", title: "Tiered HITL", body: "No-approval, single-reviewer, dual-reviewer. Risk-graded, configured per role." },
+  { k: "F7", title: "Cross-workspace traces", body: "OpenTelemetry + Langfuse — every call across every agent, in one timeline." },
+  { k: "F8", title: "3-layer Marketplace", body: "Plugin · Agent · Org. Two layers more than GitHub Actions, two more than GPT Store." },
+];
+
+const tiers = [
+  {
+    tag: "L1",
+    title: "Plugin",
+    desc: "A tool, guardrail, or compliance hook. Plug into any agent.",
+    count: "21 first-party · open to third parties soon",
+    glyph: "plugin",
+  },
+  {
+    tag: "L2",
+    title: "Agent",
+    desc: "A pre-trained role: tax CPA, SOC analyst, PM, QA. Hire, don't train.",
+    count: "8 verified roles in beta",
+    glyph: "agent",
+  },
+  {
+    tag: "L3",
+    title: "Org Bundle",
+    desc: "A whole department: agents, plugins, topology, HITL ladder.",
+    count: "6 templates published",
+    glyph: "org",
+  },
+];
+
+const compareCols = ["Molecule", "Agent frameworks", "LLM Ops", "Workflow tools"];
+const compareRows: [string, string, string, string, string][] = [
+  ["Multi-agent topology, native", "✓", "—", "✓", "partial"],
+  ["Runtime-portable", "✓", "runtime-locked", "—", "—"],
+  ["A2A protocol", "✓", "—", "—", "—"],
+  ["Three-tier marketplace", "✓", "—", "—", "—"],
+  ["Audit trail · EU AI Act ready", "✓", "partial", "—", "partial"],
+  ["HITL tiers", "✓", "—", "—", "partial"],
+  ["Org template versioning", "✓", "—", "—", "—"],
+];
+
+const faqs: [string, string][] = [
+  [
+    "Why not just use one super-agent?",
+    "Context pollution and hallucination compound. Specialized agents in their own context windows is how every large organization in human history has worked — and how language models stay sharp.",
+  ],
+  [
+    "What if a better runtime ships next year?",
+    "Swap it. Roles, memory, and topology are abstract. Adapters connect runtimes; nothing in your config changes when you migrate.",
+  ],
+  [
+    "How does the marketplace work for sellers?",
+    "Three tiers: Plugin, Agent, Org. Set your price, ship a signed manifest, get paid via Stripe Connect. We take 20%.",
+  ],
+  [
+    "Self-hosted?",
+    "Yes — full private deployment with the same Control Plane. Common for regulated industries; data never leaves your tenant.",
+  ],
+  [
+    "What protocols do you support?",
+    "A2A (JSON-RPC 2.0) for inter-agent calls, MCP for tool exposure, OpenTelemetry for traces.",
+  ],
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Molecule AI — The OS for AI agent organizations</title>
+    <meta
+      name="description"
+      content="Compose multi-agent teams the way you'd staff a company. Visual org topology, A2A protocol, three-tier memory, runtime-portable."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body data-v2>
+    <header class="v2-nav">
+      <div class="v2-statusbar">
+        <span><i class="dot"></i>All systems · status.moleculesai.app</span>
+        <span>Phase 33 shipped · Phase 35 Marketplace public beta</span>
+      </div>
+      <div class="v2-nav-row">
+        <a class="v2-brand" href="/v2">
+          <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="6" r="2.5" fill="currentColor" />
+            <circle cx="6" cy="20" r="2.5" fill="currentColor" />
+            <circle cx="22" cy="20" r="2.5" fill="currentColor" />
+            <circle cx="14" cy="14" r="1.6" fill="none" stroke="currentColor" stroke-width="1.2" />
+            <line x1="14" y1="8.5" x2="14" y2="12.6" stroke="currentColor" stroke-width="1.2" />
+            <line x1="8" y1="18.5" x2="12.7" y2="14.8" stroke="currentColor" stroke-width="1.2" />
+            <line x1="20" y1="18.5" x2="15.3" y2="14.8" stroke="currentColor" stroke-width="1.2" />
+          </svg>
+          <span class="v2-brand-name">Molecule</span>
+          <span class="v2-brand-tag">AI</span>
+        </a>
+        <nav class="v2-nav-links">
+          <a>Platform</a>
+          <a href="#marketplace">Marketplace</a>
+          <a>Runtimes</a>
+          <a href="https://docs.moleculesai.app">Docs</a>
+          <a href="/pricing">Pricing</a>
+          <a>Company</a>
+        </nav>
+        <div class="v2-nav-cta">
+          <a class="v2-btn v2-btn-ghost" href="https://app.moleculesai.app">Sign in</a>
+          <a class="v2-btn v2-btn-primary" href="https://app.moleculesai.app">Open Canvas</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      {/* HERO */}
+      <section class="v2-section v2-hero">
+        <canvas data-particle data-density="0.00006" data-line="120"></canvas>
+        <div class="v2-container v2-hero-grid">
+          <div>
+            <div class="v2-eyebrow" data-reveal>
+              <span class="dot dot-warm"></span>
+              Phase 35 · Marketplace public beta is live
+            </div>
+            <h1 class="v2-h1" data-reveal data-delay="80">
+              The operating system for<br />
+              <span class="v2-h1-shimmer">AI agent organizations.</span>
+            </h1>
+            <p class="v2-lede" data-reveal data-delay="160">
+              Compose multi-agent teams the way you'd staff a company. Visual
+              org topology, A2A protocol, three-tier memory, runtime-portable —
+              and a marketplace to buy or sell tools, agents, and entire
+              departments.
+            </p>
+            <div class="v2-cta-row" data-reveal data-delay="240">
+              <a class="v2-btn v2-btn-primary v2-btn-lg" href="#marketplace"
+                >Explore the Marketplace →</a
+              >
+              <a class="v2-btn v2-btn-ghost v2-btn-lg" href="mailto:founders@moleculesai.app"
+                >Talk to founders</a
+              >
+            </div>
+            <div class="v2-stat-row" data-reveal data-delay="320">
+              <div>
+                <span class="v2-counter" data-counter="2452" data-suffix="+">0</span>
+                <em>tests</em>
+              </div>
+              <div>
+                <span class="v2-counter" data-counter="8">0</span>
+                <em>runtimes</em>
+              </div>
+              <div>
+                <span class="v2-counter" data-counter="80" data-suffix="+">0</span>
+                <em>API endpoints</em>
+              </div>
+              <div>
+                <span class="v2-counter" data-counter="33">0</span>
+                <em>phases shipped</em>
+              </div>
+            </div>
+          </div>
+          <div class="v2-hero-card" data-reveal data-delay="120">
+            <div class="v2-hero-card-chrome">
+              <span>tenant.moleculesai.app/canvas</span>
+              <span><i class="dot dot-good pulsing"></i>A2A live · <span data-a2a>42</span> calls/s</span>
+            </div>
+            <svg
+              data-topology
+              viewBox="0 0 560 420"
+              width="100%"
+              style="display:block"
+            ></svg>
+          </div>
+        </div>
+      </section>
+
+      {/* LOGO STRIP */}
+      <section class="v2-section v2-logo-strip">
+        <div class="v2-logo-eyebrow">
+          Runtime-neutral · 8 supported, infinitely extensible
+        </div>
+        <div class="v2-marquee">
+          <div class="v2-marquee-track">
+            {[...runtimes, ...runtimes].map((n) => (
+              <span class="v2-marquee-item">
+                <i class="dot dot-accent"></i>
+                {n}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHY NOW */}
+      <section class="v2-section">
+        <div class="v2-container">
+          <div class="v2-section-head" data-reveal>
+            <div class="v2-kicker">Why now</div>
+            <h2 class="v2-h2">Four shifts converging on multi-agent.</h2>
+          </div>
+          <div class="v2-grid-4">
+            {reasons.map((r, i) => (
+              <div class="v2-card v2-card-hover" data-reveal data-delay={i * 90}>
+                <div class="v2-keynum">{r.k}</div>
+                <h3 class="v2-card-title">{r.title}</h3>
+                <p class="v2-card-body">{r.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* USE CASES */}
+      <section class="v2-section v2-section-ink">
+        <div class="v2-container">
+          <div class="v2-section-head" data-reveal>
+            <div class="v2-kicker">Use cases</div>
+            <h2 class="v2-h2">One platform, many shapes.</h2>
+          </div>
+          <div class="v2-tabs" data-tabs role="tablist" data-reveal data-delay="80">
+            {useCases.map((c, i) => (
+              <button
+                class="v2-tab"
+                data-tab={c.id}
+                data-active={i === 0 ? "true" : undefined}
+                type="button"
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+          <div class="v2-usecase-grid" data-reveal data-delay="160">
+            <div class="v2-usecase-meta">
+              <div class="v2-kicker v2-kicker-accent" data-meta-kicker>
+                {useCases[0].kicker}
+              </div>
+              <h3 class="v2-usecase-h3" data-meta-label>{useCases[0].label}</h3>
+              <p class="v2-card-body">
+                Defined as code. Versionable. Forkable.
+                Marketplace-publishable. The same workspace.yml ships to dev,
+                staging, and prod with the topology intact.
+              </p>
+              <div class="v2-cmd" data-cmd>$ molecule deploy ./fintech.yml</div>
+              <div class="v2-deploy-steps" data-deploy>
+                <div class="v2-deploy-step"><span class="check">✓</span><em>topology validated</em></div>
+                <div class="v2-deploy-step"><span class="check">✓</span><em>agents provisioned</em></div>
+                <div class="v2-deploy-step"><span class="check">✓</span><em>A2A routes live</em></div>
+              </div>
+            </div>
+            <div class="v2-yaml">
+              <div class="v2-yaml-chrome">
+                <span>workspace.yml</span>
+                <span class="dots"><i></i><i></i><i></i></span>
+              </div>
+              <pre data-yaml-target>{useCases[0].yaml}<span class="caret"></span></pre>
+            </div>
+          </div>
+        </div>
+        {useCases.map((c) => (
+          <script type="application/json" data-yaml={c.id} set:html={JSON.stringify({ yaml: c.yaml, kicker: c.kicker, label: c.label, deploy: `$ molecule deploy ./${c.id}.yml` })} is:inline />
+        ))}
+      </section>
+
+      {/* PLATFORM PILLARS */}
+      <section class="v2-section">
+        <div class="v2-container">
+          <div class="v2-section-head" data-reveal>
+            <div class="v2-kicker">Platform</div>
+            <h2 class="v2-h2">Eight pillars we wrote into the PRD.</h2>
+          </div>
+          <div class="v2-grid-4 v2-grid-tight">
+            {pillars.map((p, i) => (
+              <div class="v2-card v2-card-warm" data-reveal data-delay={(i % 4) * 70}>
+                <div class="v2-keynum v2-keynum-warm">{p.k}</div>
+                <h3 class="v2-card-title v2-card-title-sm">{p.title}</h3>
+                <p class="v2-card-body v2-card-body-sm">{p.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MARKETPLACE PROMO */}
+      <section id="marketplace" class="v2-section v2-section-ink v2-section-relative">
+        <canvas data-particle data-density="0.00004" data-line="140" data-color="warm"></canvas>
+        <div class="v2-container v2-section-relative">
+          <div class="v2-section-head" data-reveal>
+            <div>
+              <div class="v2-kicker">Marketplace</div>
+              <h2 class="v2-h2">
+                Buy a tool. Hire an Agent. Or import an entire department.
+              </h2>
+            </div>
+            <a class="v2-btn v2-btn-primary" href="https://marketplace.moleculesai.app"
+              >Open the Marketplace →</a
+            >
+          </div>
+          <div class="v2-grid-3">
+            {tiers.map((tr, i) => (
+              <a
+                class="v2-tier-card"
+                data-reveal
+                data-delay={i * 120}
+                href="https://marketplace.moleculesai.app"
+              >
+                <div class="v2-tier-head">
+                  <div class="v2-tier-glyph" set:html={
+                    tr.glyph === "plugin"
+                      ? `<svg width="22" height="22" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="4" height="4" fill="currentColor"/><rect x="8" y="2" width="4" height="4" fill="currentColor" opacity="0.45"/><rect x="2" y="8" width="4" height="4" fill="currentColor" opacity="0.45"/><rect x="8" y="8" width="4" height="4" fill="currentColor"/></svg>`
+                      : tr.glyph === "agent"
+                        ? `<svg width="22" height="22" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/></svg>`
+                        : `<svg width="22" height="22" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="3" r="1.6" fill="currentColor"/><circle cx="3" cy="11" r="1.6" fill="currentColor"/><circle cx="11" cy="11" r="1.6" fill="currentColor"/><line x1="7" y1="4.6" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="7" x2="3" y2="9.4" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="7" x2="11" y2="9.4" stroke="currentColor" stroke-width="1.2"/></svg>`
+                  } />
+                  <div>
+                    <span class="v2-tier-tag">{tr.tag}</span>
+                    <h3 class="v2-tier-title">{tr.title}</h3>
+                  </div>
+                </div>
+                <p class="v2-card-body">{tr.desc}</p>
+                <div class="v2-tier-foot">
+                  <span>{tr.count}</span><span class="browse">Browse →</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* COMPARISON */}
+      <section class="v2-section">
+        <div class="v2-container v2-narrow">
+          <div class="v2-section-head" data-reveal>
+            <div class="v2-kicker">Where we sit</div>
+            <h2 class="v2-h2">Not a framework. Not Ops. Not Zapier.</h2>
+          </div>
+          <div class="v2-compare" data-reveal>
+            <div class="v2-compare-row v2-compare-head">
+              <div>Capability</div>
+              {compareCols.map((c, i) => (
+                <div class={i === 0 ? "is-us" : ""}>{c}</div>
+              ))}
+            </div>
+            {compareRows.map((row) => (
+              <div class="v2-compare-row" data-compare-row>
+                <div>{row[0]}</div>
+                {row.slice(1).map((v) => (
+                  <div class={`val ${v === "✓" ? "ok" : v === "—" ? "no" : "partial"}`}>{v}</div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section class="v2-section v2-section-ink">
+        <div class="v2-container v2-narrowest">
+          <div class="v2-section-head" data-reveal>
+            <div class="v2-kicker">FAQ</div>
+            <h2 class="v2-h2">Common questions.</h2>
+          </div>
+          <div class="v2-faq" data-faq>
+            {faqs.map(([q, a], i) => (
+              <details class="v2-faq-item" open={i === 0}>
+                <summary>
+                  <span>{q}</span>
+                  <span class="plus">+</span>
+                </summary>
+                <div class="v2-faq-a">{a}</div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FINAL CTA */}
+      <section class="v2-section v2-section-relative v2-final">
+        <canvas data-particle data-density="0.00009" data-line="130"></canvas>
+        <div class="v2-container v2-narrowest v2-section-relative" style="text-align:center">
+          <h2 class="v2-final-h2" data-reveal>
+            Stop wiring agents.<br />
+            <span class="v2-h1-shimmer">Start running an organization.</span>
+          </h2>
+          <p class="v2-final-p" data-reveal data-delay="100">
+            Free during public beta. SaaS or self-hosted. Bring your runtime,
+            bring your team — we'll bring the org.
+          </p>
+          <div class="v2-cta-row v2-cta-center" data-reveal data-delay="180">
+            <a class="v2-btn v2-btn-primary v2-btn-lg" href="https://marketplace.moleculesai.app"
+              >Browse the Marketplace</a
+            >
+            <a class="v2-btn v2-btn-ghost v2-btn-lg" href="https://app.moleculesai.app">Open Canvas</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    {/* FOOTER */}
+    <footer class="v2-footer">
+      <div class="v2-container v2-footer-grid">
+        <div>
+          <div class="v2-footer-brand">
+            <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="6" r="2.5" fill="currentColor" />
+              <circle cx="6" cy="20" r="2.5" fill="currentColor" />
+              <circle cx="22" cy="20" r="2.5" fill="currentColor" />
+              <circle cx="14" cy="14" r="1.6" fill="none" stroke="currentColor" stroke-width="1.2" />
+            </svg>
+            <span>Molecule AI</span>
+          </div>
+          <p>The operating system for AI agent organizations. Build, deploy, govern — org-shaped from day one.</p>
+        </div>
+        {[
+          ["Product", ["Canvas", "Platform API", "Control Plane", "Customer App"]],
+          ["Marketplace", ["Plugins (L1)", "Agents (L2)", "Org Bundles (L3)", "Publish"]],
+          ["Runtimes", ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+5 more"]],
+          ["Trust", ["EU AI Act", "OWASP", "SOC 2 (in progress)", "Audit trails"]],
+        ].map(([h, items]) => (
+          <div>
+            <div class="v2-footer-h">{h}</div>
+            {(items as string[]).map((it) => (
+              <a>{it}</a>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div class="v2-container v2-footer-bottom">
+        <span>© 2026 Molecule AI · 多智能体组织治理平台</span>
+        <span>moleculesai.app · v2026.4</span>
+      </div>
+    </footer>
+
+    <style is:global>
+      body[data-v2] {
+        --bg: #fafaf7;
+        --bgElev: #ffffff;
+        --bgInk: #f3f1ec;
+        --line: #e6e2d8;
+        --lineSoft: #efece4;
+        --ink: #15181c;
+        --inkMid: #5a5e66;
+        --inkSoft: #8b8e95;
+        --accent: #3b5bdb;
+        --accentInk: #1a2f99;
+        --warm: #c0532b;
+        --good: #2f7a4d;
+      }
+      body[data-v2] {
+        margin: 0;
+        font-family:
+          "Geist",
+          -apple-system,
+          BlinkMacSystemFont,
+          system-ui,
+          sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+      }
+      body[data-v2] *,
+      body[data-v2] *::before,
+      body[data-v2] *::after {
+        box-sizing: border-box;
+      }
+      body[data-v2] .dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        margin-right: 6px;
+      }
+      body[data-v2] .dot-good { background: var(--good); color: var(--good); }
+      body[data-v2] .dot-warm { background: var(--warm); color: var(--warm); }
+      body[data-v2] .dot-accent { background: var(--accent); color: var(--accent); opacity: 0.5; }
+      body[data-v2] .pulsing {
+        animation: v2-pulse 1.4s ease-out infinite;
+      }
+      @keyframes v2-pulse {
+        0% { box-shadow: 0 0 0 0 currentColor; }
+        70% { box-shadow: 0 0 0 6px transparent; }
+        100% { box-shadow: 0 0 0 0 transparent; }
+      }
+
+      /* Nav */
+      .v2-nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: color-mix(in srgb, var(--bg) 92%, transparent);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .v2-statusbar {
+        background: var(--bgInk);
+        border-bottom: 1px solid var(--lineSoft);
+        padding: 5px 32px;
+        font-size: 11px;
+        color: var(--inkSoft);
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        display: flex;
+        justify-content: space-between;
+      }
+      .v2-nav-row {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 14px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .v2-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      .v2-brand-name { font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+      .v2-brand-tag {
+        font-size: 11px;
+        color: var(--inkSoft);
+        font-family: monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .v2-nav-links {
+        display: flex;
+        gap: 22px;
+        font-size: 13px;
+        color: var(--inkMid);
+      }
+      .v2-nav-links a {
+        cursor: pointer;
+        color: inherit;
+        text-decoration: none;
+      }
+      .v2-nav-links a:hover { color: var(--ink); }
+      .v2-nav-cta { display: flex; gap: 8px; align-items: center; }
+
+      /* Buttons */
+      .v2-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 8px 14px;
+        height: 36px;
+        font-size: 13px;
+        font-weight: 500;
+        border-radius: 6px;
+        cursor: pointer;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: transform 0.12s ease;
+        border: 1px solid transparent;
+        font-family: inherit;
+      }
+      .v2-btn:hover { transform: translateY(-0.5px); }
+      .v2-btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+      .v2-btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+      .v2-btn-lg { padding: 11px 20px; height: 44px; font-size: 14px; }
+
+      /* Sections */
+      .v2-section {
+        padding: 80px 32px;
+        border-bottom: 1px solid var(--line);
+        position: relative;
+      }
+      .v2-section-ink { background: var(--bgInk); }
+      .v2-section-relative { overflow: hidden; }
+      .v2-container { max-width: 1320px; margin: 0 auto; }
+      .v2-narrow { max-width: 1100px; }
+      .v2-narrowest { max-width: 880px; }
+      .v2-section-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 18px;
+      }
+      .v2-kicker {
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--inkSoft);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .v2-kicker-accent { color: var(--accent); }
+      .v2-h2 { margin: 0; font-size: 24px; letter-spacing: -0.018em; font-weight: 600; line-height: 1.25; }
+
+      /* Hero */
+      .v2-hero { padding: 72px 32px 56px; }
+      .v2-hero-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        gap: 56px;
+        align-items: center;
+        position: relative;
+      }
+      .v2-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 11px;
+        border-radius: 999px;
+        margin-bottom: 20px;
+        background: var(--bgElev);
+        border: 1px solid var(--line);
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--inkMid);
+      }
+      .v2-h1 {
+        margin: 0;
+        font-size: 60px;
+        line-height: 1.02;
+        letter-spacing: -0.028em;
+        font-weight: 600;
+        text-wrap: balance;
+      }
+      .v2-h1-shimmer {
+        background-image: linear-gradient(
+          120deg,
+          var(--inkMid) 0%,
+          var(--accent) 50%,
+          var(--inkMid) 100%
+        );
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: v2-shimmer 6s ease-in-out infinite;
+      }
+      @keyframes v2-shimmer {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      .v2-lede {
+        margin: 24px 0 30px;
+        font-size: 18px;
+        line-height: 1.55;
+        color: var(--inkMid);
+        max-width: 580px;
+      }
+      .v2-cta-row { display: flex; gap: 10px; margin-bottom: 32px; }
+      .v2-cta-center { justify-content: center; margin-bottom: 0; }
+      .v2-stat-row {
+        display: flex;
+        gap: 28px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        font-size: 12px;
+        color: var(--inkSoft);
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .v2-stat-row > div { display: flex; align-items: baseline; gap: 6px; }
+      .v2-counter {
+        font-size: 22px;
+        color: var(--ink);
+        font-weight: 600;
+        text-transform: none;
+        font-family: "Geist", sans-serif;
+      }
+      .v2-stat-row em { font-style: normal; }
+      .v2-hero-card {
+        background: var(--bgElev);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 24px;
+        position: relative;
+        box-shadow: 0 30px 60px -30px rgba(21, 24, 28, 0.15);
+      }
+      .v2-hero-card-chrome {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--inkSoft);
+      }
+
+      /* Logo strip */
+      .v2-logo-strip { padding: 24px 0; background: var(--bgInk); overflow: hidden; }
+      .v2-logo-eyebrow {
+        padding: 0 32px 12px;
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--inkSoft);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .v2-marquee {
+        position: relative;
+        overflow: hidden;
+        mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      }
+      .v2-marquee-track {
+        display: flex;
+        gap: 56px;
+        width: fit-content;
+        animation: v2-marquee 48s linear infinite;
+      }
+      @keyframes v2-marquee {
+        from { transform: translateX(0); }
+        to { transform: translateX(calc(-50% - 28px)); }
+      }
+      .v2-marquee-item {
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 16px;
+        color: var(--inkMid);
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Cards */
+      .v2-grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .v2-grid-tight { gap: 14px; }
+      .v2-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .v2-card {
+        padding: 22px;
+        background: var(--bgElev);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        transition:
+          transform 0.25s ease,
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .v2-card-hover:hover {
+        transform: translateY(-3px);
+        border-color: var(--ink);
+        box-shadow: 0 16px 40px -20px rgba(21, 24, 28, 0.18);
+      }
+      .v2-card-warm:hover {
+        transform: translateY(-2px);
+        border-color: var(--warm);
+      }
+      .v2-keynum {
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--accent);
+        margin-bottom: 14px;
+        letter-spacing: 0.08em;
+      }
+      .v2-keynum-warm { color: var(--warm); margin-bottom: 12px; }
+      .v2-card-title { margin: 0 0 8px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+      .v2-card-title-sm { font-size: 14.5px; margin-bottom: 6px; }
+      .v2-card-body { margin: 0; font-size: 13.5px; color: var(--inkMid); line-height: 1.55; }
+      .v2-card-body-sm { font-size: 12.5px; }
+
+      /* Use cases */
+      .v2-tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 24px;
+        padding: 4px;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        width: fit-content;
+      }
+      .v2-tab {
+        border: none;
+        padding: 8px 14px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: inherit;
+        background: transparent;
+        color: var(--inkMid);
+        font-weight: 500;
+        font-size: 13px;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+      }
+      .v2-tab[data-active="true"] {
+        background: var(--bgElev);
+        color: var(--ink);
+        font-weight: 600;
+        box-shadow: 0 0 0 1px var(--line);
+      }
+      .v2-usecase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+      .v2-usecase-meta {
+        background: var(--bgElev);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 28px;
+      }
+      .v2-usecase-h3 { margin: 0 0 12px; font-size: 24px; letter-spacing: -0.018em; font-weight: 600; }
+      .v2-cmd {
+        padding: 14px;
+        background: var(--bgInk);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 11.5px;
+        color: var(--inkSoft);
+        margin: 18px 0 8px;
+      }
+      .v2-deploy-steps { display: flex; flex-direction: column; gap: 6px; min-height: 88px; }
+      .v2-deploy-step {
+        padding: 10px 14px;
+        background: var(--bgInk);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 11.5px;
+        opacity: 0.4;
+        transition: opacity 0.3s ease;
+      }
+      .v2-deploy-step[data-on] { opacity: 1; }
+      .v2-deploy-step .check { color: var(--good); }
+      .v2-deploy-step em { color: var(--inkMid); margin-left: 6px; font-style: normal; }
+      .v2-yaml {
+        background: #0b0d11;
+        color: #e8e9eb;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 24px;
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 12.5px;
+        line-height: 1.7;
+      }
+      .v2-yaml-chrome {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        color: #7a7d85;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .v2-yaml-chrome .dots { display: flex; gap: 5px; }
+      .v2-yaml-chrome .dots i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        opacity: 0.7;
+        display: block;
+      }
+      .v2-yaml-chrome .dots i:nth-child(1) { background: #ff5f57; }
+      .v2-yaml-chrome .dots i:nth-child(2) { background: #febc2e; }
+      .v2-yaml-chrome .dots i:nth-child(3) { background: #28c840; }
+      .v2-yaml pre { margin: 0; white-space: pre; min-height: 280px; font-family: inherit; }
+      .v2-yaml .caret {
+        display: inline-block;
+        width: 7px;
+        height: 14px;
+        background: var(--accent);
+        margin-left: 2px;
+        vertical-align: middle;
+        animation: v2-caret 1s steps(2) infinite;
+      }
+      @keyframes v2-caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+      /* Tier cards */
+      .v2-tier-card {
+        display: block;
+        padding: 24px;
+        background: var(--bgElev);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+        text-decoration: none;
+        color: inherit;
+        height: 100%;
+      }
+      .v2-tier-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-4px);
+        box-shadow: 0 24px 60px -24px color-mix(in srgb, var(--accent) 33%, transparent);
+      }
+      .v2-tier-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .v2-tier-glyph {
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        background: var(--bgInk);
+        border: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ink);
+      }
+      .v2-tier-tag {
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .v2-tier-title { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.012em; }
+      .v2-tier-foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 14px;
+        margin-top: 16px;
+        border-top: 1px solid var(--lineSoft);
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        font-size: 11.5px;
+        color: var(--inkSoft);
+      }
+      .v2-tier-foot .browse { color: var(--ink); }
+
+      /* Comparison */
+      .v2-compare {
+        background: var(--bgElev);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .v2-compare-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+        border-top: 1px solid var(--lineSoft);
+      }
+      .v2-compare-head {
+        background: var(--bgInk);
+        border-bottom: 1px solid var(--line);
+        border-top: none;
+      }
+      .v2-compare-head > div {
+        padding: 14px 18px;
+        font-size: 12.5px;
+        font-weight: 600;
+        text-align: center;
+      }
+      .v2-compare-head > div:first-child {
+        font-size: 11px;
+        color: var(--inkSoft);
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        text-align: left;
+        font-weight: 400;
+      }
+      .v2-compare-head .is-us { color: var(--accent); }
+      .v2-compare-row > div { padding: 14px 18px; font-size: 13.5px; color: var(--ink); }
+      .v2-compare-row .val { text-align: center; font-size: 13px; }
+      .v2-compare-row .ok { color: var(--good); font-weight: 600; }
+      .v2-compare-row .no { color: var(--inkSoft); }
+      .v2-compare-row .partial { color: var(--warm); font-family: ui-monospace, "JetBrains Mono", monospace; }
+      .v2-compare-row[data-sweep] { background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 6%, transparent) 0%, transparent 30%); }
+
+      /* FAQ */
+      .v2-faq { display: flex; flex-direction: column; gap: 8px; }
+      .v2-faq-item {
+        background: var(--bgElev);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .v2-faq-item summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 18px 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--ink);
+      }
+      .v2-faq-item summary::-webkit-details-marker { display: none; }
+      .v2-faq-item .plus {
+        color: var(--inkSoft);
+        font-size: 22px;
+        line-height: 1;
+        transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .v2-faq-item[open] .plus { transform: rotate(45deg); }
+      .v2-faq-a { padding: 0 22px 20px; font-size: 14px; color: var(--inkMid); line-height: 1.6; }
+
+      /* Final */
+      .v2-final { padding: 96px 32px; text-align: center; }
+      .v2-final-h2 {
+        margin: 0;
+        font-size: 48px;
+        letter-spacing: -0.025em;
+        font-weight: 600;
+        line-height: 1.15;
+        text-wrap: balance;
+      }
+      .v2-final-p {
+        margin: 18px 0 28px;
+        font-size: 17px;
+        color: var(--inkMid);
+        line-height: 1.55;
+      }
+
+      /* Footer */
+      .v2-footer { background: var(--bgInk); padding: 48px 32px 28px; }
+      .v2-footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+        gap: 40px;
+      }
+      .v2-footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+        font-weight: 600;
+        font-size: 15px;
+        color: var(--ink);
+      }
+      .v2-footer-grid p { margin: 0; font-size: 13px; color: var(--inkMid); line-height: 1.6; max-width: 320px; }
+      .v2-footer-h {
+        font-size: 11px;
+        color: var(--inkSoft);
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 12px;
+      }
+      .v2-footer-grid a {
+        display: block;
+        font-size: 13px;
+        color: var(--inkMid);
+        margin-bottom: 8px;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .v2-footer-grid a:hover { color: var(--ink); }
+      .v2-footer-bottom {
+        margin-top: 32px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--inkSoft);
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+      }
+
+      /* Reveal */
+      [data-reveal] {
+        opacity: 0;
+        transform: translateY(16px);
+        transition:
+          opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+          transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      [data-reveal][data-seen] {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Particle canvas */
+      canvas[data-particle] {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      /* Mobile-ish (1280 viewport target, but minor concession) */
+      @media (max-width: 1100px) {
+        .v2-hero-grid { grid-template-columns: 1fr; gap: 32px; }
+        .v2-grid-4 { grid-template-columns: repeat(2, 1fr); }
+        .v2-grid-3 { grid-template-columns: 1fr; }
+        .v2-usecase-grid { grid-template-columns: 1fr; }
+        .v2-h1 { font-size: 44px; }
+        .v2-final-h2 { font-size: 36px; }
+        .v2-footer-grid { grid-template-columns: 1fr 1fr; }
+        .v2-stat-row { flex-wrap: wrap; }
+      }
+      @media (max-width: 640px) {
+        .v2-section { padding: 56px 20px; }
+        .v2-grid-4 { grid-template-columns: 1fr; }
+        .v2-statusbar { display: none; }
+        .v2-nav-links { display: none; }
+        .v2-h1 { font-size: 36px; }
+        .v2-h2 { font-size: 22px; }
+        .v2-section-head { flex-direction: column; align-items: flex-start; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        [data-reveal] { opacity: 1; transform: none; transition: none; }
+        .v2-marquee-track { animation: none; }
+        .v2-h1-shimmer { animation: none; background: var(--accent); -webkit-background-clip: text; background-clip: text; }
+      }
+    </style>
+
+    <script>
+      // Reveal observer
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const el = e.target as HTMLElement;
+              const delay = parseInt(el.getAttribute("data-delay") || "0", 10);
+              setTimeout(() => el.setAttribute("data-seen", "true"), delay);
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+
+      // Counters
+      const counterIo = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (!e.isIntersecting) return;
+            const el = e.target as HTMLElement;
+            const to = parseInt(el.getAttribute("data-counter") || "0", 10);
+            const suffix = el.getAttribute("data-suffix") || "";
+            const start = performance.now();
+            const dur = 1400;
+            const step = (now: number) => {
+              const k = Math.min(1, (now - start) / dur);
+              const eased = 1 - Math.pow(1 - k, 3);
+              el.textContent = Math.round(eased * to).toLocaleString() + suffix;
+              if (k < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+            counterIo.unobserve(e.target);
+          });
+        },
+        { threshold: 0.4 }
+      );
+      document.querySelectorAll("[data-counter]").forEach((el) => counterIo.observe(el));
+
+      // A2A live counter
+      const a2a = document.querySelector("[data-a2a]");
+      if (a2a) {
+        setInterval(() => {
+          a2a.textContent = String(40 + Math.floor(Math.random() * 18));
+        }, 1200);
+      }
+
+      // Particle field
+      const accent = "#3b5bdb";
+      const warm = "#c0532b";
+      document.querySelectorAll("canvas[data-particle]").forEach((cvs) => {
+        const c = cvs as HTMLCanvasElement;
+        const ctx = c.getContext("2d");
+        if (!ctx) return;
+        const dpr = window.devicePixelRatio || 1;
+        const density = parseFloat(c.getAttribute("data-density") || "0.00009");
+        const lineDist = parseInt(c.getAttribute("data-line") || "110", 10);
+        const isWarm = c.getAttribute("data-color") === "warm";
+        const color = isWarm ? warm : accent;
+        let parts: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
+        let w = 0,
+          h = 0,
+          raf = 0;
+        const resize = () => {
+          const r = c.getBoundingClientRect();
+          w = r.width;
+          h = r.height;
+          c.width = w * dpr;
+          c.height = h * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          const n = Math.max(28, Math.floor(w * h * density));
+          parts = Array.from({ length: n }, () => ({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.18,
+            vy: (Math.random() - 0.5) * 0.18,
+            r: 1 + Math.random() * 1.5,
+          }));
+        };
+        const draw = () => {
+          ctx.clearRect(0, 0, w, h);
+          for (let i = 0; i < parts.length; i++) {
+            for (let j = i + 1; j < parts.length; j++) {
+              const a = parts[i],
+                b = parts[j];
+              const dx = a.x - b.x,
+                dy = a.y - b.y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 < lineDist * lineDist) {
+                const k = 1 - Math.sqrt(d2) / lineDist;
+                ctx.strokeStyle = `color-mix(in srgb, ${color} ${(k * 35).toFixed(1)}%, transparent)`;
+                ctx.lineWidth = 0.6;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+              }
+            }
+          }
+          ctx.fillStyle = `color-mix(in srgb, ${color} 55%, transparent)`;
+          parts.forEach((p) => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+          });
+          raf = requestAnimationFrame(draw);
+        };
+        resize();
+        draw();
+        const ro = new ResizeObserver(resize);
+        ro.observe(c);
+      });
+
+      // Live topology with packets
+      const tSvg = document.querySelector("svg[data-topology]") as SVGSVGElement | null;
+      if (tSvg) {
+        const w = 560,
+          h = 420;
+        const root = { x: w / 2, y: 70, label: "CEO Coordinator" };
+        const mids = [
+          { x: 130, y: 200, label: "Engineering" },
+          { x: 280, y: 200, label: "Compliance" },
+          { x: 430, y: 200, label: "Finance" },
+        ];
+        const leaves = [
+          { x: 60, y: 340, p: 0, label: "SWE" },
+          { x: 130, y: 340, p: 0, label: "QA" },
+          { x: 200, y: 340, p: 0, label: "DevRel" },
+          { x: 280, y: 340, p: 1, label: "Audit" },
+          { x: 360, y: 340, p: 1, label: "Risk" },
+          { x: 430, y: 340, p: 2, label: "Books" },
+          { x: 500, y: 340, p: 2, label: "Tax" },
+        ];
+        const svgNs = "http://www.w3.org/2000/svg";
+        // defs
+        const defs = document.createElementNS(svgNs, "defs");
+        defs.innerHTML = `
+          <pattern id="lt-dots" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1" fill="${"#e6e2d8"}"/>
+          </pattern>
+          <radialGradient id="lt-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="${accent}" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="${accent}" stop-opacity="0"/>
+          </radialGradient>`;
+        tSvg.appendChild(defs);
+        const bg = document.createElementNS(svgNs, "rect");
+        bg.setAttribute("width", String(w));
+        bg.setAttribute("height", String(h));
+        bg.setAttribute("fill", "url(#lt-dots)");
+        tSvg.appendChild(bg);
+
+        // edge layer
+        const edges = document.createElementNS(svgNs, "g");
+        tSvg.appendChild(edges);
+        // node layer
+        const nodes = document.createElementNS(svgNs, "g");
+        tSvg.appendChild(nodes);
+        // packets layer
+        const pktLayer = document.createElementNS(svgNs, "g");
+        tSvg.appendChild(pktLayer);
+
+        const ink = "#15181c",
+          inkMid = "#5a5e66",
+          bgElev = "#ffffff";
+
+        const drawNode = (
+          x: number,
+          y: number,
+          label: string,
+          opts: { root?: boolean; small?: boolean }
+        ) => {
+          const baseR = opts.root ? 24 : opts.small ? 14 : 18;
+          const g = document.createElementNS(svgNs, "g");
+          const ring = document.createElementNS(svgNs, "circle");
+          ring.setAttribute("cx", String(x));
+          ring.setAttribute("cy", String(y));
+          ring.setAttribute("r", "0");
+          ring.setAttribute("fill", "none");
+          ring.setAttribute("stroke", accent);
+          ring.setAttribute("stroke-width", "1.2");
+          g.appendChild(ring);
+          const outer = document.createElementNS(svgNs, "circle");
+          outer.setAttribute("cx", String(x));
+          outer.setAttribute("cy", String(y));
+          outer.setAttribute("r", String(baseR));
+          outer.setAttribute("fill", bgElev);
+          outer.setAttribute("stroke", ink);
+          outer.setAttribute("stroke-width", "1");
+          g.appendChild(outer);
+          const inner = document.createElementNS(svgNs, "circle");
+          inner.setAttribute("cx", String(x));
+          inner.setAttribute("cy", String(y));
+          inner.setAttribute("r", String(baseR - 7));
+          inner.setAttribute("fill", opts.root ? ink : inkMid);
+          if (opts.small) inner.setAttribute("opacity", "0.55");
+          g.appendChild(inner);
+          const tx = document.createElementNS(svgNs, "text");
+          tx.setAttribute("x", String(x));
+          tx.setAttribute("y", String(y + baseR + 14));
+          tx.setAttribute("text-anchor", "middle");
+          tx.setAttribute("font-size", "10");
+          tx.setAttribute("font-family", "ui-monospace, monospace");
+          tx.setAttribute("fill", inkMid);
+          tx.textContent = label;
+          g.appendChild(tx);
+          nodes.appendChild(g);
+          return { ring, outer, inner, baseR };
+        };
+
+        // Build static edges
+        mids.forEach((m) => {
+          const ln = document.createElementNS(svgNs, "line");
+          ln.setAttribute("x1", String(root.x));
+          ln.setAttribute("y1", String(root.y));
+          ln.setAttribute("x2", String(m.x));
+          ln.setAttribute("y2", String(m.y));
+          ln.setAttribute("stroke", ink);
+          ln.setAttribute("stroke-opacity", "0.22");
+          ln.setAttribute("stroke-width", "1");
+          edges.appendChild(ln);
+        });
+        const leafEdges = leaves.map((l) => {
+          const m = mids[l.p];
+          const ln = document.createElementNS(svgNs, "line");
+          ln.setAttribute("x1", String(m.x));
+          ln.setAttribute("y1", String(m.y));
+          ln.setAttribute("x2", String(l.x));
+          ln.setAttribute("y2", String(l.y));
+          ln.setAttribute("stroke", ink);
+          ln.setAttribute("stroke-opacity", "0.18");
+          ln.setAttribute("stroke-width", "1");
+          edges.appendChild(ln);
+          return ln;
+        });
+
+        const rootN = drawNode(root.x, root.y, root.label, { root: true });
+        const midNs = mids.map((m) => drawNode(m.x, m.y, m.label, {}));
+        const leafNs = leaves.map((l) => drawNode(l.x, l.y, l.label, { small: true }));
+
+        // Packets
+        const pkts = [0, 0.33, 0.66].map(() => {
+          const g = document.createElementNS(svgNs, "g");
+          const halo = document.createElementNS(svgNs, "circle");
+          halo.setAttribute("r", "14");
+          halo.setAttribute("fill", "url(#lt-glow)");
+          g.appendChild(halo);
+          const dot = document.createElementNS(svgNs, "circle");
+          dot.setAttribute("r", "3.5");
+          dot.setAttribute("fill", accent);
+          g.appendChild(dot);
+          pktLayer.appendChild(g);
+          return { g, halo, dot };
+        });
+
+        const animate = () => {
+          const time = performance.now() / 1000;
+          // breathing nodes
+          [rootN, ...midNs, ...leafNs].forEach((n, i) => {
+            const breathe = Math.sin(time * 1.4 + i * 0.3) * 1.2;
+            n.outer.setAttribute("r", String(n.baseR + breathe * 0.4));
+          });
+          // packets
+          const streams = [0, 0.33, 0.66].map((off) => {
+            const phase = ((time * 0.45) + off) % 1;
+            const idx = Math.floor((time * 0.45 + off) % leaves.length);
+            return { phase, idx: idx % leaves.length };
+          });
+          // hot edges
+          leafEdges.forEach((ln, i) => {
+            const hot = streams.some((s) => s.idx === i);
+            ln.setAttribute("stroke", hot ? accent : ink);
+            ln.setAttribute("stroke-opacity", hot ? "0.85" : "0.18");
+            ln.setAttribute("stroke-width", hot ? "1.6" : "1");
+          });
+          // active leaf pulse
+          leafNs.forEach((n, i) => {
+            const active = streams.some((s) => s.idx === i);
+            if (active) {
+              const ringR = n.baseR + 6 + (Math.sin(time * 2 + i * 0.2) * 0.5 + 0.5) * 8;
+              const ringO = Math.max(0, 0.7 - (Math.sin(time * 2 + i * 0.2) * 0.5 + 0.5) * 0.7);
+              n.ring.setAttribute("r", String(ringR));
+              n.ring.setAttribute("stroke-opacity", String(ringO));
+              n.outer.setAttribute("stroke", accent);
+              n.outer.setAttribute("stroke-width", "2");
+              n.inner.setAttribute("fill", accent);
+            } else {
+              n.ring.setAttribute("r", "0");
+              n.outer.setAttribute("stroke", ink);
+              n.outer.setAttribute("stroke-width", "1");
+              n.inner.setAttribute("fill", inkMid);
+            }
+          });
+          streams.forEach((s, i) => {
+            const target = leaves[s.idx];
+            const m = mids[target.p];
+            const p = s.phase;
+            let x: number, y: number;
+            if (p < 0.5) {
+              const k = p / 0.5;
+              x = root.x + (m.x - root.x) * k;
+              y = root.y + (m.y - root.y) * k;
+            } else {
+              const k = (p - 0.5) / 0.5;
+              x = m.x + (target.x - m.x) * k;
+              y = m.y + (target.y - m.y) * k;
+            }
+            pkts[i].halo.setAttribute("cx", String(x));
+            pkts[i].halo.setAttribute("cy", String(y));
+            pkts[i].dot.setAttribute("cx", String(x));
+            pkts[i].dot.setAttribute("cy", String(y));
+          });
+          requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }
+
+      // Use case tabs (typewriter + deploy steps)
+      type Cache = { yaml: string; kicker: string; label: string; deploy: string };
+      const yamlCache = new Map<string, Cache>();
+      document.querySelectorAll<HTMLScriptElement>("script[data-yaml]").forEach((el) => {
+        const id = el.getAttribute("data-yaml")!;
+        try {
+          yamlCache.set(id, JSON.parse(el.textContent || "{}"));
+        } catch {
+          // ignore
+        }
+      });
+      const yamlTarget = document.querySelector<HTMLPreElement>("[data-yaml-target]");
+      const metaKicker = document.querySelector<HTMLElement>("[data-meta-kicker]");
+      const metaLabel = document.querySelector<HTMLElement>("[data-meta-label]");
+      const cmdEl = document.querySelector<HTMLElement>("[data-cmd]");
+      const deploySteps = document.querySelectorAll<HTMLElement>("[data-deploy] .v2-deploy-step");
+      let typeIv: ReturnType<typeof setInterval> | null = null;
+      let deployTimers: ReturnType<typeof setTimeout>[] = [];
+
+      const playTab = (id: string) => {
+        const data = yamlCache.get(id);
+        if (!data || !yamlTarget) return;
+        if (metaKicker) metaKicker.textContent = data.kicker;
+        if (metaLabel) metaLabel.textContent = data.label;
+        if (cmdEl) cmdEl.textContent = data.deploy;
+        // typewriter
+        if (typeIv) clearInterval(typeIv);
+        const target = data.yaml;
+        let i = 0;
+        const speed = Math.max(2, Math.floor(target.length / 60));
+        yamlTarget.firstChild!.textContent = "";
+        typeIv = setInterval(() => {
+          i += speed;
+          if (i >= target.length) {
+            yamlTarget.firstChild!.textContent = target;
+            if (typeIv) clearInterval(typeIv);
+          } else {
+            yamlTarget.firstChild!.textContent = target.slice(0, i);
+          }
+        }, 16);
+        // deploy steps
+        deployTimers.forEach(clearTimeout);
+        deploySteps.forEach((el) => el.removeAttribute("data-on"));
+        [800, 1500, 2300].forEach((d, idx) => {
+          deployTimers.push(setTimeout(() => deploySteps[idx]?.setAttribute("data-on", "true"), d));
+        });
+      };
+
+      // initial
+      playTab("fintech");
+
+      document.querySelectorAll<HTMLButtonElement>("[data-tabs] .v2-tab").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-tab")!;
+          document
+            .querySelectorAll<HTMLButtonElement>("[data-tabs] .v2-tab")
+            .forEach((b) => b.removeAttribute("data-active"));
+          btn.setAttribute("data-active", "true");
+          playTab(id);
+        });
+      });
+
+      // Comparison row sweep
+      const cmpIo = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              (e.target as HTMLElement).setAttribute("data-sweep", "true");
+              cmpIo.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      document
+        .querySelectorAll("[data-compare-row]")
+        .forEach((el) => cmpIo.observe(el));
+    </script>
+  </body>
+</html>
