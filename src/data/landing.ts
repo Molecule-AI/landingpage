@@ -268,7 +268,7 @@ export const enContent: LandingContent = {
   nav: {
     links: [
       { label: "Platform", href: "https://app.moleculesai.app" },
-      { label: "Marketplace", href: "https://marketplace.moleculesai.app" },
+      { label: "Marketplace", href: "https://market.moleculesai.app" },
       { label: "Docs", href: "https://doc.moleculesai.app" },
       { label: "GitHub", href: "https://github.com/Molecule-AI" },
     ],
@@ -489,7 +489,7 @@ export const enContent: LandingContent = {
           "80% revenue share. Paid out via Stripe Connect. Re-publish a new version any time.",
       },
     ],
-    primaryCta: { label: "Publish on the Marketplace →", href: "https://marketplace.moleculesai.app" },
+    primaryCta: { label: "Publish on the Marketplace →", href: "https://market.moleculesai.app" },
     secondaryCta: { label: "Read the Author Guide", href: "https://doc.moleculesai.app/marketplace" },
   },
   comparison: {
@@ -569,7 +569,7 @@ export const zhContent: LandingContent = {
   nav: {
     links: [
       { label: "平台", href: "https://app.moleculesai.app" },
-      { label: "市场", href: "https://marketplace.moleculesai.app" },
+      { label: "市场", href: "https://market.moleculesai.app" },
       { label: "文档", href: "https://doc.moleculesai.app" },
       { label: "GitHub", href: "https://github.com/Molecule-AI" },
     ],
@@ -789,7 +789,7 @@ export const zhContent: LandingContent = {
           "80% 分成,通过 Stripe Connect 结算,新版本随时再发布。",
       },
     ],
-    primaryCta: { label: "去市场发布 →", href: "https://marketplace.moleculesai.app" },
+    primaryCta: { label: "去市场发布 →", href: "https://market.moleculesai.app" },
     secondaryCta: { label: "阅读作者指南", href: "https://doc.moleculesai.app/marketplace" },
   },
   comparison: {

@@ -304,13 +304,13 @@ const tierGlyphs: Record<string, string> = {
           <div class="v2-kicker">{c.marketplace.kicker}</div>
           <h2 class="v2-h2">{c.marketplace.title}</h2>
         </div>
-        <a class="v2-btn v2-btn-primary" href="https://marketplace.moleculesai.app"
+        <a class="v2-btn v2-btn-primary" href="https://market.moleculesai.app"
           >{c.marketplace.openMarketplace}</a
         >
       </div>
       <div class="v2-grid-3">
         {c.marketplace.tiers.map((tr, i) => (
-          <a class="v2-tier-card" data-reveal data-delay={i * 120} href="https://marketplace.moleculesai.app">
+          <a class="v2-tier-card" data-reveal data-delay={i * 120} href="https://market.moleculesai.app">
             <div class="v2-tier-head">
               <div class="v2-tier-glyph" set:html={tierGlyphs[tr.glyph]} />
               <div>
@@ -415,7 +415,7 @@ const tierGlyphs: Record<string, string> = {
       </h2>
       <p class="v2-final-p" data-reveal data-delay="100">{c.final.lede}</p>
       <div class="v2-cta-row v2-cta-center" data-reveal data-delay="180">
-        <a class="v2-btn v2-btn-primary v2-btn-lg" href="https://marketplace.moleculesai.app"
+        <a class="v2-btn v2-btn-primary v2-btn-lg" href="https://market.moleculesai.app"
           >{c.final.primaryCta}</a
         >
         <a class="v2-btn v2-btn-ghost v2-btn-lg" href="https://app.moleculesai.app"
