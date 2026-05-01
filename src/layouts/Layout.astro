@@ -7,9 +7,10 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  theme?: "light" | "dark";
 }
 
-const { locale, title, description, image = "/og-image.jpg" } = Astro.props;
+const { locale, title, description, image = "/og-image.jpg", theme = "dark" } = Astro.props;
 const c = content[locale];
 
 const pageTitle = title ?? `${c.siteMeta.fullName} — ${c.siteMeta.tagline}`;
@@ -94,8 +95,8 @@ const jsonLd = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#050912" />
+    <meta name="color-scheme" content={theme} />
+    <meta name="theme-color" content={theme === "light" ? "#fafaf7" : "#050912"} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/logo.png" />
@@ -158,7 +159,7 @@ const jsonLd = {
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   </head>
-  <body>
+  <body data-theme={theme}>
     <a href="#main" class="mol-skip-link">
       {locale === "zh" ? "跳转到主内容" : "Skip to main content"}
     </a>

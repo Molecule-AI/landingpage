@@ -1,42 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import Hero from "../components/Hero.astro";
-import SocialProof from "../components/SocialProof.astro";
-import WhyNow from "../components/WhyNow.astro";
-import UseCases from "../components/UseCases.astro";
-import Architecture from "../components/Architecture.astro";
-import Adapters from "../components/Adapters.astro";
-import RuntimeMarquee from "../components/RuntimeMarquee.astro";
-import Platform from "../components/Platform.astro";
-import WhatShips from "../components/WhatShips.astro";
-import Marketplace from "../components/Marketplace.astro";
-import WhyMolecule from "../components/WhyMolecule.astro";
-import CreatorCta from "../components/CreatorCta.astro";
-import FAQ from "../components/FAQ.astro";
-import FinalCTA from "../components/FinalCTA.astro";
-import Footer from "../components/Footer.astro";
+import Landing from "../components/Landing.astro";
+import { enContent } from "../data/landing";
 
 const locale = "en" as const;
 ---
 
-<Layout locale={locale}>
-  <Header locale={locale} />
-  <main id="main">
-    <Hero locale={locale} />
-    <SocialProof locale={locale} />
-    <WhyNow locale={locale} />
-    <UseCases locale={locale} />
-    <Architecture locale={locale} />
-    <Adapters locale={locale} />
-    <RuntimeMarquee locale={locale} />
-    <WhatShips locale={locale} />
-    <Platform locale={locale} />
-    <Marketplace locale={locale} />
-    <WhyMolecule locale={locale} />
-    <CreatorCta locale={locale} />
-    <FAQ locale={locale} />
-    <FinalCTA locale={locale} />
-  </main>
-  <Footer locale={locale} />
+<Layout
+  locale={locale}
+  theme="light"
+  title={enContent.meta.title}
+  description={enContent.meta.description}
+>
+  <Landing locale={locale} />
 </Layout>
