@@ -4,8 +4,7 @@
 
 export interface LandingNavLink {
   label: string;
-  href?: string;
-  scrollTo?: string;
+  href: string;
 }
 
 export interface LandingStat {
@@ -268,12 +267,10 @@ export const enContent: LandingContent = {
   },
   nav: {
     links: [
-      { label: "Platform" },
-      { label: "Marketplace", scrollTo: "marketplace" },
-      { label: "Runtimes", scrollTo: "adapters" },
+      { label: "Platform", href: "https://app.moleculesai.app" },
+      { label: "Marketplace", href: "https://marketplace.moleculesai.app" },
       { label: "Docs", href: "https://doc.moleculesai.app" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Company" },
+      { label: "GitHub", href: "https://github.com/Molecule-AI" },
     ],
     signIn: "Sign In",
     openCanvas: "Sign In",
@@ -571,12 +568,10 @@ export const zhContent: LandingContent = {
   },
   nav: {
     links: [
-      { label: "平台" },
-      { label: "市场", scrollTo: "marketplace" },
-      { label: "运行时", scrollTo: "adapters" },
+      { label: "平台", href: "https://app.moleculesai.app" },
+      { label: "市场", href: "https://marketplace.moleculesai.app" },
       { label: "文档", href: "https://doc.moleculesai.app" },
-      { label: "定价", href: "/pricing" },
-      { label: "公司" },
+      { label: "GitHub", href: "https://github.com/Molecule-AI" },
     ],
     signIn: "登录",
     openCanvas: "登录",
