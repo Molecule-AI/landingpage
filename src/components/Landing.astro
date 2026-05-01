@@ -37,7 +37,7 @@ const tierGlyphs: Record<string, string> = {
     </a>
     <nav class="v2-nav-links">
       {c.nav.links.map((l) => (
-        <a href={l.href ?? (l.scrollTo ? `#${l.scrollTo}` : undefined)}>{l.label}</a>
+        <a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
       ))}
     </nav>
     <div class="v2-nav-cta">
