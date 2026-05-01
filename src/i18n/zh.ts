@@ -404,6 +404,86 @@ export const zh: ContentShape = {
     ],
     columns: { bestAt: "擅长", gap: "不足在哪", edge: "Molecule 补上什么" },
   },
+  marketplace: {
+    eyebrow: "Marketplace",
+    title: "不断扩展的插件、Agent 与 Bundle 库,可直接接入你的组织。",
+    subtitle:
+      "三个层级,一套治理模型。浏览经过审核的 MCP 插件、预构建 Agent 与完整团队 Bundle —— 全部跑在同一套工作空间、内存与审计基础设施之上。",
+    tiers: [
+      {
+        level: "L1",
+        name: "插件 (Plugins)",
+        description:
+          "MCP 服务器与工具包。几分钟内为任意 Agent 接入 Postgres、Slack、Linear 插件 —— 凭据范围严格限定在挂载它的工作空间内。",
+        count: "120+ 插件",
+        href: "https://moleculesai.app/plugins",
+        example: "postgres · slack · linear · gh-actions · sentry",
+      },
+      {
+        level: "L2",
+        name: "Agents",
+        description:
+          "预构建的单 Agent 能力 —— 代码评审、On-call 值班分诊、流失分析。作为工作空间成员挂载,提示词、工具与策略已预先连好。",
+        count: "40+ Agent",
+        href: "https://moleculesai.app/agents",
+        example: "code-reviewer · oncall-triager · churn-analyst",
+      },
+      {
+        level: "L3",
+        name: "Bundles",
+        description:
+          "完整的团队拓扑 —— 根节点 + 子节点,各自带工具、内存域与审批。可 fork,按你的组织流程调整,无需重新接线。",
+        count: "12+ Bundle",
+        href: "https://moleculesai.app/bundles",
+        example: "growth-team · platform-ops · revenue-pod",
+      },
+    ],
+    cta: { label: "前往 Marketplace", href: "https://moleculesai.app" },
+  },
+  runtimeMarquee: {
+    eyebrow: "Runtime 无关",
+    title: "你信赖什么 runtime,就用什么。组织层我们来管。",
+    subtitle:
+      "Molecule 通过 A2A 与所有主流 Agent 运行时对话 —— 不论 Agent 是 Claude Code、LangGraph、CrewAI 还是你自己的实现,工作空间、内存与审计语义保持一致。",
+    chips: [
+      { label: "Claude Code", detail: "一等公民 —— 原生 A2A" },
+      { label: "LangGraph", detail: "适配器 —— 图作为工作空间 Agent 挂载" },
+      { label: "CrewAI", detail: "适配器 —— Crew 挂载为团队 scope" },
+      { label: "AutoGen", detail: "适配器 —— 多 Agent 群组作为 scope" },
+      { label: "DeepAgents", detail: "适配器 —— 深度规划器接入我们的内存" },
+      { label: "OpenClaw", detail: "适配器 —— 工具型 Agent 接入我们的策略" },
+      { label: "Hermes (OSS)", detail: "参考实现 —— 端到端可自托管" },
+      { label: "自定义", detail: "兼容 A2A —— 自带 runtime 即可" },
+    ],
+  },
+  creatorCta: {
+    eyebrow: "面向构建者",
+    title: "发布你的插件、Agent 或 Bundle,触达每一个 Molecule 组织。",
+    subtitle:
+      "如果你已经构建了可复用的 Agent 基础设施,把它列到 Marketplace。分发、计费与策略我们来,IP 与升级节奏归你。",
+    steps: [
+      {
+        number: "01",
+        title: "Build",
+        description:
+          "基于开放 SDK 编写你的插件、Agent 或 Bundle。和我们内部使用的是同一套原语 —— 工作空间、内存、A2A、审计。",
+      },
+      {
+        number: "02",
+        title: "List",
+        description:
+          "通过创建者门户提交。我们做安全审核、运行时沙箱化,并依据信任等级进行验证。",
+      },
+      {
+        number: "03",
+        title: "Earn",
+        description:
+          "按席位或按使用量计费 —— 你来定。计费、企业策略与审计可见性默认就有。",
+      },
+    ],
+    primaryCta: { label: "前往 Marketplace 上架", href: "https://moleculesai.app/creators" },
+    secondaryCta: { label: "阅读 SDK 文档", href: "https://doc.moleculesai.app/docs" },
+  },
   faq: {
     eyebrow: "常见问题",
     title: "团队在采用 Molecule AI 之前常问的问题。",

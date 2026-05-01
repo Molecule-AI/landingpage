@@ -1,0 +1,64 @@
+---
+import { content, type Locale } from "../i18n";
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const c = content[locale].marketplace;
+---
+
+<section id="marketplace" class="py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
+      <span class="mol-eyebrow">{c.eyebrow}</span>
+      <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
+        {c.title}
+      </h2>
+      <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+        {c.subtitle}
+      </p>
+    </div>
+
+    <ul class="mt-16 grid gap-6 lg:grid-cols-3" data-reveal="stagger">
+      {
+        c.tiers.map((tier, i) => (
+          <li class="mol-panel mol-panel-hover flex flex-col rounded-2xl p-5 sm:p-7" style={`--i: ${i}`}>
+            <div class="flex items-center gap-3">
+              <span
+                class="inline-flex h-8 items-center rounded-md border px-2.5 font-mono text-xs font-bold tracking-[0.08em]"
+                style="border-color: rgba(127,232,214,0.3); background: rgba(127,232,214,0.08); color: var(--color-mint);"
+              >
+                {tier.level}
+              </span>
+              <h3 class="text-lg font-semibold text-white">{tier.name}</h3>
+              <span class="ml-auto font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--color-fg-dim)]">
+                {tier.count}
+              </span>
+            </div>
+            <p class="mt-4 flex-1 text-sm leading-relaxed text-[color:var(--color-fg-muted)]">
+              {tier.description}
+            </p>
+            <p class="mt-5 truncate font-mono text-[11px] text-[color:var(--color-fg-dim)]">
+              {tier.example}
+            </p>
+            <a
+              href={tier.href}
+              class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--color-mint)] transition-colors hover:text-white"
+            >
+              Browse {tier.name.toLowerCase()}
+              <span aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-12 text-center" data-reveal>
+      <a
+        href={c.cta.href}
+        class="inline-flex items-center gap-2 rounded-md border border-[color:var(--color-ink-border-strong)] bg-[color:var(--color-ink-soft)]/50 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[color:var(--color-ink-soft)]"
+      >
+        {c.cta.label}
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
