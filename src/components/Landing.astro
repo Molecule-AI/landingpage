@@ -1,5 +1,6 @@
 ---
 import { landingContent, type LandingContent } from "../data/landing";
+import ThemeToggle from "./ThemeToggle.tsx";
 
 interface Props {
   locale: "en" | "zh";
@@ -41,6 +42,7 @@ const tierGlyphs: Record<string, string> = {
       ))}
     </nav>
     <div class="v2-nav-cta">
+      <ThemeToggle client:idle />
       <a class="v2-btn v2-btn-primary" href="https://app.moleculesai.app">{c.nav.signIn}</a>
     </div>
   </div>
@@ -457,11 +459,16 @@ const tierGlyphs: Record<string, string> = {
 </footer>
 
 <style is:global>
-  /* Light warm-paper theme tokens — applied when Layout sets data-theme="light".
-   * Scoped to that selector so the legacy dark theme on /pricing and /legal/*
-   * continues to work.
+  /* Token values per theme. Selectors are gated on :root[data-theme]
+   * (matches <html>) so the cascade resolves against the attribute
+   * the boot script in Layout.astro stamps synchronously — before
+   * <body> exists. Stamping body would FOUC the first paint frame
+   * because body wouldn't carry the resolved theme until
+   * DOMContentLoaded. Shadow components use --shadow-rgb so elevation
+   * darkens correctly on cream paper but shifts to true black on
+   * deep ink.
    */
-  body[data-theme="light"] {
+  :root[data-theme="light"] {
     --bg: #fafaf7;
     --bgElev: #ffffff;
     --bgInk: #f3f1ec;
@@ -474,7 +481,26 @@ const tierGlyphs: Record<string, string> = {
     --accentInk: #1a2f99;
     --warm: #c0532b;
     --good: #2f7a4d;
-
+    --shadow-rgb: 21, 24, 28;
+    --accent-fg: #ffffff;     /* text on --accent surfaces */
+  }
+  :root[data-theme="dark"] {
+    --bg: #050912;
+    --bgElev: #0d1729;
+    --bgInk: #0a1120;
+    --line: #13263f;
+    --lineSoft: #1c3350;
+    --ink: #e5f0ff;
+    --inkMid: #8fa3bf;
+    --inkSoft: #5f7691;
+    --accent: #7fe8d6;       /* mint accent in dark */
+    --accentInk: #a8f0e1;
+    --warm: #ffd166;
+    --good: #6af0b8;
+    --shadow-rgb: 0, 0, 0;
+    --accent-fg: #04121a;     /* dark text on pale-mint accent */
+  }
+  :root[data-theme] body {
     margin: 0;
     font-family: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     background: var(--bg);
@@ -482,12 +508,12 @@ const tierGlyphs: Record<string, string> = {
     -webkit-font-smoothing: antialiased;
     background-image: none;
   }
-  body[data-theme="light"] *,
-  body[data-theme="light"] *::before,
-  body[data-theme="light"] *::after {
+  :root[data-theme] *,
+  :root[data-theme] *::before,
+  :root[data-theme] *::after {
     box-sizing: border-box;
   }
-  body[data-theme="light"] .dot {
+  :root[data-theme] .dot {
     display: inline-block;
     width: 6px;
     height: 6px;
@@ -495,10 +521,10 @@ const tierGlyphs: Record<string, string> = {
     background: currentColor;
     margin-right: 6px;
   }
-  body[data-theme="light"] .dot-good { background: var(--good); color: var(--good); }
-  body[data-theme="light"] .dot-warm { background: var(--warm); color: var(--warm); }
-  body[data-theme="light"] .dot-accent { background: var(--accent); color: var(--accent); opacity: 0.5; }
-  body[data-theme="light"] .pulsing {
+  :root[data-theme] .dot-good { background: var(--good); color: var(--good); }
+  :root[data-theme] .dot-warm { background: var(--warm); color: var(--warm); }
+  :root[data-theme] .dot-accent { background: var(--accent); color: var(--accent); opacity: 0.5; }
+  :root[data-theme] .pulsing {
     animation: v2-pulse 1.4s ease-out infinite;
   }
   @keyframes v2-pulse {
@@ -508,13 +534,13 @@ const tierGlyphs: Record<string, string> = {
   }
 
   /* Override the legacy mol-skip-link from globals.css to fit the light theme. */
-  body[data-theme="light"] .mol-skip-link {
+  :root[data-theme] .mol-skip-link {
     background: var(--accent);
-    color: #ffffff;
+    color: var(--accent-fg);
   }
 
   /* Nav */
-  body[data-theme="light"] .v2-nav {
+  :root[data-theme] .v2-nav {
     position: sticky;
     top: 0;
     z-index: 50;
@@ -522,7 +548,7 @@ const tierGlyphs: Record<string, string> = {
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
   }
-  body[data-theme="light"] .v2-statusbar {
+  :root[data-theme] .v2-statusbar {
     background: var(--bgInk);
     border-bottom: 1px solid var(--lineSoft);
     padding: 5px 32px;
@@ -533,7 +559,7 @@ const tierGlyphs: Record<string, string> = {
     justify-content: space-between;
     gap: 16px;
   }
-  body[data-theme="light"] .v2-nav-row {
+  :root[data-theme] .v2-nav-row {
     max-width: 1320px;
     margin: 0 auto;
     padding: 14px 32px;
@@ -542,37 +568,37 @@ const tierGlyphs: Record<string, string> = {
     justify-content: space-between;
     gap: 24px;
   }
-  body[data-theme="light"] .v2-brand {
+  :root[data-theme] .v2-brand {
     display: flex;
     align-items: center;
     gap: 10px;
     text-decoration: none;
     color: var(--ink);
   }
-  body[data-theme="light"] .v2-brand-name { font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
-  body[data-theme="light"] .v2-brand-tag {
+  :root[data-theme] .v2-brand-name { font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+  :root[data-theme] .v2-brand-tag {
     font-size: 11px;
     color: var(--inkSoft);
     font-family: ui-monospace, "JetBrains Mono", monospace;
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
-  body[data-theme="light"] .v2-nav-links {
+  :root[data-theme] .v2-nav-links {
     display: flex;
     gap: 22px;
     font-size: 13px;
     color: var(--inkMid);
   }
-  body[data-theme="light"] .v2-nav-links a {
+  :root[data-theme] .v2-nav-links a {
     cursor: pointer;
     color: inherit;
     text-decoration: none;
   }
-  body[data-theme="light"] .v2-nav-links a:hover { color: var(--ink); }
-  body[data-theme="light"] .v2-nav-cta { display: flex; gap: 8px; align-items: center; }
+  :root[data-theme] .v2-nav-links a:hover { color: var(--ink); }
+  :root[data-theme] .v2-nav-cta { display: flex; gap: 8px; align-items: center; }
 
   /* Buttons */
-  body[data-theme="light"] .v2-btn {
+  :root[data-theme] .v2-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -589,30 +615,30 @@ const tierGlyphs: Record<string, string> = {
     border: 1px solid transparent;
     font-family: inherit;
   }
-  body[data-theme="light"] .v2-btn:hover { transform: translateY(-0.5px); }
-  body[data-theme="light"] .v2-btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  body[data-theme="light"] .v2-btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
-  body[data-theme="light"] .v2-btn-lg { padding: 11px 20px; height: 44px; font-size: 14px; }
+  :root[data-theme] .v2-btn:hover { transform: translateY(-0.5px); }
+  :root[data-theme] .v2-btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  :root[data-theme] .v2-btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  :root[data-theme] .v2-btn-lg { padding: 11px 20px; height: 44px; font-size: 14px; }
 
   /* Sections */
-  body[data-theme="light"] .v2-section {
+  :root[data-theme] .v2-section {
     padding: 80px 32px;
     border-bottom: 1px solid var(--line);
     position: relative;
   }
-  body[data-theme="light"] .v2-section-ink { background: var(--bgInk); }
-  body[data-theme="light"] .v2-section-relative { overflow: hidden; }
-  body[data-theme="light"] .v2-container { max-width: 1320px; margin: 0 auto; }
-  body[data-theme="light"] .v2-narrow { max-width: 1100px; }
-  body[data-theme="light"] .v2-narrowest { max-width: 880px; }
-  body[data-theme="light"] .v2-section-head {
+  :root[data-theme] .v2-section-ink { background: var(--bgInk); }
+  :root[data-theme] .v2-section-relative { overflow: hidden; }
+  :root[data-theme] .v2-container { max-width: 1320px; margin: 0 auto; }
+  :root[data-theme] .v2-narrow { max-width: 1100px; }
+  :root[data-theme] .v2-narrowest { max-width: 880px; }
+  :root[data-theme] .v2-section-head {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
     margin-bottom: 18px;
   }
-  body[data-theme="light"] .v2-kicker {
+  :root[data-theme] .v2-kicker {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 11px;
     color: var(--inkSoft);
@@ -620,19 +646,19 @@ const tierGlyphs: Record<string, string> = {
     text-transform: uppercase;
     margin-bottom: 6px;
   }
-  body[data-theme="light"] .v2-kicker-accent { color: var(--accent); }
-  body[data-theme="light"] .v2-h2 { margin: 0; font-size: 24px; letter-spacing: -0.018em; font-weight: 600; line-height: 1.25; }
+  :root[data-theme] .v2-kicker-accent { color: var(--accent); }
+  :root[data-theme] .v2-h2 { margin: 0; font-size: 24px; letter-spacing: -0.018em; font-weight: 600; line-height: 1.25; }
 
   /* Hero */
-  body[data-theme="light"] .v2-hero { padding: 72px 32px 56px; }
-  body[data-theme="light"] .v2-hero-grid {
+  :root[data-theme] .v2-hero { padding: 72px 32px 56px; }
+  :root[data-theme] .v2-hero-grid {
     display: grid;
     grid-template-columns: 1.05fr 1fr;
     gap: 56px;
     align-items: center;
     position: relative;
   }
-  body[data-theme="light"] .v2-eyebrow {
+  :root[data-theme] .v2-eyebrow {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -645,7 +671,7 @@ const tierGlyphs: Record<string, string> = {
     font-size: 11px;
     color: var(--inkMid);
   }
-  body[data-theme="light"] .v2-h1 {
+  :root[data-theme] .v2-h1 {
     margin: 0;
     font-size: 60px;
     line-height: 1.02;
@@ -653,7 +679,7 @@ const tierGlyphs: Record<string, string> = {
     font-weight: 600;
     text-wrap: balance;
   }
-  body[data-theme="light"] .v2-h1-shimmer {
+  :root[data-theme] .v2-h1-shimmer {
     background-image: linear-gradient(
       120deg,
       var(--inkMid) 0%,
@@ -670,16 +696,16 @@ const tierGlyphs: Record<string, string> = {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
   }
-  body[data-theme="light"] .v2-lede {
+  :root[data-theme] .v2-lede {
     margin: 24px 0 30px;
     font-size: 18px;
     line-height: 1.55;
     color: var(--inkMid);
     max-width: 580px;
   }
-  body[data-theme="light"] .v2-cta-row { display: flex; gap: 10px; margin-bottom: 32px; }
-  body[data-theme="light"] .v2-cta-center { justify-content: center; margin-bottom: 0; }
-  body[data-theme="light"] .v2-stat-row {
+  :root[data-theme] .v2-cta-row { display: flex; gap: 10px; margin-bottom: 32px; }
+  :root[data-theme] .v2-cta-center { justify-content: center; margin-bottom: 0; }
+  :root[data-theme] .v2-stat-row {
     display: flex;
     gap: 28px;
     padding-top: 24px;
@@ -690,24 +716,24 @@ const tierGlyphs: Record<string, string> = {
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
-  body[data-theme="light"] .v2-stat-row > div { display: flex; align-items: baseline; gap: 6px; }
-  body[data-theme="light"] .v2-counter {
+  :root[data-theme] .v2-stat-row > div { display: flex; align-items: baseline; gap: 6px; }
+  :root[data-theme] .v2-counter {
     font-size: 22px;
     color: var(--ink);
     font-weight: 600;
     text-transform: none;
     font-family: "Geist", sans-serif;
   }
-  body[data-theme="light"] .v2-stat-row em { font-style: normal; }
-  body[data-theme="light"] .v2-hero-card {
+  :root[data-theme] .v2-stat-row em { font-style: normal; }
+  :root[data-theme] .v2-hero-card {
     background: var(--bgElev);
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 24px;
     position: relative;
-    box-shadow: 0 30px 60px -30px rgba(21, 24, 28, 0.15);
+    box-shadow: 0 30px 60px -30px rgba(var(--shadow-rgb), 0.15);
   }
-  body[data-theme="light"] .v2-hero-card-chrome {
+  :root[data-theme] .v2-hero-card-chrome {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -718,8 +744,8 @@ const tierGlyphs: Record<string, string> = {
   }
 
   /* Logo strip */
-  body[data-theme="light"] .v2-logo-strip { padding: 24px 0; background: var(--bgInk); overflow: hidden; }
-  body[data-theme="light"] .v2-logo-eyebrow {
+  :root[data-theme] .v2-logo-strip { padding: 24px 0; background: var(--bgInk); overflow: hidden; }
+  :root[data-theme] .v2-logo-eyebrow {
     padding: 0 32px 12px;
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 11px;
@@ -727,13 +753,13 @@ const tierGlyphs: Record<string, string> = {
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
-  body[data-theme="light"] .v2-marquee {
+  :root[data-theme] .v2-marquee {
     position: relative;
     overflow: hidden;
     mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   }
-  body[data-theme="light"] .v2-marquee-track {
+  :root[data-theme] .v2-marquee-track {
     display: flex;
     gap: 56px;
     width: fit-content;
@@ -743,7 +769,7 @@ const tierGlyphs: Record<string, string> = {
     from { transform: translateX(0); }
     to { transform: translateX(calc(-50% - 28px)); }
   }
-  body[data-theme="light"] .v2-marquee-item {
+  :root[data-theme] .v2-marquee-item {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 16px;
     color: var(--inkMid);
@@ -754,14 +780,14 @@ const tierGlyphs: Record<string, string> = {
   }
 
   /* Cards */
-  body[data-theme="light"] .v2-grid-4 {
+  :root[data-theme] .v2-grid-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
   }
-  body[data-theme="light"] .v2-grid-tight { gap: 14px; }
-  body[data-theme="light"] .v2-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  body[data-theme="light"] .v2-card {
+  :root[data-theme] .v2-grid-tight { gap: 14px; }
+  :root[data-theme] .v2-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  :root[data-theme] .v2-card {
     padding: 22px;
     background: var(--bgElev);
     border: 1px solid var(--line);
@@ -771,30 +797,30 @@ const tierGlyphs: Record<string, string> = {
       border-color 0.25s ease,
       box-shadow 0.25s ease;
   }
-  body[data-theme="light"] .v2-card-hover:hover {
+  :root[data-theme] .v2-card-hover:hover {
     transform: translateY(-3px);
     border-color: var(--ink);
-    box-shadow: 0 16px 40px -20px rgba(21, 24, 28, 0.18);
+    box-shadow: 0 16px 40px -20px rgba(var(--shadow-rgb), 0.18);
   }
-  body[data-theme="light"] .v2-card-warm:hover {
+  :root[data-theme] .v2-card-warm:hover {
     transform: translateY(-2px);
     border-color: var(--warm);
   }
-  body[data-theme="light"] .v2-keynum {
+  :root[data-theme] .v2-keynum {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 11px;
     color: var(--accent);
     margin-bottom: 14px;
     letter-spacing: 0.08em;
   }
-  body[data-theme="light"] .v2-keynum-warm { color: var(--warm); margin-bottom: 12px; }
-  body[data-theme="light"] .v2-card-title { margin: 0 0 8px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
-  body[data-theme="light"] .v2-card-title-sm { font-size: 14.5px; margin-bottom: 6px; }
-  body[data-theme="light"] .v2-card-body { margin: 0; font-size: 13.5px; color: var(--inkMid); line-height: 1.55; }
-  body[data-theme="light"] .v2-card-body-sm { font-size: 12.5px; }
+  :root[data-theme] .v2-keynum-warm { color: var(--warm); margin-bottom: 12px; }
+  :root[data-theme] .v2-card-title { margin: 0 0 8px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  :root[data-theme] .v2-card-title-sm { font-size: 14.5px; margin-bottom: 6px; }
+  :root[data-theme] .v2-card-body { margin: 0; font-size: 13.5px; color: var(--inkMid); line-height: 1.55; }
+  :root[data-theme] .v2-card-body-sm { font-size: 12.5px; }
 
   /* Use cases */
-  body[data-theme="light"] .v2-tabs {
+  :root[data-theme] .v2-tabs {
     display: flex;
     gap: 6px;
     margin-bottom: 24px;
@@ -805,7 +831,7 @@ const tierGlyphs: Record<string, string> = {
     width: fit-content;
     flex-wrap: wrap;
   }
-  body[data-theme="light"] .v2-tab {
+  :root[data-theme] .v2-tab {
     border: none;
     padding: 8px 14px;
     border-radius: 5px;
@@ -818,21 +844,21 @@ const tierGlyphs: Record<string, string> = {
     white-space: nowrap;
     transition: all 0.2s ease;
   }
-  body[data-theme="light"] .v2-tab[data-active="true"] {
+  :root[data-theme] .v2-tab[data-active="true"] {
     background: var(--bgElev);
     color: var(--ink);
     font-weight: 600;
     box-shadow: 0 0 0 1px var(--line);
   }
-  body[data-theme="light"] .v2-usecase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
-  body[data-theme="light"] .v2-usecase-meta {
+  :root[data-theme] .v2-usecase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+  :root[data-theme] .v2-usecase-meta {
     background: var(--bgElev);
     border: 1px solid var(--line);
     border-radius: 10px;
     padding: 28px;
   }
-  body[data-theme="light"] .v2-usecase-h3 { margin: 0 0 12px; font-size: 24px; letter-spacing: -0.018em; font-weight: 600; }
-  body[data-theme="light"] .v2-cmd {
+  :root[data-theme] .v2-usecase-h3 { margin: 0 0 12px; font-size: 24px; letter-spacing: -0.018em; font-weight: 600; }
+  :root[data-theme] .v2-cmd {
     padding: 14px;
     background: var(--bgInk);
     border: 1px solid var(--line);
@@ -842,8 +868,8 @@ const tierGlyphs: Record<string, string> = {
     color: var(--inkSoft);
     margin: 18px 0 8px;
   }
-  body[data-theme="light"] .v2-deploy-steps { display: flex; flex-direction: column; gap: 6px; min-height: 88px; }
-  body[data-theme="light"] .v2-deploy-step {
+  :root[data-theme] .v2-deploy-steps { display: flex; flex-direction: column; gap: 6px; min-height: 88px; }
+  :root[data-theme] .v2-deploy-step {
     padding: 10px 14px;
     background: var(--bgInk);
     border: 1px solid var(--line);
@@ -853,10 +879,10 @@ const tierGlyphs: Record<string, string> = {
     opacity: 0.4;
     transition: opacity 0.3s ease;
   }
-  body[data-theme="light"] .v2-deploy-step[data-on] { opacity: 1; }
-  body[data-theme="light"] .v2-deploy-step .check { color: var(--good); }
-  body[data-theme="light"] .v2-deploy-step em { color: var(--inkMid); margin-left: 6px; font-style: normal; }
-  body[data-theme="light"] .v2-yaml {
+  :root[data-theme] .v2-deploy-step[data-on] { opacity: 1; }
+  :root[data-theme] .v2-deploy-step .check { color: var(--good); }
+  :root[data-theme] .v2-deploy-step em { color: var(--inkMid); margin-left: 6px; font-style: normal; }
+  :root[data-theme] .v2-yaml {
     background: #0b0d11;
     color: #e8e9eb;
     border: 1px solid var(--line);
@@ -866,7 +892,7 @@ const tierGlyphs: Record<string, string> = {
     font-size: 12.5px;
     line-height: 1.7;
   }
-  body[data-theme="light"] .v2-yaml-chrome {
+  :root[data-theme] .v2-yaml-chrome {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -876,19 +902,19 @@ const tierGlyphs: Record<string, string> = {
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
-  body[data-theme="light"] .v2-yaml-chrome .dots { display: flex; gap: 5px; }
-  body[data-theme="light"] .v2-yaml-chrome .dots i {
+  :root[data-theme] .v2-yaml-chrome .dots { display: flex; gap: 5px; }
+  :root[data-theme] .v2-yaml-chrome .dots i {
     width: 10px;
     height: 10px;
     border-radius: 50%;
     opacity: 0.7;
     display: block;
   }
-  body[data-theme="light"] .v2-yaml-chrome .dots i:nth-child(1) { background: #ff5f57; }
-  body[data-theme="light"] .v2-yaml-chrome .dots i:nth-child(2) { background: #febc2e; }
-  body[data-theme="light"] .v2-yaml-chrome .dots i:nth-child(3) { background: #28c840; }
-  body[data-theme="light"] .v2-yaml pre { margin: 0; white-space: pre; min-height: 280px; font-family: inherit; }
-  body[data-theme="light"] .v2-yaml .caret {
+  :root[data-theme] .v2-yaml-chrome .dots i:nth-child(1) { background: #ff5f57; }
+  :root[data-theme] .v2-yaml-chrome .dots i:nth-child(2) { background: #febc2e; }
+  :root[data-theme] .v2-yaml-chrome .dots i:nth-child(3) { background: #28c840; }
+  :root[data-theme] .v2-yaml pre { margin: 0; white-space: pre; min-height: 280px; font-family: inherit; }
+  :root[data-theme] .v2-yaml .caret {
     display: inline-block;
     width: 7px;
     height: 14px;
@@ -900,7 +926,7 @@ const tierGlyphs: Record<string, string> = {
   @keyframes v2-caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
   /* Tier cards */
-  body[data-theme="light"] .v2-tier-card {
+  :root[data-theme] .v2-tier-card {
     display: block;
     padding: 24px;
     background: var(--bgElev);
@@ -912,18 +938,18 @@ const tierGlyphs: Record<string, string> = {
     color: inherit;
     height: 100%;
   }
-  body[data-theme="light"] .v2-tier-card:hover {
+  :root[data-theme] .v2-tier-card:hover {
     border-color: var(--accent);
     transform: translateY(-4px);
     box-shadow: 0 24px 60px -24px color-mix(in srgb, var(--accent) 33%, transparent);
   }
-  body[data-theme="light"] .v2-tier-head {
+  :root[data-theme] .v2-tier-head {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 18px;
   }
-  body[data-theme="light"] .v2-tier-glyph {
+  :root[data-theme] .v2-tier-glyph {
     width: 44px;
     height: 44px;
     border-radius: 8px;
@@ -934,14 +960,14 @@ const tierGlyphs: Record<string, string> = {
     justify-content: center;
     color: var(--ink);
   }
-  body[data-theme="light"] .v2-tier-tag {
+  :root[data-theme] .v2-tier-tag {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 11px;
     color: var(--accent);
     font-weight: 600;
   }
-  body[data-theme="light"] .v2-tier-title { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.012em; }
-  body[data-theme="light"] .v2-tier-foot {
+  :root[data-theme] .v2-tier-title { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.012em; }
+  :root[data-theme] .v2-tier-foot {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -952,10 +978,10 @@ const tierGlyphs: Record<string, string> = {
     font-size: 11.5px;
     color: var(--inkSoft);
   }
-  body[data-theme="light"] .v2-tier-foot .browse { color: var(--ink); }
+  :root[data-theme] .v2-tier-foot .browse { color: var(--ink); }
 
   /* Section lede — sits under the kicker+title pair */
-  body[data-theme="light"] .v2-section-lede {
+  :root[data-theme] .v2-section-lede {
     margin: 14px 0 0;
     max-width: 720px;
     font-size: 15px;
@@ -964,44 +990,44 @@ const tierGlyphs: Record<string, string> = {
   }
 
   /* Architecture — three-tier memory scopes */
-  body[data-theme="light"] .v2-scope-card {
+  :root[data-theme] .v2-scope-card {
     padding: 24px;
     background: var(--bgElev);
     border: 1px solid var(--line);
     border-radius: 10px;
     transition: border-color 0.25s ease, transform 0.25s ease;
   }
-  body[data-theme="light"] .v2-scope-card:hover {
+  :root[data-theme] .v2-scope-card:hover {
     border-color: var(--accent);
     transform: translateY(-2px);
   }
-  body[data-theme="light"] .v2-scope-head {
+  :root[data-theme] .v2-scope-head {
     display: flex;
     align-items: baseline;
     gap: 10px;
     margin-bottom: 14px;
   }
-  body[data-theme="light"] .v2-scope-tag {
+  :root[data-theme] .v2-scope-tag {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 10.5px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--inkSoft);
   }
-  body[data-theme="light"] .v2-scope-name {
+  :root[data-theme] .v2-scope-name {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 13px;
     color: var(--accent);
     font-weight: 600;
     letter-spacing: 0.06em;
   }
-  body[data-theme="light"] .v2-scope-title {
+  :root[data-theme] .v2-scope-title {
     margin: 0 0 8px;
     font-size: 18px;
     font-weight: 600;
     letter-spacing: -0.012em;
   }
-  body[data-theme="light"] .v2-hermes {
+  :root[data-theme] .v2-hermes {
     margin-top: 32px;
     padding: 28px 32px;
     background: var(--bgInk);
@@ -1012,8 +1038,8 @@ const tierGlyphs: Record<string, string> = {
     gap: 32px;
     align-items: start;
   }
-  body[data-theme="light"] .v2-hermes-head h3 { margin-bottom: 8px; }
-  body[data-theme="light"] .v2-hermes-steps {
+  :root[data-theme] .v2-hermes-head h3 { margin-bottom: 8px; }
+  :root[data-theme] .v2-hermes-steps {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -1021,14 +1047,14 @@ const tierGlyphs: Record<string, string> = {
     flex-direction: column;
     gap: 12px;
   }
-  body[data-theme="light"] .v2-hermes-steps li {
+  :root[data-theme] .v2-hermes-steps li {
     display: flex;
     gap: 14px;
     font-size: 13.5px;
     color: var(--inkMid);
     line-height: 1.55;
   }
-  body[data-theme="light"] .v2-hermes-num {
+  :root[data-theme] .v2-hermes-num {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 11px;
     color: var(--accent);
@@ -1038,7 +1064,7 @@ const tierGlyphs: Record<string, string> = {
   }
 
   /* Adapters — runtime/model/observability cards */
-  body[data-theme="light"] .v2-adapter-card {
+  :root[data-theme] .v2-adapter-card {
     padding: 26px;
     background: var(--bgElev);
     border: 1px solid var(--line);
@@ -1048,18 +1074,18 @@ const tierGlyphs: Record<string, string> = {
     gap: 14px;
     transition: border-color 0.25s ease, transform 0.25s ease;
   }
-  body[data-theme="light"] .v2-adapter-card:hover {
+  :root[data-theme] .v2-adapter-card:hover {
     border-color: var(--accent);
     transform: translateY(-2px);
   }
-  body[data-theme="light"] .v2-adapter-head h3 { margin-bottom: 6px; }
-  body[data-theme="light"] .v2-adapter-headline {
+  :root[data-theme] .v2-adapter-head h3 { margin-bottom: 6px; }
+  :root[data-theme] .v2-adapter-headline {
     margin: 0;
     font-size: 13px;
     color: var(--accent);
     font-weight: 500;
   }
-  body[data-theme="light"] .v2-adapter-list {
+  :root[data-theme] .v2-adapter-list {
     list-style: none;
     margin: 6px 0 0;
     padding: 14px 0 0;
@@ -1070,18 +1096,18 @@ const tierGlyphs: Record<string, string> = {
     font-size: 12.5px;
     color: var(--inkMid);
   }
-  body[data-theme="light"] .v2-adapter-list li {
+  :root[data-theme] .v2-adapter-list li {
     display: flex;
     align-items: center;
   }
 
   /* What ships — Canvas + Platform open-core columns */
-  body[data-theme="light"] .v2-ships-grid {
+  :root[data-theme] .v2-ships-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 22px;
   }
-  body[data-theme="light"] .v2-ship-card {
+  :root[data-theme] .v2-ship-card {
     padding: 28px;
     background: var(--bgElev);
     border: 1px solid var(--line);
@@ -1090,15 +1116,15 @@ const tierGlyphs: Record<string, string> = {
     flex-direction: column;
     gap: 18px;
   }
-  body[data-theme="light"] .v2-ship-head h3 { margin: 6px 0 4px; font-size: 22px; letter-spacing: -0.014em; }
-  body[data-theme="light"] .v2-ship-stack {
+  :root[data-theme] .v2-ship-head h3 { margin: 6px 0 4px; font-size: 22px; letter-spacing: -0.014em; }
+  :root[data-theme] .v2-ship-stack {
     margin: 0;
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 12px;
     color: var(--inkSoft);
     letter-spacing: 0.02em;
   }
-  body[data-theme="light"] .v2-ship-list {
+  :root[data-theme] .v2-ship-list {
     list-style: none;
     margin: 0;
     padding: 16px 0 0;
@@ -1110,26 +1136,26 @@ const tierGlyphs: Record<string, string> = {
     color: var(--inkMid);
     line-height: 1.5;
   }
-  body[data-theme="light"] .v2-ship-list li {
+  :root[data-theme] .v2-ship-list li {
     display: flex;
     gap: 10px;
     align-items: flex-start;
   }
-  body[data-theme="light"] .v2-ship-list .check { color: var(--good); flex-shrink: 0; padding-top: 2px; }
+  :root[data-theme] .v2-ship-list .check { color: var(--good); flex-shrink: 0; padding-top: 2px; }
 
   /* Creator — Build / List / Earn */
-  body[data-theme="light"] .v2-creator-step {
+  :root[data-theme] .v2-creator-step {
     padding: 26px;
     background: var(--bgElev);
     border: 1px solid var(--line);
     border-radius: 10px;
     transition: border-color 0.25s ease, transform 0.25s ease;
   }
-  body[data-theme="light"] .v2-creator-step:hover {
+  :root[data-theme] .v2-creator-step:hover {
     border-color: var(--warm);
     transform: translateY(-2px);
   }
-  body[data-theme="light"] .v2-creator-num {
+  :root[data-theme] .v2-creator-num {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 28px;
     font-weight: 600;
@@ -1139,29 +1165,29 @@ const tierGlyphs: Record<string, string> = {
   }
 
   /* Comparison */
-  body[data-theme="light"] .v2-compare {
+  :root[data-theme] .v2-compare {
     background: var(--bgElev);
     border: 1px solid var(--line);
     border-radius: 10px;
     overflow: hidden;
   }
-  body[data-theme="light"] .v2-compare-row {
+  :root[data-theme] .v2-compare-row {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     border-top: 1px solid var(--lineSoft);
   }
-  body[data-theme="light"] .v2-compare-head {
+  :root[data-theme] .v2-compare-head {
     background: var(--bgInk);
     border-bottom: 1px solid var(--line);
     border-top: none;
   }
-  body[data-theme="light"] .v2-compare-head > div {
+  :root[data-theme] .v2-compare-head > div {
     padding: 14px 18px;
     font-size: 12.5px;
     font-weight: 600;
     text-align: center;
   }
-  body[data-theme="light"] .v2-compare-head > div:first-child {
+  :root[data-theme] .v2-compare-head > div:first-child {
     font-size: 11px;
     color: var(--inkSoft);
     font-family: ui-monospace, "JetBrains Mono", monospace;
@@ -1170,25 +1196,25 @@ const tierGlyphs: Record<string, string> = {
     text-align: left;
     font-weight: 400;
   }
-  body[data-theme="light"] .v2-compare-head .is-us { color: var(--accent); }
-  body[data-theme="light"] .v2-compare-row > div { padding: 14px 18px; font-size: 13.5px; color: var(--ink); }
-  body[data-theme="light"] .v2-compare-row .val { text-align: center; font-size: 13px; }
-  body[data-theme="light"] .v2-compare-row .ok { color: var(--good); font-weight: 600; }
-  body[data-theme="light"] .v2-compare-row .no { color: var(--inkSoft); }
-  body[data-theme="light"] .v2-compare-row .partial { color: var(--warm); font-family: ui-monospace, "JetBrains Mono", monospace; }
-  body[data-theme="light"] .v2-compare-row[data-sweep] {
+  :root[data-theme] .v2-compare-head .is-us { color: var(--accent); }
+  :root[data-theme] .v2-compare-row > div { padding: 14px 18px; font-size: 13.5px; color: var(--ink); }
+  :root[data-theme] .v2-compare-row .val { text-align: center; font-size: 13px; }
+  :root[data-theme] .v2-compare-row .ok { color: var(--good); font-weight: 600; }
+  :root[data-theme] .v2-compare-row .no { color: var(--inkSoft); }
+  :root[data-theme] .v2-compare-row .partial { color: var(--warm); font-family: ui-monospace, "JetBrains Mono", monospace; }
+  :root[data-theme] .v2-compare-row[data-sweep] {
     background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 6%, transparent) 0%, transparent 30%);
   }
 
   /* FAQ */
-  body[data-theme="light"] .v2-faq { display: flex; flex-direction: column; gap: 8px; }
-  body[data-theme="light"] .v2-faq-item {
+  :root[data-theme] .v2-faq { display: flex; flex-direction: column; gap: 8px; }
+  :root[data-theme] .v2-faq-item {
     background: var(--bgElev);
     border: 1px solid var(--line);
     border-radius: 8px;
     overflow: hidden;
   }
-  body[data-theme="light"] .v2-faq-item summary {
+  :root[data-theme] .v2-faq-item summary {
     list-style: none;
     cursor: pointer;
     padding: 18px 22px;
@@ -1199,19 +1225,19 @@ const tierGlyphs: Record<string, string> = {
     font-weight: 500;
     color: var(--ink);
   }
-  body[data-theme="light"] .v2-faq-item summary::-webkit-details-marker { display: none; }
-  body[data-theme="light"] .v2-faq-item .plus {
+  :root[data-theme] .v2-faq-item summary::-webkit-details-marker { display: none; }
+  :root[data-theme] .v2-faq-item .plus {
     color: var(--inkSoft);
     font-size: 22px;
     line-height: 1;
     transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  body[data-theme="light"] .v2-faq-item[open] .plus { transform: rotate(45deg); }
-  body[data-theme="light"] .v2-faq-a { padding: 0 22px 20px; font-size: 14px; color: var(--inkMid); line-height: 1.6; }
+  :root[data-theme] .v2-faq-item[open] .plus { transform: rotate(45deg); }
+  :root[data-theme] .v2-faq-a { padding: 0 22px 20px; font-size: 14px; color: var(--inkMid); line-height: 1.6; }
 
   /* Final */
-  body[data-theme="light"] .v2-final { padding: 96px 32px; text-align: center; }
-  body[data-theme="light"] .v2-final-h2 {
+  :root[data-theme] .v2-final { padding: 96px 32px; text-align: center; }
+  :root[data-theme] .v2-final-h2 {
     margin: 0;
     font-size: 48px;
     letter-spacing: -0.025em;
@@ -1219,7 +1245,7 @@ const tierGlyphs: Record<string, string> = {
     line-height: 1.15;
     text-wrap: balance;
   }
-  body[data-theme="light"] .v2-final-p {
+  :root[data-theme] .v2-final-p {
     margin: 18px 0 28px;
     font-size: 17px;
     color: var(--inkMid);
@@ -1227,13 +1253,13 @@ const tierGlyphs: Record<string, string> = {
   }
 
   /* Footer */
-  body[data-theme="light"] .v2-footer { background: var(--bgInk); padding: 48px 32px 28px; }
-  body[data-theme="light"] .v2-footer-grid {
+  :root[data-theme] .v2-footer { background: var(--bgInk); padding: 48px 32px 28px; }
+  :root[data-theme] .v2-footer-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
     gap: 40px;
   }
-  body[data-theme="light"] .v2-footer-brand {
+  :root[data-theme] .v2-footer-brand {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -1242,14 +1268,14 @@ const tierGlyphs: Record<string, string> = {
     font-size: 15px;
     color: var(--ink);
   }
-  body[data-theme="light"] .v2-footer-grid p {
+  :root[data-theme] .v2-footer-grid p {
     margin: 0;
     font-size: 13px;
     color: var(--inkMid);
     line-height: 1.6;
     max-width: 320px;
   }
-  body[data-theme="light"] .v2-footer-h {
+  :root[data-theme] .v2-footer-h {
     font-size: 11px;
     color: var(--inkSoft);
     font-family: ui-monospace, "JetBrains Mono", monospace;
@@ -1257,7 +1283,7 @@ const tierGlyphs: Record<string, string> = {
     letter-spacing: 0.08em;
     margin-bottom: 12px;
   }
-  body[data-theme="light"] .v2-footer-grid a {
+  :root[data-theme] .v2-footer-grid a {
     display: block;
     font-size: 13px;
     color: var(--inkMid);
@@ -1265,8 +1291,8 @@ const tierGlyphs: Record<string, string> = {
     text-decoration: none;
     cursor: pointer;
   }
-  body[data-theme="light"] .v2-footer-grid a:hover { color: var(--ink); }
-  body[data-theme="light"] .v2-footer-bottom {
+  :root[data-theme] .v2-footer-grid a:hover { color: var(--ink); }
+  :root[data-theme] .v2-footer-bottom {
     margin-top: 32px;
     padding-top: 20px;
     border-top: 1px solid var(--line);
@@ -1280,20 +1306,20 @@ const tierGlyphs: Record<string, string> = {
   }
 
   /* Reveal */
-  body[data-theme="light"] [data-reveal] {
+  :root[data-theme] [data-reveal] {
     opacity: 0;
     transform: translateY(16px);
     transition:
       opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
       transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  body[data-theme="light"] [data-reveal][data-seen] {
+  :root[data-theme] [data-reveal][data-seen] {
     opacity: 1;
     transform: translateY(0);
   }
 
   /* Particle canvas */
-  body[data-theme="light"] canvas[data-particle] {
+  :root[data-theme] canvas[data-particle] {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -1303,33 +1329,33 @@ const tierGlyphs: Record<string, string> = {
 
   /* Responsive — design targets 1280; provide graceful collapse below. */
   @media (max-width: 1100px) {
-    body[data-theme="light"] .v2-hero-grid { grid-template-columns: 1fr; gap: 32px; }
-    body[data-theme="light"] .v2-grid-4 { grid-template-columns: repeat(2, 1fr); }
-    body[data-theme="light"] .v2-grid-3 { grid-template-columns: 1fr; }
-    body[data-theme="light"] .v2-usecase-grid { grid-template-columns: 1fr; }
-    body[data-theme="light"] .v2-hermes { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
-    body[data-theme="light"] .v2-ships-grid { grid-template-columns: 1fr; }
-    body[data-theme="light"] .v2-h1 { font-size: 44px; }
-    body[data-theme="light"] .v2-final-h2 { font-size: 36px; }
-    body[data-theme="light"] .v2-footer-grid { grid-template-columns: 1fr 1fr; }
-    body[data-theme="light"] .v2-stat-row { flex-wrap: wrap; }
+    :root[data-theme] .v2-hero-grid { grid-template-columns: 1fr; gap: 32px; }
+    :root[data-theme] .v2-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    :root[data-theme] .v2-grid-3 { grid-template-columns: 1fr; }
+    :root[data-theme] .v2-usecase-grid { grid-template-columns: 1fr; }
+    :root[data-theme] .v2-hermes { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
+    :root[data-theme] .v2-ships-grid { grid-template-columns: 1fr; }
+    :root[data-theme] .v2-h1 { font-size: 44px; }
+    :root[data-theme] .v2-final-h2 { font-size: 36px; }
+    :root[data-theme] .v2-footer-grid { grid-template-columns: 1fr 1fr; }
+    :root[data-theme] .v2-stat-row { flex-wrap: wrap; }
   }
   @media (max-width: 640px) {
-    body[data-theme="light"] .v2-section { padding: 56px 20px; }
-    body[data-theme="light"] .v2-grid-4 { grid-template-columns: 1fr; }
-    body[data-theme="light"] .v2-statusbar { display: none; }
-    body[data-theme="light"] .v2-nav-links { display: none; }
-    body[data-theme="light"] .v2-h1 { font-size: 36px; }
-    body[data-theme="light"] .v2-h2 { font-size: 22px; }
-    body[data-theme="light"] .v2-section-head { flex-direction: column; align-items: flex-start; }
-    body[data-theme="light"] .v2-compare-row { grid-template-columns: 1.3fr 0.8fr 0.8fr 0.8fr 0.8fr; }
-    body[data-theme="light"] .v2-compare-row > div { padding: 10px 12px; font-size: 12px; }
+    :root[data-theme] .v2-section { padding: 56px 20px; }
+    :root[data-theme] .v2-grid-4 { grid-template-columns: 1fr; }
+    :root[data-theme] .v2-statusbar { display: none; }
+    :root[data-theme] .v2-nav-links { display: none; }
+    :root[data-theme] .v2-h1 { font-size: 36px; }
+    :root[data-theme] .v2-h2 { font-size: 22px; }
+    :root[data-theme] .v2-section-head { flex-direction: column; align-items: flex-start; }
+    :root[data-theme] .v2-compare-row { grid-template-columns: 1.3fr 0.8fr 0.8fr 0.8fr 0.8fr; }
+    :root[data-theme] .v2-compare-row > div { padding: 10px 12px; font-size: 12px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    body[data-theme="light"] [data-reveal] { opacity: 1; transform: none; transition: none; }
-    body[data-theme="light"] .v2-marquee-track { animation: none; }
-    body[data-theme="light"] .v2-h1-shimmer {
+    :root[data-theme] [data-reveal] { opacity: 1; transform: none; transition: none; }
+    :root[data-theme] .v2-marquee-track { animation: none; }
+    :root[data-theme] .v2-h1-shimmer {
       animation: none;
       background: var(--accent);
       -webkit-background-clip: text;
@@ -1387,9 +1413,12 @@ const tierGlyphs: Record<string, string> = {
     }, 1200);
   }
 
-  // Particle field
-  const accent = "#3b5bdb";
-  const warm = "#c0532b";
+  // Particle field — read theme tokens at draw time so the canvas
+  // matches whatever data-theme the boot script resolved. Doesn't
+  // re-init on toggle (decorative) — full redraw on next nav.
+  const styles = getComputedStyle(document.body);
+  const accent = styles.getPropertyValue("--accent").trim() || "#3b5bdb";
+  const warm = styles.getPropertyValue("--warm").trim() || "#c0532b";
   document.querySelectorAll("canvas[data-particle]").forEach((cvs) => {
     const c = cvs as HTMLCanvasElement;
     const ctx = c.getContext("2d");
@@ -1479,9 +1508,10 @@ const tierGlyphs: Record<string, string> = {
     ];
     const svgNs = "http://www.w3.org/2000/svg";
     const defs = document.createElementNS(svgNs, "defs");
+    const dotColor = styles.getPropertyValue("--line").trim() || "#e6e2d8";
     defs.innerHTML = `
       <pattern id="lt-dots" width="22" height="22" patternUnits="userSpaceOnUse">
-        <circle cx="2" cy="2" r="1" fill="#e6e2d8"/>
+        <circle cx="2" cy="2" r="1" fill="${dotColor}"/>
       </pattern>
       <radialGradient id="lt-glow" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="${accent}" stop-opacity="0.6"/>
@@ -1501,9 +1531,9 @@ const tierGlyphs: Record<string, string> = {
     const pktLayer = document.createElementNS(svgNs, "g");
     tSvg.appendChild(pktLayer);
 
-    const ink = "#15181c",
-      inkMid = "#5a5e66",
-      bgElev = "#ffffff";
+    const ink = styles.getPropertyValue("--ink").trim() || "#15181c",
+      inkMid = styles.getPropertyValue("--inkMid").trim() || "#5a5e66",
+      bgElev = styles.getPropertyValue("--bgElev").trim() || "#ffffff";
 
     const drawNode = (
       x: number,

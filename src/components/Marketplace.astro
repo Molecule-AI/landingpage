@@ -9,7 +9,7 @@ const c = content[locale].marketplace;
   <div class="mx-auto max-w-7xl px-6">
     <div class="mx-auto max-w-3xl text-center" data-reveal>
       <span class="mol-eyebrow">{c.eyebrow}</span>
-      <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
+      <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-5xl">
         {c.title}
       </h2>
       <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
@@ -28,7 +28,7 @@ const c = content[locale].marketplace;
               >
                 {tier.level}
               </span>
-              <h3 class="text-lg font-semibold text-white">{tier.name}</h3>
+              <h3 class="text-lg font-semibold text-[color:var(--color-fg)]">{tier.name}</h3>
               <span class="ml-auto font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--color-fg-dim)]">
                 {tier.count}
               </span>
@@ -41,7 +41,7 @@ const c = content[locale].marketplace;
             </p>
             <a
               href={tier.href}
-              class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--color-mint)] transition-colors hover:text-white"
+              class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[color:var(--color-mint)] transition-colors hover:text-[color:var(--color-fg)]"
             >
               Browse {tier.name.toLowerCase()}
               <span aria-hidden="true">→</span>
@@ -54,7 +54,7 @@ const c = content[locale].marketplace;
     <div class="mt-12 text-center" data-reveal>
       <a
         href={c.cta.href}
-        class="inline-flex items-center gap-2 rounded-md border border-[color:var(--color-ink-border-strong)] bg-[color:var(--color-ink-soft)]/50 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[color:var(--color-ink-soft)]"
+        class="inline-flex items-center gap-2 rounded-md border border-[color:var(--color-ink-border-strong)] bg-[color:var(--color-ink-soft)]/50 px-5 py-3 text-sm font-semibold text-[color:var(--color-fg)] transition-colors hover:bg-[color:var(--color-ink-soft)]"
       >
         {c.cta.label}
         <span aria-hidden="true">→</span>

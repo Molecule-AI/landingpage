@@ -30,7 +30,7 @@ const d = c.dashboard;
     </div>
 
     <h1
-      class="mx-auto max-w-4xl text-balance text-[2.25rem] font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl mol-entrance mol-entrance-3"
+      class="mx-auto max-w-4xl text-balance text-[2.25rem] font-bold leading-[1.05] tracking-tight text-[color:var(--color-fg)] sm:text-5xl lg:text-6xl mol-entrance mol-entrance-3"
     >
       <BlurText client:visible text={h.titleLead} delay={80} className="justify-center" />
       <span class="mol-gradient-text block pt-2">
@@ -71,7 +71,7 @@ const d = c.dashboard;
       </a>
       {
         h.tertiaryCta && (
-          <a href={h.tertiaryCta.href} class="text-sm font-medium text-[color:var(--color-fg-muted)] underline underline-offset-4 transition-colors hover:text-white">
+          <a href={h.tertiaryCta.href} class="text-sm font-medium text-[color:var(--color-fg-muted)] underline underline-offset-4 transition-colors hover:text-[color:var(--color-fg)]">
             {h.tertiaryCta.label}
           </a>
         )
@@ -80,7 +80,7 @@ const d = c.dashboard;
 
     <!-- Control Plane dashboard mockup -->
     <div class="relative mx-auto mt-16 hidden max-w-5xl text-left sm:block mol-entrance mol-entrance-6">
-      <div class="mol-dashboard">
+      <div class="mol-dashboard" data-theme="dark">
         <div class="mol-dashboard-chrome">
           <div class="flex items-center gap-4">
             <div class="mol-dots" aria-hidden="true">
