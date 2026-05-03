@@ -1,12 +1,19 @@
 ---
 import "../styles/global.css";
 import { content, localePaths, type Locale } from "../i18n";
+import { themeBootScript } from "../scripts/theme";
 
 interface Props {
   locale: Locale;
   title?: string;
   description?: string;
   image?: string;
+  /** SSR default — Astro builds static HTML and crawlers see this.
+   * Real users get their cookie/system preference applied by the
+   * inline boot script before first paint, so this value only
+   * affects no-script and the very first paint frame. Default
+   * "dark" preserves the brand identity for crawlers; landing
+   * pages opt into "light" explicitly. */
   theme?: "light" | "dark";
 }
 
@@ -90,13 +97,28 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang={c.htmlLang}>
+<html lang={c.htmlLang} data-theme={theme}>
   <head>
+    {/* Synchronous boot script — must run before any styles to prevent
+        FOUC. Reads the molecule_theme cookie + system preference and
+        stamps data-theme on <html> in <1ms. Only <html> is stamped:
+        every theme-aware selector cascades from :root[data-theme], so
+        body inherits without a JS body-update step that would race
+        with DOMContentLoaded. is:inline keeps Astro from treating it
+        as a module and deferring it. */}
+    <script is:inline set:html={themeBootScript} />
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="color-scheme" content={theme} />
-    <meta name="theme-color" content={theme === "light" ? "#fafaf7" : "#050912"} />
+    {/* Both modes are supported — tells the browser to render form
+        controls + scrollbars correctly in either. */}
+    <meta name="color-scheme" content="light dark" />
+    {/* Two theme-color values keyed by user pref so iOS/Android
+        chrome adopt the right hue regardless of which theme the
+        boot script resolves to. */}
+    <meta name="theme-color" content="#fafaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#050912" media="(prefers-color-scheme: dark)" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/logo.png" />
@@ -159,7 +181,7 @@ const jsonLd = {
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   </head>
-  <body data-theme={theme}>
+  <body>
     <a href="#main" class="mol-skip-link">
       {locale === "zh" ? "跳转到主内容" : "Skip to main content"}
     </a>

@@ -1,12 +1,32 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ShapeGrid from "../components/ShapeGrid.astro";
+import ThemeToggle from "../components/ThemeToggle.tsx";
 
 interface Props { locale?: "en" | "zh" }
 const { locale = "en" } = Astro.props;
 ---
 
 <Layout locale={locale} title="Pricing — Molecule AI" description="Simple, transparent pricing for AI agent team orchestration.">
+  {/* Minimal sticky header — interior pages don't need the full nav from
+      Landing.astro, but the theme toggle has to be reachable on every
+      page; otherwise users who open /pricing as a deep link are stuck
+      on whatever theme the cookie last set. Mirrors the chrome on
+      Landing.astro v2-nav so the swap is visually consistent. */}
+  <header class="sticky top-0 z-50 border-b border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink)]/85 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+      <a
+        href={locale === "zh" ? "/zh/" : "/"}
+        class="flex items-center gap-2.5 text-base font-semibold tracking-tight text-[color:var(--color-fg)]"
+        aria-label="Molecule AI home"
+      >
+        <img src="/logo.png" alt="" width="28" height="28" class="rounded-lg" loading="eager" decoding="async" />
+        <span>Molecule<span class="text-[color:var(--color-mint)]"> AI</span></span>
+      </a>
+      <ThemeToggle client:idle />
+    </div>
+  </header>
+
   <main class="relative">
     <ShapeGrid class="-z-10 opacity-60" />
 
@@ -15,7 +35,7 @@ const { locale = "en" } = Astro.props;
       <div class="mol-orb mol-orb--mint -z-10" style="width:480px;height:480px;top:-180px;left:50%;transform:translateX(-50%);" aria-hidden="true"></div>
       <div class="mx-auto max-w-7xl px-6 text-center">
         <p class="mol-eyebrow">Pricing</p>
-        <h1 class="mt-6 text-balance text-4xl font-bold tracking-tight text-white sm:text-6xl">
+        <h1 class="mt-6 text-balance text-4xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-6xl">
           One platform,<br/><span class="mol-gradient-text">every runtime.</span>
         </h1>
         <p class="mx-auto mt-6 max-w-2xl text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
@@ -33,9 +53,9 @@ const { locale = "en" } = Astro.props;
           <!-- Free / Self-hosted -->
           <div class="rounded-2xl border border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink-soft)]/40 p-8">
             <div class="mol-eyebrow mb-4">Open Core</div>
-            <h2 class="text-3xl font-bold text-white">Free</h2>
+            <h2 class="text-3xl font-bold text-[color:var(--color-fg)]">Free</h2>
             <p class="mt-3 text-sm text-[color:var(--color-fg-muted)]">Self-host the monorepo. Full source. No limits.</p>
-            <p class="mt-6 text-4xl font-bold text-white">$0<span class="text-base font-normal text-[color:var(--color-fg-muted)]">/mo</span></p>
+            <p class="mt-6 text-4xl font-bold text-[color:var(--color-fg)]">$0<span class="text-base font-normal text-[color:var(--color-fg-muted)]">/mo</span></p>
             <ul class="mt-8 space-y-3">
               {[
                 "Full monorepo (Go + Python + Next.js)",
@@ -54,7 +74,7 @@ const { locale = "en" } = Astro.props;
             </ul>
             <a
               href="https://github.com/Molecule-AI/molecule-monorepo"
-              class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[color:var(--color-ink-border)] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-[color:var(--color-mint)] hover:text-[color:var(--color-mint)]"
+              class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[color:var(--color-ink-border)] px-4 py-2.5 text-sm font-medium text-[color:var(--color-fg)] transition-colors hover:border-[color:var(--color-mint)] hover:text-[color:var(--color-mint)]"
               rel="noopener"
             >
               Clone on GitHub
@@ -65,9 +85,9 @@ const { locale = "en" } = Astro.props;
           <!-- Team / SaaS -->
           <div class="rounded-2xl border border-[color:var(--color-mint)] bg-[color:var(--color-mint)]/10 p-8 ring-1 ring-[color:var(--color-mint)]/30">
             <div class="mol-eyebrow mb-4 text-[color:var(--color-mint)]">Hosted SaaS</div>
-            <h2 class="text-3xl font-bold text-white">Team</h2>
+            <h2 class="text-3xl font-bold text-[color:var(--color-fg)]">Team</h2>
             <p class="mt-3 text-sm text-[color:var(--color-fg-muted)]">Zero ops. Auto-scaling. Full platform, managed for you.</p>
-            <p class="mt-6 text-4xl font-bold text-white">$29<span class="text-base font-normal text-[color:var(--color-fg-muted)]">/workspace/mo</span></p>
+            <p class="mt-6 text-4xl font-bold text-[color:var(--color-fg)]">$29<span class="text-base font-normal text-[color:var(--color-fg-muted)]">/workspace/mo</span></p>
             <ul class="mt-8 space-y-3">
               {[
                 "Everything in Free",
@@ -96,9 +116,9 @@ const { locale = "en" } = Astro.props;
           <!-- Enterprise -->
           <div class="rounded-2xl border border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink-soft)]/40 p-8">
             <div class="mol-eyebrow mb-4">Enterprise</div>
-            <h2 class="text-3xl font-bold text-white">Custom</h2>
+            <h2 class="text-3xl font-bold text-[color:var(--color-fg)]">Custom</h2>
             <p class="mt-3 text-sm text-[color:var(--color-fg-muted)]">Private deployment, custom runtimes, dedicated support.</p>
-            <p class="mt-6 text-4xl font-bold text-white">Custom<span class="text-base font-normal text-[color:var(--color-fg-muted)]"></span></p>
+            <p class="mt-6 text-4xl font-bold text-[color:var(--color-fg)]">Custom<span class="text-base font-normal text-[color:var(--color-fg-muted)]"></span></p>
             <ul class="mt-8 space-y-3">
               {[
                 "Everything in Team",
@@ -116,7 +136,7 @@ const { locale = "en" } = Astro.props;
             </ul>
             <a
               href="mailto:hello@moleculesai.app"
-              class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[color:var(--color-ink-border)] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:border-[color:var(--color-mint)] hover:text-[color:var(--color-mint)]"
+              class="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[color:var(--color-ink-border)] px-4 py-2.5 text-sm font-medium text-[color:var(--color-fg)] transition-colors hover:border-[color:var(--color-mint)] hover:text-[color:var(--color-mint)]"
             >
               Contact sales
             </a>

@@ -9,7 +9,7 @@ const c = content[locale].whatShips;
   <div class="mx-auto max-w-7xl px-6">
     <div class="mx-auto max-w-3xl text-center" data-reveal>
       <span class="mol-eyebrow">{c.eyebrow}</span>
-      <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-white sm:text-5xl">
+      <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-5xl">
         {c.title}
       </h2>
       <p class="mt-5 text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
@@ -24,7 +24,7 @@ const c = content[locale].whatShips;
             <div class="mb-2 font-mono text-[11px] font-bold tracking-[0.2em] text-[color:var(--color-mint)]">
               {col.label}
             </div>
-            <h3 class="text-2xl font-semibold text-white sm:text-3xl">{col.name}</h3>
+            <h3 class="text-2xl font-semibold text-[color:var(--color-fg)] sm:text-3xl">{col.name}</h3>
             <p class="mt-3 font-mono text-xs text-[color:var(--color-fg-muted)]">
               {col.stack}
             </p>
