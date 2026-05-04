@@ -482,7 +482,7 @@ export const enContent: LandingContent = {
     kicker: "For creators",
     title: "Build it. List it. Earn from it.",
     subtitle:
-      "Plugins, agents, and org bundles ship as signed manifests. Stripe Connect handles payouts. Authors keep 80%.",
+      "Plugins, agents, and org bundles ship as signed manifests. Authors keep 80% on every sale.",
     steps: [
       {
         number: "01",
@@ -500,7 +500,7 @@ export const enContent: LandingContent = {
         number: "03",
         title: "Earn",
         description:
-          "80% revenue share. Paid out via Stripe Connect. Re-publish a new version any time.",
+          "80% revenue share. Re-publish a new version any time.",
       },
     ],
     primaryCta: { label: "Publish on the Marketplace →", href: "https://market.moleculesai.app" },
@@ -535,7 +535,7 @@ export const enContent: LandingContent = {
       ],
       [
         "How does the marketplace work for sellers?",
-        "Three tiers: Plugin, Agent, Org. Set your price, ship a signed manifest, get paid via Stripe Connect. We take 20%.",
+        "Three tiers: Plugin, Agent, Org. Set your price, ship a signed manifest, We take 20%. We take 20%.",
       ],
       [
         "Self-hosted?",
@@ -789,7 +789,7 @@ export const zhContent: LandingContent = {
     kicker: "创作者",
     title: "做一个。上架。变现。",
     subtitle:
-      "插件、智能体、组织包以带签名的 manifest 发布。Stripe Connect 自动结算。作者拿走 80%。",
+      "插件、智能体、组织包以带签名的 manifest 发布。作者拿走每笔销售的 80%。",
     steps: [
       {
         number: "01",
@@ -807,7 +807,7 @@ export const zhContent: LandingContent = {
         number: "03",
         title: "变现",
         description:
-          "80% 分成,通过 Stripe Connect 结算,新版本随时再发布。",
+          "80% 分成。新版本随时再发布。",
       },
     ],
     primaryCta: { label: "去市场发布 →", href: "https://market.moleculesai.app" },
@@ -842,7 +842,7 @@ export const zhContent: LandingContent = {
       ],
       [
         "卖家如何上架?",
-        "三层:插件、智能体、组织。设置价格,提交带签名的 manifest,通过 Stripe Connect 收款。我们抽 20%。",
+        "三层:插件、智能体、组织。设置价格,提交带签名的 manifest。我们抽 20%。",
       ],
       [
         "支持自托管吗?",
@@ -1097,7 +1097,7 @@ export const frContent: LandingContent = {
     kicker: "Pour les créateurs",
     title: "Construisez-le. Publiez-le. Gagnez avec.",
     subtitle:
-      "Plugins, agents et bundles d'organisation sont livrés sous forme de manifestes signés. Stripe Connect gère les paiements. Les auteurs gardent 80 %.",
+      "Plugins, agents et bundles d'organisation sont livrés sous forme de manifestes signés. Les auteurs gardent 80 % sur chaque vente.",
     steps: [
       {
         number: "01",
@@ -1115,7 +1115,7 @@ export const frContent: LandingContent = {
         number: "03",
         title: "Gagner",
         description:
-          "80 % de partage de revenus. Versé via Stripe Connect. Republiez une nouvelle version à tout moment.",
+          "80 % de partage de revenus. Republiez une nouvelle version à tout moment.",
       },
     ],
     primaryCta: { label: "Publier sur la Marketplace →", href: "https://market.moleculesai.app" },
@@ -1150,7 +1150,7 @@ export const frContent: LandingContent = {
       ],
       [
         "Comment fonctionne la marketplace pour les vendeurs ?",
-        "Trois niveaux : Plugin, Agent, Org. Fixez votre prix, livrez un manifeste signé, soyez payé via Stripe Connect. Nous prenons 20 %.",
+        "Trois niveaux : Plugin, Agent, Org. Fixez votre prix, livrez un manifeste signé. Nous prenons 20 %.",
       ],
       [
         "Auto-hébergé ?",
@@ -1405,7 +1405,7 @@ export const jaContent: LandingContent = {
     kicker: "クリエイター向け",
     title: "作って、出品して、稼ぐ。",
     subtitle:
-      "プラグイン、エージェント、組織バンドルは署名付きマニフェストとして出荷されます。Stripe Connect が支払いを処理。作者の取り分は 80%。",
+      "プラグイン、エージェント、組織バンドルは署名付きマニフェストとして出荷されます。販売ごとに作者の取り分は 80%。",
     steps: [
       {
         number: "01",
@@ -1423,7 +1423,7 @@ export const jaContent: LandingContent = {
         number: "03",
         title: "Earn",
         description:
-          "80% のレベニュー シェア。Stripe Connect で支払い。新バージョンはいつでも再公開可能です。",
+          "80% のレベニュー シェア。新バージョンはいつでも再公開可能です。",
       },
     ],
     primaryCta: { label: "Marketplace で公開する →", href: "https://market.moleculesai.app" },
@@ -1458,7 +1458,7 @@ export const jaContent: LandingContent = {
       ],
       [
         "売り手にとって Marketplace はどう機能しますか?",
-        "Plugin、Agent、Org の 3 ティア。価格を設定し、署名付きマニフェストを出荷し、Stripe Connect で支払いを受け取ります。当社の手数料は 20% です。",
+        "Plugin、Agent、Org の 3 ティア。価格を設定し、署名付きマニフェストを出荷します。当社の手数料は 20% です。",
       ],
       [
         "セルフ ホスト可能ですか?",
@@ -1713,7 +1713,7 @@ export const esContent: LandingContent = {
     kicker: "Para creadores",
     title: "Constrúyelo. Pónlo en venta. Gana con ello.",
     subtitle:
-      "Los plugins, agentes y org bundles se entregan como manifiestos firmados. Stripe Connect gestiona los pagos. Los autores se quedan con el 80%.",
+      "Los plugins, agentes y org bundles se entregan como manifiestos firmados. Los autores se quedan con el 80% de cada venta.",
     steps: [
       {
         number: "01",
@@ -1731,7 +1731,7 @@ export const esContent: LandingContent = {
         number: "03",
         title: "Gana",
         description:
-          "Reparto del 80% de los ingresos. Pagado vía Stripe Connect. Republica una nueva versión cuando quieras.",
+          "Reparto del 80% de los ingresos. Republica una nueva versión cuando quieras.",
       },
     ],
     primaryCta: { label: "Publica en el Marketplace →", href: "https://market.moleculesai.app" },
@@ -1766,7 +1766,7 @@ export const esContent: LandingContent = {
       ],
       [
         "¿Cómo funciona el marketplace para vendedores?",
-        "Tres niveles: Plugin, Agente, Org. Pon tu precio, entrega un manifiesto firmado, cobra vía Stripe Connect. Nos quedamos el 20%.",
+        "Tres niveles: Plugin, Agente, Org. Pon tu precio, entrega un manifiesto firmado. Nos quedamos el 20%.",
       ],
       [
         "¿Self-hosted?",
