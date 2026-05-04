@@ -178,12 +178,26 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
             ))}
           </div>
         </div>
-        <div class="v2-yaml">
-          <div class="v2-yaml-chrome">
-            <span>workspace.yml</span>
-            <span class="dots"><i></i><i></i><i></i></span>
+        <div class="v2-usecase-diagram" data-usecase-diagram>
+          <div class="v2-usecase-diagram-chrome">
+            <span data-diagram-title>workspace.topology</span>
+            <button
+              type="button"
+              class="v2-usecase-diagram-toggle"
+              data-diagram-toggle
+              aria-pressed="false"
+            >show YAML</button>
           </div>
-          <pre data-yaml-target>{c.useCases.cases[0].yaml}<span class="caret"></span></pre>
+          <div class="v2-usecase-diagram-stage" data-diagram-stage>
+            <svg
+              data-usecase-svg
+              viewBox="0 0 520 360"
+              preserveAspectRatio="xMidYMid meet"
+              role="img"
+              aria-label="Agent topology diagram"
+            ></svg>
+          </div>
+          <pre class="v2-usecase-diagram-yaml" data-yaml-target hidden>{c.useCases.cases[0].yaml}<span class="caret"></span></pre>
         </div>
       </div>
     </div>
@@ -1092,6 +1106,202 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   }
   @keyframes v2-caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
+  /* Use-case agent topology diagram. Replaces the previous YAML pre block
+     with an animated SVG so investors / non-engineers see the org shape
+     instead of a config dump. The "show YAML" toggle keeps the original
+     view available for technical readers. */
+  :root[data-theme] .v2-usecase-diagram {
+    position: relative;
+    background: var(--bgElev);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 360px;
+    overflow: hidden;
+  }
+  :root[data-theme] .v2-usecase-diagram-chrome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    color: var(--inkSoft);
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  :root[data-theme] .v2-usecase-diagram-toggle {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--inkMid);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.18s ease, border-color 0.18s ease;
+    text-transform: inherit;
+    letter-spacing: inherit;
+  }
+  :root[data-theme] .v2-usecase-diagram-toggle:hover {
+    color: var(--ink);
+    border-color: var(--accent);
+  }
+  :root[data-theme] .v2-usecase-diagram-stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+  }
+  :root[data-theme] svg[data-usecase-svg] {
+    width: 100%;
+    height: 100%;
+    max-height: 340px;
+    display: block;
+  }
+  /* Theme-reactive paint: static fill/stroke attrs the JS sets at render
+     time would otherwise bake in the boot-time hex on toggle. CSS class
+     wins over the attribute, so toggling <html data-theme> repaints the
+     diagram without re-rendering. Same pattern as v2-topo-* (PR #79). */
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-edge {
+    stroke: var(--ink);
+    stroke-opacity: 0.35;
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-edge-hot {
+    stroke: var(--accent);
+    stroke-opacity: 0.85;
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-org-fill {
+    fill: var(--ink);
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-agent-fill {
+    fill: var(--bgElev);
+    stroke: var(--ink);
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-agent-inner {
+    fill: var(--inkMid);
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-label {
+    fill: var(--ink);
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-sublabel {
+    fill: var(--inkMid);
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 9px;
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-runtime-bg {
+    fill: color-mix(in srgb, var(--accent) 18%, transparent);
+    stroke: color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-runtime-text {
+    fill: var(--ink);
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 8.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-tool {
+    fill: var(--bgElev);
+    stroke: var(--inkMid);
+    stroke-opacity: 0.55;
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-tool-text {
+    fill: var(--inkMid);
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 8px;
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-hitl-bg {
+    fill: color-mix(in srgb, var(--warm) 22%, transparent);
+    stroke: var(--warm);
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-hitl-text {
+    fill: var(--warm);
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-org-label {
+    fill: var(--bgElev);
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  :root[data-theme] svg[data-usecase-svg] .v2-uc-memory-bg {
+    fill: color-mix(in srgb, var(--accent) 10%, transparent);
+    stroke: color-mix(in srgb, var(--accent) 45%, transparent);
+    stroke-dasharray: 3 3;
+  }
+  /* Stagger animation — each node/edge gets data-anim and slides in.
+     Reduce-motion mode skips the transition (rule below). */
+  svg[data-usecase-svg] .v2-uc-anim {
+    opacity: 0;
+    transform: translateY(6px) scale(0.92);
+    transform-origin: center;
+    transform-box: fill-box;
+    transition: opacity 0.42s ease, transform 0.42s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  svg[data-usecase-svg] .v2-uc-anim[data-on="true"] {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  svg[data-usecase-svg] .v2-uc-edge.v2-uc-anim,
+  svg[data-usecase-svg] .v2-uc-edge-hot.v2-uc-anim {
+    transform-origin: 0 0;
+    transform: scaleX(0.05);
+  }
+  svg[data-usecase-svg] .v2-uc-edge.v2-uc-anim[data-on="true"],
+  svg[data-usecase-svg] .v2-uc-edge-hot.v2-uc-anim[data-on="true"] {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    svg[data-usecase-svg] .v2-uc-anim,
+    svg[data-usecase-svg] .v2-uc-edge.v2-uc-anim,
+    svg[data-usecase-svg] .v2-uc-edge-hot.v2-uc-anim {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+  /* When YAML view is requested, hide the SVG stage and reveal the pre. */
+  :root[data-theme] .v2-usecase-diagram[data-show-yaml="true"] .v2-usecase-diagram-stage {
+    display: none;
+  }
+  :root[data-theme] .v2-usecase-diagram-yaml {
+    margin: 0;
+    white-space: pre;
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    font-size: 12px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--bgInk);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow: auto;
+    min-height: 280px;
+  }
+  :root[data-theme] .v2-usecase-diagram-yaml[hidden] {
+    display: none;
+  }
+  :root[data-theme] .v2-usecase-diagram-yaml .caret {
+    display: inline-block;
+    width: 7px;
+    height: 14px;
+    background: var(--accent);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: v2-caret 1s steps(2) infinite;
+  }
+
   /* Tier cards */
   :root[data-theme] .v2-tier-card-link {
     display: block;
@@ -1979,7 +2189,10 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     });
   }
 
-  // Use case tabs (typewriter + deploy steps)
+  // Use case tabs — animated agent topology + deploy steps + YAML toggle.
+  // The right-pane was a static YAML dump (user feedback: "too boring and
+  // developer-y"); now it renders an SVG topology of the org so investors
+  // see agents/runtimes/HITL gates instead of config code.
   type Cache = { yaml: string; kicker: string; label: string; deploy: string };
   const yamlCache = new Map<string, Cache>();
   document.querySelectorAll<HTMLScriptElement>("script[data-yaml]").forEach((el) => {
@@ -1995,42 +2208,444 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   const metaLabel = document.querySelector<HTMLElement>("[data-meta-label]");
   const cmdEl = document.querySelector<HTMLElement>("[data-cmd]");
   const deploySteps = document.querySelectorAll<HTMLElement>("[data-deploy] .v2-deploy-step");
-  let typeIv: ReturnType<typeof setInterval> | null = null;
+  const ucDiagram = document.querySelector<HTMLElement>("[data-usecase-diagram]");
+  const ucSvg = document.querySelector<SVGSVGElement>("svg[data-usecase-svg]");
+  const ucToggle = document.querySelector<HTMLButtonElement>("[data-diagram-toggle]");
+  const diagramTitleEl = document.querySelector<HTMLElement>("[data-diagram-title]");
   let deployTimers: ReturnType<typeof setTimeout>[] = [];
+  let revealTimers: ReturnType<typeof setTimeout>[] = [];
+
+  // Tiny YAML parser tailored to USECASE_YAMLS shape (org / agents[] / hitl[] /
+  // memory). We don't need a general YAML lib — these strings are well-formed
+  // and small. Lines look like `org: x`, `  - role: y`, `    runtime: z`,
+  // `    tools: [a, b]`, `    plugins: [a, b]`, `    count: 2`.
+  type Agent = {
+    role: string;
+    runtime: string;
+    tools: string[];
+    plugins: string[];
+    count: number;
+  };
+  type ParsedYaml = {
+    org: string;
+    agents: Agent[];
+    hitl: string[];
+    memory: string | null;
+  };
+  const parseUsecaseYaml = (src: string): ParsedYaml => {
+    const out: ParsedYaml = { org: "", agents: [], hitl: [], memory: null };
+    const lines = src.split("\n");
+    let mode: "top" | "agents" | "hitl" | "memory" = "top";
+    let cur: Agent | null = null;
+    const parseList = (raw: string): string[] =>
+      raw
+        .replace(/^\[/, "")
+        .replace(/\]$/, "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+    for (const ln of lines) {
+      if (!ln.trim()) continue;
+      const m = /^(\s*)(.*)$/.exec(ln)!;
+      const indent = m[1].length;
+      const body = m[2];
+      if (indent === 0) {
+        if (body.startsWith("org:")) out.org = body.slice(4).trim();
+        else if (body.startsWith("agents:")) {
+          mode = "agents";
+          cur = null;
+        } else if (body.startsWith("hitl:")) {
+          mode = "hitl";
+          cur = null;
+        } else if (body.startsWith("memory:")) {
+          mode = "memory";
+          cur = null;
+        } else mode = "top";
+        continue;
+      }
+      if (mode === "agents") {
+        if (body.startsWith("- ")) {
+          cur = { role: "", runtime: "", tools: [], plugins: [], count: 1 };
+          out.agents.push(cur);
+          const inner = body.slice(2).trim();
+          if (inner.startsWith("role:")) cur.role = inner.slice(5).trim();
+        } else if (cur) {
+          if (body.startsWith("role:")) cur.role = body.slice(5).trim();
+          else if (body.startsWith("runtime:")) cur.runtime = body.slice(8).trim();
+          else if (body.startsWith("count:")) cur.count = Number(body.slice(6).trim()) || 1;
+          else if (body.startsWith("tools:")) cur.tools = parseList(body.slice(6).trim());
+          else if (body.startsWith("plugins:")) cur.plugins = parseList(body.slice(8).trim());
+        }
+      } else if (mode === "hitl") {
+        if (body.startsWith("- ")) out.hitl.push(body.slice(2).trim());
+      } else if (mode === "memory") {
+        // Best-effort: capture the first scope line for the diagram label.
+        if (body.includes("scope:")) {
+          const sm = /scope:\s*([\w-]+)/.exec(body);
+          if (sm) out.memory = sm[1];
+        }
+      }
+    }
+    return out;
+  };
+
+  // Map runtime names to short badge labels (kept under 6 chars so they
+  // fit inside the agent node's runtime pill without truncation).
+  const runtimeBadge = (rt: string): string => {
+    const r = rt.toLowerCase();
+    if (r === "claude-code") return "claude";
+    if (r === "langgraph") return "lgraph";
+    if (r === "deepagents") return "deep";
+    if (r === "hermes") return "hermes";
+    if (r === "crewai") return "crew";
+    if (r === "autogen") return "autog";
+    if (r === "gemini-cli") return "gemini";
+    return r.slice(0, 6) || "agent";
+  };
+
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const el = (
+    name: string,
+    attrs: Record<string, string | number> = {},
+    parent?: SVGElement | null
+  ): SVGElement => {
+    const node = document.createElementNS(SVG_NS, name);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, String(v));
+    if (parent) parent.appendChild(node);
+    return node;
+  };
+
+  const renderDiagram = (parsed: ParsedYaml) => {
+    if (!ucSvg) return;
+    while (ucSvg.firstChild) ucSvg.removeChild(ucSvg.firstChild);
+    revealTimers.forEach(clearTimeout);
+    revealTimers = [];
+
+    // Expand agents with `count: N` into N siblings so the diagram shows
+    // the actual head-count (lab YAML has `postdoc count: 2`).
+    const slots: { agent: Agent; suffix: string }[] = [];
+    parsed.agents.forEach((a) => {
+      if (a.count > 1) {
+        for (let i = 0; i < a.count; i++)
+          slots.push({ agent: a, suffix: `·${i + 1}` });
+      } else {
+        slots.push({ agent: a, suffix: "" });
+      }
+    });
+
+    const W = 520;
+    const H = 360;
+    const cx = W / 2;
+    const cy = H / 2;
+    const orgR = 38;
+    const agentR = 22;
+    const ringR = Math.min(118, 60 + slots.length * 8);
+
+    // Optional memory ring (drawn first, behind everything).
+    if (parsed.memory) {
+      el("circle", {
+        cx,
+        cy,
+        r: ringR + 36,
+        class: "v2-uc-memory-bg v2-uc-anim",
+        "data-anim": "memory",
+        "fill-opacity": "1",
+      }, ucSvg);
+      const mt = el("text", {
+        x: cx,
+        y: cy - (ringR + 28),
+        "text-anchor": "middle",
+        class: "v2-uc-sublabel v2-uc-anim",
+        "data-anim": "memory",
+      }, ucSvg);
+      mt.textContent = `memory · ${parsed.memory}`;
+    }
+
+    // Agent positions on the ring.
+    const N = slots.length;
+    const positions = slots.map((_, i) => {
+      // Start at -90deg (top) and go clockwise.
+      const angle = -Math.PI / 2 + (i * 2 * Math.PI) / Math.max(N, 1);
+      return { x: cx + Math.cos(angle) * ringR, y: cy + Math.sin(angle) * ringR, angle };
+    });
+
+    // Edges first so nodes paint over them.
+    const edges: SVGElement[] = [];
+    positions.forEach((p, i) => {
+      const dx = p.x - cx;
+      const dy = p.y - cy;
+      const len = Math.sqrt(dx * dx + dy * dy);
+      const ux = dx / len;
+      const uy = dy / len;
+      const x1 = cx + ux * orgR;
+      const y1 = cy + uy * orgR;
+      const x2 = p.x - ux * agentR;
+      const y2 = p.y - uy * agentR;
+      const ln = el("line", {
+        x1,
+        y1,
+        x2,
+        y2,
+        "stroke-width": 1.4,
+        class: "v2-uc-edge v2-uc-anim",
+        "data-anim": "edge",
+      }, ucSvg) as SVGLineElement;
+      // Anchor the scaleX transform at the org-side endpoint so the line
+      // appears to grow outward from the org node toward the agent.
+      ln.style.transformOrigin = `${x1}px ${y1}px`;
+      edges.push(ln);
+      // HITL gate badge: if the agent role appears in any hitl rule, drop a
+      // small chip on the midpoint of the edge.
+      const slot = slots[i];
+      const hitForRole = parsed.hitl.find((rule) =>
+        rule.toLowerCase().includes(slot.agent.role.toLowerCase())
+      );
+      // soc YAML's "severity >= high → l3 + ir-lead" — match l3 / ir-lead.
+      // fintech YAML's "amount > 10_000 → dual_review" — applies to all
+      // money-handling agents; we tag cfo + compliance heuristically.
+      const ruleApplies =
+        hitForRole !== undefined ||
+        (parsed.hitl.length > 0 &&
+          (slot.agent.role === "cfo" || slot.agent.role === "compliance"));
+      if (ruleApplies) {
+        const mx = (x1 + x2) / 2;
+        const my = (y1 + y2) / 2;
+        const g = el("g", {
+          class: "v2-uc-anim",
+          "data-anim": "hitl",
+          transform: `translate(${mx} ${my})`,
+        }, ucSvg);
+        el("rect", {
+          x: -22,
+          y: -8,
+          width: 44,
+          height: 16,
+          rx: 8,
+          ry: 8,
+          class: "v2-uc-hitl-bg",
+          "stroke-width": 1,
+        }, g);
+        const t = el("text", {
+          x: 0,
+          y: 3.5,
+          "text-anchor": "middle",
+          class: "v2-uc-hitl-text",
+        }, g);
+        t.textContent = "HITL";
+      }
+    });
+
+    // Agent nodes.
+    positions.forEach((p, i) => {
+      const slot = slots[i];
+      const g = el("g", {
+        class: "v2-uc-anim",
+        "data-anim": `agent-${i}`,
+        transform: `translate(${p.x} ${p.y})`,
+      }, ucSvg);
+      el("circle", {
+        cx: 0,
+        cy: 0,
+        r: agentR,
+        "stroke-width": 1.2,
+        class: "v2-uc-agent-fill",
+      }, g);
+      el("circle", {
+        cx: 0,
+        cy: 0,
+        r: agentR - 9,
+        class: "v2-uc-agent-inner",
+      }, g);
+      // Role label below the node. Push it further out for nodes on the
+      // bottom half so it doesn't overlap with neighbors.
+      const labelDy = p.y > cy ? agentR + 14 : -(agentR + 8);
+      const lbl = el("text", {
+        x: 0,
+        y: labelDy,
+        "text-anchor": "middle",
+        class: "v2-uc-label",
+      }, g);
+      lbl.textContent = slot.agent.role + slot.suffix;
+      // Runtime pill below the role label (or above for top-half nodes).
+      const rtDy = p.y > cy ? labelDy + 14 : labelDy - 12;
+      const rtTxt = runtimeBadge(slot.agent.runtime);
+      const pillW = Math.max(34, rtTxt.length * 6 + 10);
+      const rtg = el("g", {
+        transform: `translate(${-pillW / 2} ${rtDy - 8})`,
+      }, g);
+      el("rect", {
+        x: 0,
+        y: 0,
+        width: pillW,
+        height: 14,
+        rx: 7,
+        ry: 7,
+        "stroke-width": 1,
+        class: "v2-uc-runtime-bg",
+      }, rtg);
+      const rtTextEl = el("text", {
+        x: pillW / 2,
+        y: 9.5,
+        "text-anchor": "middle",
+        class: "v2-uc-runtime-text",
+      }, rtg);
+      rtTextEl.textContent = rtTxt;
+
+      // Tool / plugin chips clustered around the agent node, on the
+      // outer side of the ring (away from the org).
+      const chips = [...slot.agent.tools, ...slot.agent.plugins].slice(0, 3);
+      if (chips.length) {
+        const dx = p.x - cx;
+        const dy = p.y - cy;
+        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+        const ux = dx / len;
+        const uy = dy / len;
+        chips.forEach((tool, j) => {
+          const offset = agentR + 14 + j * 14;
+          const tx = ux * offset;
+          const ty = uy * offset - 4;
+          const w = Math.max(28, tool.length * 5.2 + 10);
+          const tg = el("g", {
+            transform: `translate(${tx - w / 2} ${ty})`,
+          }, g);
+          el("rect", {
+            x: 0,
+            y: 0,
+            width: w,
+            height: 12,
+            rx: 6,
+            ry: 6,
+            "stroke-width": 0.8,
+            class: "v2-uc-tool",
+          }, tg);
+          const tt = el("text", {
+            x: w / 2,
+            y: 8.5,
+            "text-anchor": "middle",
+            class: "v2-uc-tool-text",
+          }, tg);
+          tt.textContent = tool;
+        });
+      }
+    });
+
+    // Org node last so it sits on top of all edges.
+    const orgG = el("g", {
+      class: "v2-uc-anim",
+      "data-anim": "org",
+      transform: `translate(${cx} ${cy})`,
+    }, ucSvg);
+    el("circle", {
+      cx: 0,
+      cy: 0,
+      r: orgR,
+      class: "v2-uc-org-fill",
+    }, orgG);
+    // Wrap the org name on the disc — most are 1-2 words separated by `-`.
+    const orgWords = parsed.org.split("-");
+    if (orgWords.length === 1) {
+      const tx = el("text", {
+        x: 0,
+        y: 4,
+        "text-anchor": "middle",
+        class: "v2-uc-org-label",
+      }, orgG);
+      tx.textContent = orgWords[0];
+    } else {
+      const lineH = 13;
+      const startY = -((orgWords.length - 1) * lineH) / 2 + 4;
+      orgWords.forEach((w, i) => {
+        const tx = el("text", {
+          x: 0,
+          y: startY + i * lineH,
+          "text-anchor": "middle",
+          class: "v2-uc-org-label",
+        }, orgG);
+        tx.textContent = w;
+      });
+    }
+    const orgKicker = el("text", {
+      x: 0,
+      y: orgR + 14,
+      "text-anchor": "middle",
+      class: "v2-uc-sublabel",
+    }, ucSvg);
+    orgKicker.textContent = "org · A2A bus";
+
+    // Stagger reveal: org first, then agents fanning out, then edges drawing,
+    // then HITL gates settling on top. Reduce-motion CSS rule snaps to final.
+    if (prefersReducedMotion) {
+      ucSvg.querySelectorAll<SVGElement>(".v2-uc-anim").forEach((n) =>
+        n.setAttribute("data-on", "true")
+      );
+      return;
+    }
+    const reveal = (selector: string, baseDelay: number, step: number) => {
+      const list = Array.from(
+        ucSvg.querySelectorAll<SVGElement>(selector)
+      );
+      list.forEach((n, idx) => {
+        revealTimers.push(
+          setTimeout(() => n.setAttribute("data-on", "true"), baseDelay + idx * step)
+        );
+      });
+    };
+    reveal('[data-anim="memory"]', 0, 80);
+    reveal('[data-anim="org"]', 60, 80);
+    // Stagger each agent group, then edges in parallel, then HITL gates.
+    const agentNodes = Array.from(
+      ucSvg.querySelectorAll<SVGElement>('[data-anim^="agent-"]')
+    );
+    agentNodes.forEach((n, idx) => {
+      revealTimers.push(
+        setTimeout(() => n.setAttribute("data-on", "true"), 220 + idx * 80)
+      );
+    });
+    const edgeDelay = 220 + agentNodes.length * 80;
+    reveal('[data-anim="edge"]', edgeDelay, 50);
+    reveal('[data-anim="hitl"]', edgeDelay + 200, 60);
+  };
 
   const playTab = (id: string) => {
     const data = yamlCache.get(id);
-    if (!data || !yamlTarget) return;
+    if (!data) return;
     if (metaKicker) metaKicker.textContent = data.kicker;
     if (metaLabel) metaLabel.textContent = data.label;
     if (cmdEl) cmdEl.textContent = data.deploy;
-    if (typeIv) clearInterval(typeIv);
-    const target = data.yaml;
+    if (diagramTitleEl) diagramTitleEl.textContent = `${id}.topology`;
     deployTimers.forEach(clearTimeout);
+    // Refresh YAML pre content (used when toggle reveals it).
+    if (yamlTarget) {
+      const caret = yamlTarget.querySelector(".caret");
+      yamlTarget.firstChild!.textContent = data.yaml;
+      if (caret) yamlTarget.appendChild(caret);
+    }
+    const parsed = parseUsecaseYaml(data.yaml);
+    renderDiagram(parsed);
     if (prefersReducedMotion) {
-      // Snap the YAML to its final form and mark every deploy step done
-      // without the typewriter / staggered reveal motion. WCAG 2.3.3.
-      yamlTarget.firstChild!.textContent = target;
       deploySteps.forEach((el) => el.setAttribute("data-on", "true"));
       return;
     }
-    let i = 0;
-    const speed = Math.max(2, Math.floor(target.length / 60));
-    yamlTarget.firstChild!.textContent = "";
-    typeIv = setInterval(() => {
-      i += speed;
-      if (i >= target.length) {
-        yamlTarget.firstChild!.textContent = target;
-        if (typeIv) clearInterval(typeIv);
-      } else {
-        yamlTarget.firstChild!.textContent = target.slice(0, i);
-      }
-    }, 16);
     deploySteps.forEach((el) => el.removeAttribute("data-on"));
     [800, 1500, 2300].forEach((d, idx) => {
       deployTimers.push(setTimeout(() => deploySteps[idx]?.setAttribute("data-on", "true"), d));
     });
   };
+
+  // Show-YAML toggle: flip the diagram container into yaml-mode and back.
+  if (ucToggle && ucDiagram) {
+    ucToggle.addEventListener("click", () => {
+      const showing = ucDiagram.getAttribute("data-show-yaml") === "true";
+      const next = !showing;
+      ucDiagram.setAttribute("data-show-yaml", String(next));
+      ucToggle.setAttribute("aria-pressed", String(next));
+      ucToggle.textContent = next ? "show diagram" : "show YAML";
+      if (yamlTarget) {
+        if (next) yamlTarget.removeAttribute("hidden");
+        else yamlTarget.setAttribute("hidden", "");
+      }
+    });
+  }
 
   // Kick off the first tab without waiting for a click
   const firstTab = document.querySelector<HTMLButtonElement>("[data-tabs] .v2-tab");
