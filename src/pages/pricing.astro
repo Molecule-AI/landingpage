@@ -57,8 +57,23 @@ const homeHref = localePaths[locale];
       <div class="mx-auto max-w-7xl px-6">
         <div class="grid gap-8 md:grid-cols-3">
 
+          {/* Tier-card scroll-reveal stagger:
+              site.ts's IntersectionObserver flips `data-visible` on
+              intersect, the existing [data-reveal] CSS in global.css
+              owns the slide-up + fade transition, and the inline
+              transition-delay sequences the three cards (0/120/240 ms).
+              `data-delay` mirrors Landing.astro's stagger pattern so a
+              future cleanup that consolidates both observers reads the
+              same attribute. site.ts's observer ignores data-delay
+              today, so the inline style is what actually drives the
+              stagger — kept inline to avoid adding a new CSS rule. */}
           <!-- Free / Self-hosted -->
-          <div class="rounded-2xl border border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink-soft)]/40 p-8 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-[color:var(--color-mint)]/60 hover:shadow-[0_16px_40px_-20px_rgba(0,0,0,0.18)]">
+          <div
+            data-reveal
+            data-delay={0}
+            style="transition-delay: 0ms;"
+            class="rounded-2xl border border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink-soft)]/40 p-8 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-[color:var(--color-mint)]/60 hover:shadow-[0_16px_40px_-20px_rgba(0,0,0,0.18)]"
+          >
             <div class="mol-eyebrow mb-4">Open Core</div>
             <h2 class="text-3xl font-bold text-[color:var(--color-fg)]">Free</h2>
             <p class="mt-3 text-sm text-[color:var(--color-fg-muted)]">Self-host the monorepo. Full source. No limits.</p>
@@ -90,7 +105,12 @@ const homeHref = localePaths[locale];
           </div>
 
           <!-- Team / SaaS -->
-          <div class="rounded-2xl border border-[color:var(--color-mint)] bg-[color:var(--color-mint)]/10 p-8 ring-1 ring-[color:var(--color-mint)]/30 transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_24px_60px_-24px_rgba(127,232,214,0.33)]">
+          <div
+            data-reveal
+            data-delay={120}
+            style="transition-delay: 120ms;"
+            class="rounded-2xl border border-[color:var(--color-mint)] bg-[color:var(--color-mint)]/10 p-8 ring-1 ring-[color:var(--color-mint)]/30 transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_24px_60px_-24px_rgba(127,232,214,0.33)]"
+          >
             <div class="mol-eyebrow mb-4 text-[color:var(--color-mint)]">Hosted SaaS</div>
             <h2 class="text-3xl font-bold text-[color:var(--color-fg)]">Team</h2>
             <p class="mt-3 text-sm text-[color:var(--color-fg-muted)]">Zero ops. Auto-scaling. Full platform, managed for you.</p>
@@ -121,7 +141,12 @@ const homeHref = localePaths[locale];
           </div>
 
           <!-- Enterprise -->
-          <div class="rounded-2xl border border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink-soft)]/40 p-8 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-[color:var(--color-mint)]/60 hover:shadow-[0_16px_40px_-20px_rgba(0,0,0,0.18)]">
+          <div
+            data-reveal
+            data-delay={240}
+            style="transition-delay: 240ms;"
+            class="rounded-2xl border border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink-soft)]/40 p-8 transition-all duration-200 ease-out hover:-translate-y-1 hover:border-[color:var(--color-mint)]/60 hover:shadow-[0_16px_40px_-20px_rgba(0,0,0,0.18)]"
+          >
             <div class="mol-eyebrow mb-4">Enterprise</div>
             <h2 class="text-3xl font-bold text-[color:var(--color-fg)]">Custom</h2>
             <p class="mt-3 text-sm text-[color:var(--color-fg-muted)]">Private deployment, custom runtimes, dedicated support.</p>
