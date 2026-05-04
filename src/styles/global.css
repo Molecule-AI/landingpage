@@ -745,7 +745,10 @@ img, canvas, video, svg {
   gap: 0.5rem;
   padding: 0.35rem;
   border-radius: 999px;
-  background: rgba(10, 17, 32, 0.6);
+  /* Was rgba(10, 17, 32, 0.6) — opaque dark, invisible-on-cream in
+     light theme. color-mix on var(--ink-soft) gives a tint that flips
+     with theme. */
+  background: color-mix(in srgb, var(--ink-soft) 60%, transparent);
   border: 1px solid var(--color-ink-border);
   backdrop-filter: blur(8px);
   overflow-x: auto;
@@ -783,15 +786,33 @@ img, canvas, video, svg {
 }
 
 .mol-tab:hover {
-  color: #fff;
-  background: rgba(127, 232, 214, 0.05);
+  /* color: #fff was invisible on the warm-paper light theme (white on
+     cream). Use the semantic foreground token so it reads in both
+     themes. Mint hover-tint via color-mix so it flips too. */
+  color: var(--color-fg);
+  background: color-mix(in srgb, var(--mint) 5%, transparent);
+}
+
+/* Keyboard focus indicator — was missing entirely. Tabs are
+   focusable but had no visible :focus-visible style; keyboard users
+   couldn't tell which tab was focused. Pin the same ring pattern
+   used across the rest of the canvas. */
+.mol-tab:focus-visible {
+  outline: 2px solid var(--color-mint);
+  outline-offset: 2px;
 }
 
 .mol-tab[data-active] {
-  background: linear-gradient(135deg, rgba(127, 232, 214, 0.18), rgba(94, 227, 207, 0.1));
-  color: #fff;
-  border-color: rgba(127, 232, 214, 0.4);
-  box-shadow: 0 0 24px -8px rgba(127, 232, 214, 0.5);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--mint) 18%, transparent),
+    color-mix(in srgb, var(--cyan) 10%, transparent)
+  );
+  /* color: #fff was invisible on warm-paper light theme. Switched to
+     the foreground token. */
+  color: var(--color-fg);
+  border-color: color-mix(in srgb, var(--mint) 40%, transparent);
+  box-shadow: 0 0 24px -8px color-mix(in srgb, var(--mint) 50%, transparent);
 }
 
 .mol-tab-panel {
@@ -843,7 +864,8 @@ img, canvas, video, svg {
 .mol-faq-q {
   font-size: 1rem;
   font-weight: 600;
-  color: #fff;
+  /* Was color: #fff — invisible on warm-paper light theme. */
+  color: var(--color-fg);
   line-height: 1.45;
   flex: 1;
 }
@@ -958,7 +980,8 @@ img, canvas, video, svg {
 .mol-flywheel-label {
   font-size: 0.82rem;
   font-weight: 500;
-  color: #fff;
+  /* Was color: #fff — invisible on warm-paper light theme. */
+  color: var(--color-fg);
   line-height: 1.35;
 }
 
@@ -1021,7 +1044,8 @@ img, canvas, video, svg {
 
 .mol-compare td:first-child {
   font-weight: 600;
-  color: #fff;
+  /* Was color: #fff — invisible on warm-paper light theme. */
+  color: var(--color-fg);
   width: 20%;
 }
 
