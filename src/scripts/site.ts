@@ -5,6 +5,72 @@ const reduced =
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// ---------------- nav scroll-spy ----------------
+// Highlight the .v2-nav-links anchor whose target <section[id]> currently
+// occupies the viewport "active band" (rootMargin trims the top 40% and
+// bottom 50%, so only the section roughly centered on screen qualifies).
+//
+// Uses one AbortController per script lifecycle: the IO is disconnected
+// and its listeners freed on abort, mirroring the AbortController pattern
+// established by the use-case diagram drag stack (PR #127).
+function initNavScrollSpy(signal: AbortSignal) {
+  const links = document.querySelectorAll<HTMLAnchorElement>(
+    '.v2-nav-links a[href^="#"]',
+  );
+  if (!links.length) return;
+  const linkBySection = new Map<string, HTMLAnchorElement>();
+  links.forEach((a) => {
+    const id = a.getAttribute("href")?.slice(1);
+    if (id) linkBySection.set(id, a);
+  });
+  if (!linkBySection.size) return;
+
+  const sections: HTMLElement[] = [];
+  linkBySection.forEach((_a, id) => {
+    const el = document.getElementById(id);
+    if (el) sections.push(el);
+  });
+  if (!sections.length) return;
+
+  let active: HTMLAnchorElement | null = null;
+  const setActive = (next: HTMLAnchorElement | null) => {
+    if (next === active) return;
+    if (active) active.removeAttribute("data-active");
+    if (next) next.setAttribute("data-active", "");
+    active = next;
+  };
+
+  const visible = new Map<string, IntersectionObserverEntry>();
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        const id = (entry.target as HTMLElement).id;
+        if (entry.isIntersecting) visible.set(id, entry);
+        else visible.delete(id);
+      }
+      // Pick the topmost intersecting section so the nav cleanly steps
+      // through sections as the user scrolls down.
+      let best: { id: string; top: number } | null = null;
+      visible.forEach((e, id) => {
+        const top = e.boundingClientRect.top;
+        if (!best || top < best.top) best = { id, top };
+      });
+      setActive(best ? linkBySection.get(best.id) ?? null : null);
+    },
+    { rootMargin: "-40% 0px -50% 0px", threshold: 0 },
+  );
+  sections.forEach((s) => io.observe(s));
+
+  signal.addEventListener(
+    "abort",
+    () => {
+      io.disconnect();
+      setActive(null);
+    },
+    { once: true },
+  );
+}
+
 // ---------------- scroll-reveal fades ----------------
 function initReveal() {
   const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
@@ -258,11 +324,14 @@ function initAllGrids() {
 }
 
 // ---------------- boot ----------------
+const lifecycle = new AbortController();
+
 function boot() {
   initReveal();
   initRotators();
   initTabs();
   initAllGrids();
+  initNavScrollSpy(lifecycle.signal);
 }
 
 if (document.readyState === "loading") {

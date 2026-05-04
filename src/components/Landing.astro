@@ -982,6 +982,18 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] .v2-nav-links a:focus-visible::after {
     transform: scaleX(1);
   }
+  /* Scroll-spy active state — IntersectionObserver in site.ts toggles
+     [data-active] on the link whose section is in view. Mirrors the
+     :hover state so it reads "you are here". */
+  :root[data-theme] .v2-nav-links a[data-active] { color: var(--ink); }
+  :root[data-theme] .v2-nav-links a[data-active]::after {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-nav-links a[data-active]::after {
+      transition: none;
+    }
+  }
   :root[data-theme] .v2-nav-cta { display: flex; gap: 8px; align-items: center; }
 
   /* Locale dropdown — native <details> for click-out + a11y. */
