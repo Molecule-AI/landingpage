@@ -984,6 +984,14 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     width: fit-content;
     animation: v2-marquee 48s linear infinite;
   }
+  /* Pause the runtime marquee on hover/focus so a curious viewer can
+     read a specific runtime name without it scrolling away. Scoped to
+     the marquee container so a stray hover anywhere in the strip is
+     enough — the user doesn't need to land precisely on a moving item. */
+  :root[data-theme] .v2-marquee:hover .v2-marquee-track,
+  :root[data-theme] .v2-marquee:focus-within .v2-marquee-track {
+    animation-play-state: paused;
+  }
   @keyframes v2-marquee {
     from { transform: translateX(0); }
     to { transform: translateX(calc(-50% - 28px)); }
@@ -996,7 +1004,9 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    transition: color 0.18s ease;
   }
+  :root[data-theme] .v2-marquee:hover .v2-marquee-item { color: var(--ink); }
 
   /* Cards */
   :root[data-theme] .v2-grid-4 {
