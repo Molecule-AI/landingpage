@@ -1,6 +1,7 @@
 ---
 import { landingContent, type LandingContent } from "../data/landing";
 import ThemeToggle from "./ThemeToggle.tsx";
+import LocaleDropdown from "./LocaleDropdown.astro";
 import BlurText from "./reactbits/BlurText";
 import SpotlightCard from "./reactbits/SpotlightCard";
 
@@ -44,6 +45,7 @@ const tierGlyphs: Record<string, string> = {
       ))}
     </nav>
     <div class="v2-nav-cta">
+      <LocaleDropdown current={locale} />
       <ThemeToggle client:idle />
       <a class="v2-btn v2-btn-primary" href="https://app.moleculesai.app">{c.nav.signIn}</a>
     </div>
@@ -619,6 +621,77 @@ const tierGlyphs: Record<string, string> = {
   }
   :root[data-theme] .v2-nav-links a:hover { color: var(--ink); }
   :root[data-theme] .v2-nav-cta { display: flex; gap: 8px; align-items: center; }
+
+  /* Locale dropdown — native <details> for click-out + a11y. */
+  :root[data-theme] .v2-locale {
+    position: relative;
+  }
+  :root[data-theme] .v2-locale > summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--inkMid);
+    font-size: 12px;
+    font-weight: 500;
+    transition: border-color 0.12s ease, color 0.12s ease;
+  }
+  :root[data-theme] .v2-locale > summary::-webkit-details-marker { display: none; }
+  :root[data-theme] .v2-locale > summary:hover { border-color: var(--ink); color: var(--ink); }
+  :root[data-theme] .v2-locale[open] > summary { border-color: var(--ink); color: var(--ink); }
+  :root[data-theme] .v2-locale-globe { opacity: 0.75; }
+  :root[data-theme] .v2-locale-caret {
+    opacity: 0.6;
+    transition: transform 0.18s ease;
+  }
+  :root[data-theme] .v2-locale[open] > summary .v2-locale-caret {
+    transform: rotate(180deg);
+  }
+  :root[data-theme] .v2-locale > ul {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 180px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--bgElev);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 12px 32px -16px rgba(var(--shadow-rgb), 0.22);
+    z-index: 50;
+  }
+  :root[data-theme] .v2-locale > ul > li > a {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: background 0.12s ease;
+  }
+  :root[data-theme] .v2-locale > ul > li > a:hover {
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+  :root[data-theme] .v2-locale > ul > li > a[data-active="true"] {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-locale-caret,
+    :root[data-theme] .v2-locale[open] > summary .v2-locale-caret {
+      transition: none;
+      transform: none;
+    }
+  }
 
   /* Buttons */
   :root[data-theme] .v2-btn {
