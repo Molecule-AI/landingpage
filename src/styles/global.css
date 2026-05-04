@@ -646,6 +646,25 @@ img, canvas, video, svg {
   animation-duration: 64s;
 }
 
+/* Pause-on-hover so a user can read a specific logo. Only on
+   pointer:fine devices — on touch, "hover" is sticky after a tap
+   which would surprise the user. */
+@media (hover: hover) and (pointer: fine) {
+  .mol-marquee:hover .mol-marquee-track,
+  .mol-marquee:hover .mol-marquee-track--right {
+    animation-play-state: paused;
+  }
+}
+
+/* content-visibility: auto lets the browser skip rendering work
+   (paint, layout, and CSS animation ticks) for the marquee when
+   it's outside the viewport. contain-intrinsic-size pins the row
+   height so the page doesn't jump when the section is skipped. */
+.mol-marquee {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 32px;
+}
+
 .mol-marquee-item {
   font-family: var(--font-mono);
   font-size: 0.82rem;
