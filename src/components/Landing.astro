@@ -1175,6 +1175,35 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-bottom: 6px;
+    /* Section-eyebrow accent dash. ::before is an inline-block 18px
+       accent rule that grows from 0 → full when the parent reveals
+       on intersection (data-seen). Anchors each section visually
+       and reuses the same 0.42s reveal as data-reveal elements. */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  :root[data-theme] .v2-kicker::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 1.5px;
+    background: currentColor;
+    opacity: 0.55;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s;
+  }
+  :root[data-theme] [data-seen] .v2-kicker::before,
+  :root[data-theme] .v2-kicker[data-seen]::before {
+    transform: scaleX(1);
+  }
+  /* Snap visible without animation if the user opts out of motion. */
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-kicker::before {
+      transform: scaleX(1);
+      transition: none;
+    }
   }
   :root[data-theme] .v2-kicker-accent { color: var(--accent); }
   :root[data-theme] .v2-h2 { margin: 0; font-size: 24px; letter-spacing: -0.018em; font-weight: 600; line-height: 1.25; }
