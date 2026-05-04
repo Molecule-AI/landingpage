@@ -1066,6 +1066,25 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     font-family: inherit;
   }
   :root[data-theme] .v2-btn:hover { transform: translateY(-0.5px); }
+  /* Tactile click feedback: subtle push-down on press. Tightens the
+     transition so the down-stroke feels immediate. Applied broadly
+     to .v2-btn so primary, ghost, and small variants all feel clickable.
+     The .v2-btn-primary.v2-btn-lg :active override below preserves the
+     magnet vars during the press so the button doesn't snap back to
+     baseline mid-click. */
+  :root[data-theme] .v2-btn:active { transform: translateY(0.5px) scale(0.985); transition-duration: 0.06s; }
+  :root[data-theme] .v2-btn-primary.v2-btn-lg:active {
+    transform: translate(var(--magnet-x, 0px), calc(var(--magnet-y, 0px) + 0.5px)) scale(0.985);
+  }
+  /* Accessible focus ring on every .v2-btn. Keyboard users hit Tab and
+     should see where focus lands; the existing :focus-visible coverage
+     was on nav links and tabs only — primary CTAs were silent. Use the
+     accent color so the ring matches the brand and stays visible on
+     both light and dark themes. */
+  :root[data-theme] .v2-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
   /* Magnet-pulled buttons compose hover-lift with the JS-set offset:
      translate by --magnet-x/y, then nudge up 0.5px on hover. Without
      this override, the generic .v2-btn:hover rule above would snap
