@@ -281,8 +281,8 @@ export const enContent: LandingContent = {
     h1Highlight: "AI agent organizations.",
     lede:
       "Compose multi-agent teams the way you'd staff a company. Visual org topology, A2A protocol, three-tier memory, runtime-portable — and a marketplace to buy or sell tools, agents, and entire departments.",
-    primaryCta: "Explore the Marketplace →",
-    secondaryCta: "Talk to founders",
+    primaryCta: "View on GitHub →",
+    secondaryCta: "Try SaaS",
     stats: [
       { to: 2452, suffix: "+", label: "tests" },
       { to: 8, label: "runtimes" },
@@ -582,8 +582,8 @@ export const zhContent: LandingContent = {
     h1Highlight: "操作系统。",
     lede:
       "像组建一家公司那样组建多智能体团队。可视化组织拓扑、A2A 协议、三层内存、运行时可移植 —— 还有一个可以买卖工具、智能体与整建制部门的市场。",
-    primaryCta: "浏览市场 →",
-    secondaryCta: "联系创始人",
+    primaryCta: "在 GitHub 查看 →",
+    secondaryCta: "试用 SaaS",
     stats: [
       { to: 2452, suffix: "+", label: "测试" },
       { to: 8, label: "运行时" },
