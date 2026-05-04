@@ -2267,6 +2267,33 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] .v2-faq-item[open] .plus { transform: rotate(45deg); }
   :root[data-theme] .v2-faq-a { padding: 0 22px 20px; font-size: 14px; color: var(--inkMid); line-height: 1.6; }
 
+  /* Smooth open/close on FAQ items via the modern ::details-content
+     pseudo-element (Chrome 131+ / Safari 18.2+ / Firefox 137+).
+     Older browsers fall through @supports and keep the existing
+     instant toggle — no JS, no markup change. interpolate-size +
+     transition-behavior:allow-discrete is what lets us animate
+     block-size:0 → auto without measuring in JS. */
+  @supports selector(::details-content) {
+    :root[data-theme] .v2-faq-item::details-content {
+      block-size: 0;
+      overflow-y: clip;
+      interpolate-size: allow-keywords;
+      transition:
+        block-size 0.28s cubic-bezier(0.2, 0.7, 0.2, 1),
+        content-visibility 0.28s allow-discrete;
+      transition-behavior: allow-discrete;
+    }
+    :root[data-theme] .v2-faq-item[open]::details-content {
+      block-size: auto;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      :root[data-theme] .v2-faq-item::details-content,
+      :root[data-theme] .v2-faq-item[open]::details-content {
+        transition: none;
+      }
+    }
+  }
+
   /* Final */
   :root[data-theme] .v2-final { padding: 96px 32px; text-align: center; }
   :root[data-theme] .v2-final-h2 {
