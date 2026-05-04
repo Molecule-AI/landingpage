@@ -5,6 +5,7 @@ import LocaleDropdown from "./LocaleDropdown.astro";
 import BlurText from "./reactbits/BlurText";
 import ShinyText from "./reactbits/ShinyText";
 import SpotlightCard from "./reactbits/SpotlightCard";
+import DecryptedText from "./reactbits/DecryptedText";
 
 interface Props {
   locale: "en" | "zh" | "fr" | "ja" | "es";
@@ -244,7 +245,9 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
 
   {/* LOGO STRIP */}
   <section class="v2-section v2-logo-strip">
-    <div class="v2-logo-eyebrow">{c.logoStrip.eyebrow}</div>
+    <div class="v2-logo-eyebrow">
+      <DecryptedText client:visible text={c.logoStrip.eyebrow} speed={28} />
+    </div>
     <div class="v2-marquee">
       <div class="v2-marquee-track">
         {[...c.logoStrip.runtimes, ...c.logoStrip.runtimes].map((n) => {
