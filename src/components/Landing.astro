@@ -897,6 +897,16 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     color: var(--ink);
     border-bottom-color: var(--accent);
   }
+  /* Status link is the first tab stop on the page and sits on the
+     darkest surface (--bgInk), where the default browser focus ring
+     is effectively invisible. Match the PR #135 footer pattern so
+     keyboard users land on a clearly outlined target before the
+     locale + nav row even comes into focus. */
+  :root[data-theme] .v2-status-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
   :root[data-theme] .v2-nav-row {
     max-width: 1320px;
     margin: 0 auto;
