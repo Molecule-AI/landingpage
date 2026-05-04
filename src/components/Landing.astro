@@ -13,6 +13,22 @@ interface Props {
 const { locale } = Astro.props;
 const c: LandingContent = landingContent[locale];
 
+// Why-now reason icons. Indexed positionally (0..3) so the data file
+// stays free of icon-implementation details. Designed at 14×14 viewBox
+// to match tierGlyphs; rendered at 22×22 inside a soft accent-tinted
+// surface above the keynum. currentColor inherits from the .v2-card-icon
+// CSS rule so dark/light theme reactivity works without inline fills.
+const whyNowGlyphs: ReadonlyArray<string> = [
+  // 01 — agent count exploding (ascending bars)
+  `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><rect x="2" y="9" width="2" height="3" fill="currentColor"/><rect x="6" y="6" width="2" height="6" fill="currentColor"/><rect x="10" y="3" width="2" height="9" fill="currentColor"/></svg>`,
+  // 02 — A2A / MCP standards (two nodes + bridge)
+  `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><circle cx="3.2" cy="7" r="1.6" fill="currentColor"/><circle cx="10.8" cy="7" r="1.6" fill="currentColor"/><path d="M5 7 L9 7" stroke="currentColor" stroke-width="1.2"/><path d="M7 5 L7 9" stroke="currentColor" stroke-width="1.2" opacity="0.45"/></svg>`,
+  // 03 — governance / buying gate (shield + check)
+  `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><path d="M7 1.6 L11.6 3.4 L11.6 7.6 Q11.6 10.4 7 12.4 Q2.4 10.4 2.4 7.6 L2.4 3.4 Z" stroke="currentColor" stroke-width="1.1" fill="none"/><path d="M4.6 7.2 L6.4 8.8 L9.4 5.4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  // 04 — runtimes commoditize (swap arrows)
+  `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><path d="M2.5 4.5 L11 4.5 L8.5 2.4 M11.5 9.5 L3 9.5 L5.5 11.6" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+];
+
 // Plug glyph SVGs inline so the marketplace tier cards work without a separate icon component.
 const tierGlyphs: Record<string, string> = {
   plugin: `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="4" height="4" fill="currentColor"/><rect x="8" y="2" width="4" height="4" fill="currentColor" opacity="0.45"/><rect x="2" y="8" width="4" height="4" fill="currentColor" opacity="0.45"/><rect x="8" y="8" width="4" height="4" fill="currentColor"/></svg>`,
@@ -194,6 +210,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         {c.whyNow.reasons.map((r, i) => (
           <div data-reveal data-delay={i * 90}>
             <SpotlightCard client:visible className="v2-card v2-card-hover h-full" spotlightColor="rgba(127,232,214,0.14)">
+              <div class="v2-card-icon" set:html={whyNowGlyphs[i]} />
               <div class="v2-keynum">{r.k}</div>
               <h3 class="v2-card-title">{r.title}</h3>
               <p class="v2-card-body">{r.body}</p>
@@ -1127,6 +1144,27 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] .v2-card-warm:hover {
     transform: translateY(-2px);
     border-color: var(--warm);
+  }
+  /* Why-now reason icons. Soft accent-tinted square anchors the card
+     visually and provides a fast skim signal (bars / nodes / shield /
+     swap) so investors can read the four-shifts story even before
+     parsing the title. */
+  :root[data-theme] .v2-card-icon {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent);
+    margin-bottom: 14px;
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      background 0.25s ease;
+  }
+  :root[data-theme] .v2-card-hover:hover .v2-card-icon {
+    transform: translateY(-2px);
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
   }
   :root[data-theme] .v2-keynum {
     font-family: ui-monospace, "JetBrains Mono", monospace;
