@@ -281,8 +281,10 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
               </div>
               <p class="v2-card-body">{card.detail}</p>
               <ul class="v2-adapter-list">
-                {card.items.map((item) => (
-                  <li><i class="dot dot-accent"></i>{item}</li>
+                {card.items.map((item, j) => (
+                  <li data-reveal data-delay={i * 100 + 200 + j * 60}>
+                    <i class="dot dot-accent" aria-hidden="true"></i>{item}
+                  </li>
                 ))}
               </ul>
             </SpotlightCard>
