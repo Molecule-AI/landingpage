@@ -230,12 +230,24 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     <div class="v2-logo-eyebrow">{c.logoStrip.eyebrow}</div>
     <div class="v2-marquee">
       <div class="v2-marquee-track">
-        {[...c.logoStrip.runtimes, ...c.logoStrip.runtimes].map((n) => (
-          <span class="v2-marquee-item">
-            <i class="dot dot-accent"></i>
-            {n}
-          </span>
-        ))}
+        {[...c.logoStrip.runtimes, ...c.logoStrip.runtimes].map((n) => {
+          // Display label → docs slug: lowercase + spaces to hyphens.
+          // "Claude Code" → "claude-code", "Gemini CLI" → "gemini-cli".
+          // Matches the URL shape used by footerHrefs[2] (Runtimes column).
+          const slug = n.toLowerCase().replace(/\s+/g, "-");
+          return (
+            <a
+              class="v2-marquee-item"
+              href={`https://doc.moleculesai.app/adapters/${slug}`}
+              rel="noopener"
+              target="_blank"
+              aria-label={`${n} adapter docs`}
+            >
+              <i class="dot dot-accent" aria-hidden="true"></i>
+              {n}
+            </a>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -1202,13 +1214,26 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     font-size: 16px;
     color: var(--inkMid);
+    text-decoration: none;
     white-space: nowrap;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    transition: color 0.18s ease;
+    transition: color 0.18s ease, transform 0.18s ease;
   }
   :root[data-theme] .v2-marquee:hover .v2-marquee-item { color: var(--ink); }
+  /* Cursor + lift the specific item the user is pointing at — the
+     marquee is paused on hover (PR #85) so this lets the user clearly
+     identify which runtime they'll click through to. */
+  :root[data-theme] .v2-marquee-item:hover {
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+  :root[data-theme] .v2-marquee-item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
 
   /* Cards */
   :root[data-theme] .v2-grid-4 {
