@@ -32,6 +32,15 @@ const imgType = image.endsWith(".jpg") || image.endsWith(".jpeg") ? "image/jpeg"
 const ogLocale = locale === "zh" ? "zh_CN" : "en_US";
 const ogAlt = locale === "zh" ? "en_US" : "zh_CN";
 
+// Logo is the LCP-critical hero element on the landing pages (/, /zh/),
+// where Landing.astro renders it at hero scale. On interior pages
+// (/pricing, /legal/terms) it's a 28×28 navbar mark — preloading it
+// there wastes a high-priority connection slot that should go to the
+// Inter woff2 fonts gating the real LCP (the page heading). Scope the
+// preload to homepages only.
+const pathname = Astro.url.pathname;
+const isHomepage = pathname === "/" || pathname === "/zh/" || pathname === "/zh";
+
 const alternates = [
   { hreflang: "en", href: new URL(localePaths.en, site).toString() },
   { hreflang: "zh-CN", href: new URL(localePaths.zh, site).toString() },
@@ -176,7 +185,7 @@ const jsonLd = {
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" as="image" href="/logo.svg" />
+    {isHomepage && <link rel="preload" as="image" href="/logo.svg" />}
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   </head>
