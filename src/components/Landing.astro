@@ -1134,6 +1134,18 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     color: var(--accent);
     margin-bottom: 14px;
     letter-spacing: 0.08em;
+    display: inline-block;
+    transform-origin: left center;
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      letter-spacing 0.25s ease;
+  }
+  /* Same family of polish as the Creator step number (#89) — the
+     parent card lift on :hover triggers a small slide+tracking-expand
+     on the keynum so the eye is anchored to the section's number. */
+  :root[data-theme] .v2-card-hover:hover .v2-keynum,
+  :root[data-theme] .v2-card-warm:hover .v2-keynum {
+    transform: translateX(2px);
+    letter-spacing: 0.14em;
   }
   :root[data-theme] .v2-keynum-warm { color: var(--warm); margin-bottom: 12px; }
   :root[data-theme] .v2-card-title { margin: 0 0 8px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
