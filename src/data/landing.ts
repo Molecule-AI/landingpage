@@ -466,9 +466,9 @@ export const enContent: LandingContent = {
     openMarketplace: "Open the Marketplace →",
     browse: "Browse →",
     tiers: [
-      { tag: "L1", title: "Plugin", desc: "A tool, guardrail, or compliance hook. Plug into any agent.", count: "21 first-party · open to third parties soon", glyph: "plugin" },
-      { tag: "L2", title: "Agent", desc: "A pre-trained role: tax CPA, SOC analyst, PM, QA. Hire, don't train.", count: "8 verified roles in beta", glyph: "agent" },
-      { tag: "L3", title: "Org Bundle", desc: "A whole department: agents, plugins, topology, HITL ladder.", count: "6 templates published", glyph: "org" },
+      { tag: "L1", title: "Plugin", desc: "A tool, guardrail, or compliance hook. Plug into any agent.", count: "17 first-party · open to third parties soon", glyph: "plugin" },
+      { tag: "L2", title: "Agent", desc: "A pre-trained role: tax CPA, SOC analyst, PM, QA. Hire, don't train.", count: "14 roles in beta", glyph: "agent" },
+      { tag: "L3", title: "Org Bundle", desc: "A whole department: agents, plugins, topology, HITL ladder.", count: "4 bundles published", glyph: "org" },
     ],
   },
   creator: {
@@ -773,9 +773,9 @@ export const zhContent: LandingContent = {
     openMarketplace: "进入市场 →",
     browse: "浏览 →",
     tiers: [
-      { tag: "L1", title: "插件", desc: "工具、护栏、合规钩子。可接入任意智能体。", count: "21 个首方插件 · 第三方即将开放", glyph: "plugin" },
-      { tag: "L2", title: "智能体", desc: "已训练好的角色:税务 CPA、SOC 分析师、PM、QA。雇用,无需自训。", count: "8 个已认证角色,公测中", glyph: "agent" },
-      { tag: "L3", title: "组织包", desc: "整建制部门:智能体、插件、拓扑、HITL 阶梯。", count: "已发布 6 套模板", glyph: "org" },
+      { tag: "L1", title: "插件", desc: "工具、护栏、合规钩子。可接入任意智能体。", count: "17 个首方插件 · 第三方即将开放", glyph: "plugin" },
+      { tag: "L2", title: "智能体", desc: "已训练好的角色:税务 CPA、SOC 分析师、PM、QA。雇用,无需自训。", count: "14 个角色,公测中", glyph: "agent" },
+      { tag: "L3", title: "组织包", desc: "整建制部门:智能体、插件、拓扑、HITL 阶梯。", count: "已发布 4 个组织包", glyph: "org" },
     ],
   },
   creator: {
@@ -1081,9 +1081,9 @@ export const frContent: LandingContent = {
     openMarketplace: "Ouvrir la Marketplace →",
     browse: "Parcourir →",
     tiers: [
-      { tag: "L1", title: "Plugin", desc: "Un outil, un garde-fou ou un hook de conformité. Branché à n'importe quel agent.", count: "21 first-party · ouverture aux tiers bientôt", glyph: "plugin" },
-      { tag: "L2", title: "Agent", desc: "Un rôle pré-entraîné : CPA fiscal, analyste SOC, PM, QA. Embauchez plutôt qu'entraîner.", count: "8 rôles vérifiés en bêta", glyph: "agent" },
-      { tag: "L3", title: "Bundle Org", desc: "Un département entier : agents, plugins, topologie, échelle HITL.", count: "6 modèles publiés", glyph: "org" },
+      { tag: "L1", title: "Plugin", desc: "Un outil, un garde-fou ou un hook de conformité. Branché à n'importe quel agent.", count: "17 first-party · ouverture aux tiers bientôt", glyph: "plugin" },
+      { tag: "L2", title: "Agent", desc: "Un rôle pré-entraîné : CPA fiscal, analyste SOC, PM, QA. Embauchez plutôt qu'entraîner.", count: "14 rôles en bêta", glyph: "agent" },
+      { tag: "L3", title: "Bundle Org", desc: "Un département entier : agents, plugins, topologie, échelle HITL.", count: "4 bundles publiés", glyph: "org" },
     ],
   },
   creator: {
@@ -1389,9 +1389,9 @@ export const jaContent: LandingContent = {
     openMarketplace: "Marketplace を開く →",
     browse: "見る →",
     tiers: [
-      { tag: "L1", title: "Plugin", desc: "ツール、ガードレール、コンプライアンス フック。任意のエージェントに差し込めます。", count: "21 個のファースト パーティ · まもなくサード パーティに開放", glyph: "plugin" },
-      { tag: "L2", title: "Agent", desc: "事前学習済みのロール:税務 CPA、SOC アナリスト、PM、QA。トレーニング不要、雇うだけ。", count: "8 個の認定済みロールがベータ提供中", glyph: "agent" },
-      { tag: "L3", title: "Org Bundle", desc: "部門まるごと:エージェント、プラグイン、トポロジー、HITL ラダー。", count: "6 個のテンプレートを公開", glyph: "org" },
+      { tag: "L1", title: "Plugin", desc: "ツール、ガードレール、コンプライアンス フック。任意のエージェントに差し込めます。", count: "17 個のファースト パーティ · まもなくサード パーティに開放", glyph: "plugin" },
+      { tag: "L2", title: "Agent", desc: "事前学習済みのロール:税務 CPA、SOC アナリスト、PM、QA。トレーニング不要、雇うだけ。", count: "14 個のロールがベータ提供中", glyph: "agent" },
+      { tag: "L3", title: "Org Bundle", desc: "部門まるごと:エージェント、プラグイン、トポロジー、HITL ラダー。", count: "4 個のバンドルを公開", glyph: "org" },
     ],
   },
   creator: {
@@ -1697,9 +1697,9 @@ export const esContent: LandingContent = {
     openMarketplace: "Abrir el Marketplace →",
     browse: "Explorar →",
     tiers: [
-      { tag: "L1", title: "Plugin", desc: "Una herramienta, guardrail o hook de compliance. Conéctalo a cualquier agente.", count: "21 first-party · pronto abierto a terceros", glyph: "plugin" },
-      { tag: "L2", title: "Agente", desc: "Un rol pre-entrenado: CPA fiscal, analista SOC, PM, QA. Contrata, no entrenes.", count: "8 roles verificados en beta", glyph: "agent" },
-      { tag: "L3", title: "Org Bundle", desc: "Todo un departamento: agentes, plugins, topología, escalera HITL.", count: "6 templates publicados", glyph: "org" },
+      { tag: "L1", title: "Plugin", desc: "Una herramienta, guardrail o hook de compliance. Conéctalo a cualquier agente.", count: "17 first-party · pronto abierto a terceros", glyph: "plugin" },
+      { tag: "L2", title: "Agente", desc: "Un rol pre-entrenado: CPA fiscal, analista SOC, PM, QA. Contrata, no entrenes.", count: "14 roles en beta", glyph: "agent" },
+      { tag: "L3", title: "Org Bundle", desc: "Todo un departamento: agentes, plugins, topología, escalera HITL.", count: "4 bundles publicados", glyph: "org" },
     ],
   },
   creator: {
