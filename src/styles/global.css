@@ -157,11 +157,14 @@ img, canvas, video, svg {
   outline-offset: 2px;
 }
 
-/* Focus-visible defaults for keyboard users */
+/* Focus-visible defaults for keyboard users.
+   Outlines follow each element's own border-radius (CSS Outline L3),
+   so don't set border-radius here — doing so would flatten pill / round
+   elements (theme-toggle pill, .mol-btn-primary's 10px corners, etc.)
+   to 4px during keyboard focus. */
 :focus-visible {
   outline: 2px solid var(--color-mint);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
 /* ============= hex honeycomb background ============= */
