@@ -231,6 +231,13 @@ const jsonLd = {
     </noscript>
   </head>
   <body>
+    {/* Scroll-driven progress bar at the very top of the viewport.
+        Pure CSS via animation-timeline:scroll(root) — no JS, no rAF,
+        no scroll listener. Browsers without scroll-driven-animations
+        support (older Safari/Firefox) see scaleX(0), which renders
+        as a 0-width invisible bar — graceful no-op fallback. Sits
+        above the skip-link and the rest of the page chrome. */}
+    <div class="mol-scroll-progress" aria-hidden="true"></div>
     <a href="#main" class="mol-skip-link">
       {locale === "zh"
         ? "跳转到主内容"

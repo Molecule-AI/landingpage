@@ -626,6 +626,36 @@ img, canvas, video, svg {
   color: var(--color-fg-dim);
 }
 
+/* ============= scroll progress bar ============= */
+/* 2px gradient bar at top of viewport, scaleX driven by scroll
+   position via scroll-driven animations. Pure CSS — no JS, no
+   scroll listener, no rAF tick. Pointer-events:none so it never
+   intercepts clicks on hover-zone-y elements behind it. Browsers
+   without animation-timeline:scroll() (older Safari/FF) see
+   scaleX(0) → invisible no-op. Reduced-motion still shows the
+   bar — it's not animating, it's reflecting position. */
+.mol-scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-mint), var(--color-cyan));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  z-index: 100;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@supports (animation-timeline: scroll()) {
+  .mol-scroll-progress {
+    animation: mol-scroll-progress linear forwards;
+    animation-timeline: scroll(root);
+  }
+  @keyframes mol-scroll-progress {
+    to { transform: scaleX(1); }
+  }
+}
+
 /* ============= marquee ============= */
 .mol-marquee {
   overflow: hidden;
