@@ -2339,6 +2339,9 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     ) => {
       const baseR = opts.root ? 24 : opts.small ? 14 : 18;
       const g = document.createElementNS(svgNs, "g");
+      // Make non-root nodes feel grabbable in CSS even before the
+      // pointerdown handler fires.
+      if (!opts.root) g.style.cursor = "grab";
       const ring = document.createElementNS(svgNs, "circle");
       ring.setAttribute("cx", String(x));
       ring.setAttribute("cy", String(y));
@@ -2382,7 +2385,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       tx.textContent = label;
       g.appendChild(tx);
       nodes.appendChild(g);
-      return { ring, outer, inner, baseR };
+      return { ring, outer, inner, baseR, label: tx, group: g };
     };
 
     mids.forEach((m) => {
@@ -2416,6 +2419,91 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     const rootN = drawNode(root.x, root.y, root.label, { root: true });
     const midNs = mids.map((m) => drawNode(m.x, m.y, m.label, {}));
     const leafNs = leaves.map((l) => drawNode(l.x, l.y, l.label, { small: true }));
+
+    // Drag-to-rearrange. Hovering a non-root node shows `cursor: grab`
+    // (set in drawNode); pointerdown captures, pointermove updates the
+    // node's stored coords + repositions its circles/label + repaints
+    // every connected edge endpoint. Packets continue to animate over
+    // the live positions because the animate() loop reads from the
+    // mutable {root, mids[], leaves[]} arrays each frame. Dragging a
+    // mid drags every child leaf edge with it. Root is intentionally
+    // not draggable — it's the coordinator anchor.
+    if (!prefersReducedMotion) {
+      const screenToSvg = (clientX: number, clientY: number) => {
+        const rect = tSvg.getBoundingClientRect();
+        return {
+          x: ((clientX - rect.left) / rect.width) * w,
+          y: ((clientY - rect.top) / rect.height) * h,
+        };
+      };
+      const moveNodeChildren = (nodeRef: { ring: SVGCircleElement; outer: SVGCircleElement; inner: SVGCircleElement; label: SVGTextElement; baseR: number }, x: number, y: number) => {
+        nodeRef.ring.setAttribute("cx", String(x));
+        nodeRef.ring.setAttribute("cy", String(y));
+        nodeRef.outer.setAttribute("cx", String(x));
+        nodeRef.outer.setAttribute("cy", String(y));
+        nodeRef.inner.setAttribute("cx", String(x));
+        nodeRef.inner.setAttribute("cy", String(y));
+        nodeRef.label.setAttribute("x", String(x));
+        nodeRef.label.setAttribute("y", String(y + nodeRef.baseR + 14));
+      };
+      type DragKind = "mid" | "leaf";
+      let drag: { kind: DragKind; idx: number; offX: number; offY: number; nodeRef: typeof midNs[number] } | null = null;
+      const beginDrag = (kind: DragKind, idx: number) => (e: PointerEvent) => {
+        e.preventDefault();
+        const pt = screenToSvg(e.clientX, e.clientY);
+        const src = kind === "mid" ? mids[idx] : leaves[idx];
+        const nodeRef = kind === "mid" ? midNs[idx] : leafNs[idx];
+        drag = { kind, idx, offX: pt.x - src.x, offY: pt.y - src.y, nodeRef };
+        nodeRef.group.style.cursor = "grabbing";
+        // Pointer capture so a fast drag that leaves the SVG keeps
+        // updating until pointerup. tSvg gets the events because we
+        // bind move/up there.
+        try { tSvg.setPointerCapture(e.pointerId); } catch { /* noop */ }
+      };
+      midNs.forEach((n, i) => n.group.addEventListener("pointerdown", beginDrag("mid", i)));
+      leafNs.forEach((n, i) => n.group.addEventListener("pointerdown", beginDrag("leaf", i)));
+
+      tSvg.addEventListener("pointermove", (e) => {
+        if (!drag) return;
+        const pt = screenToSvg(e.clientX, e.clientY);
+        // Clamp to viewBox with a 30px margin so labels don't clip.
+        const nx = Math.max(40, Math.min(w - 40, pt.x - drag.offX));
+        const ny = Math.max(40, Math.min(h - 40, pt.y - drag.offY));
+        if (drag.kind === "mid") {
+          mids[drag.idx].x = nx;
+          mids[drag.idx].y = ny;
+          moveNodeChildren(drag.nodeRef, nx, ny);
+          // Move root→mid edge.
+          const rootMidEdge = edges.children[drag.idx] as SVGLineElement | undefined;
+          if (rootMidEdge) {
+            rootMidEdge.setAttribute("x2", String(nx));
+            rootMidEdge.setAttribute("y2", String(ny));
+          }
+          // Move every leaf-edge whose parent is this mid.
+          leafEdges.forEach((ln, li) => {
+            if (leaves[li].p === drag!.idx) {
+              ln.setAttribute("x1", String(nx));
+              ln.setAttribute("y1", String(ny));
+            }
+          });
+        } else {
+          leaves[drag.idx].x = nx;
+          leaves[drag.idx].y = ny;
+          moveNodeChildren(drag.nodeRef, nx, ny);
+          const ln = leafEdges[drag.idx];
+          ln.setAttribute("x2", String(nx));
+          ln.setAttribute("y2", String(ny));
+        }
+      });
+      const endDrag = (e: PointerEvent) => {
+        if (!drag) return;
+        drag.nodeRef.group.style.cursor = "grab";
+        try { tSvg.releasePointerCapture(e.pointerId); } catch { /* noop */ }
+        drag = null;
+      };
+      tSvg.addEventListener("pointerup", endDrag);
+      tSvg.addEventListener("pointercancel", endDrag);
+    }
 
     const pkts = [0, 0.33, 0.66].map(() => {
       const g = document.createElementNS(svgNs, "g");
