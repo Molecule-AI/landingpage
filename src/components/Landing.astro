@@ -1,6 +1,7 @@
 ---
 import { landingContent, type LandingContent } from "../data/landing";
 import ThemeToggle from "./ThemeToggle.tsx";
+import BlurText from "./reactbits/BlurText";
 
 interface Props {
   locale: "en" | "zh";
@@ -58,8 +59,9 @@ const tierGlyphs: Record<string, string> = {
           <span class="dot dot-warm"></span>
           {c.hero.eyebrow}
         </div>
-        <h1 class="v2-h1" data-reveal data-delay="80">
-          {c.hero.h1Lead}<br />
+        <h1 class="v2-h1">
+          <BlurText client:visible text={c.hero.h1Lead} delay={70} />
+          <br />
           <span class="v2-h1-shimmer">{c.hero.h1Highlight}</span>
         </h1>
         <p class="v2-lede" data-reveal data-delay="160">{c.hero.lede}</p>
