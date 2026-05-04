@@ -184,6 +184,16 @@ export interface LandingContent {
   };
 }
 
+// Hero stats verified against source on 2026-05-04:
+//   tests:   4642 measured (Go monorepo 1859 + Go CP 806 + Python 739 + TS 1238)
+//            → claimed 4500+ (rounded down for investor-defensibility)
+//   runtimes: 9 measured (count of molecule-ai-workspace-template-* repos:
+//            autogen, claude-code, codex, crewai, deepagents, gemini-cli,
+//            hermes, langgraph, openclaw)
+//   API endpoints: 215 measured (154 monorepo Go + 61 controlplane Gin routes)
+//            → claimed 200+ (conservative)
+//   phases shipped: Phase 34 GA launched (commits across monorepo +
+//            controlplane); Phase 35.1 in CP, Marketplace public beta live.
 const RUNTIMES = [
   "LangGraph",
   "Claude Code",
@@ -193,10 +203,7 @@ const RUNTIMES = [
   "Hermes",
   "Gemini CLI",
   "OpenClaw",
-  "LangChain",
-  "Pydantic AI",
-  "Bedrock Agents",
-  "Vercel AI",
+  "Codex",
 ];
 
 // YAML samples are intentionally not localized — they're code blocks.
@@ -263,7 +270,7 @@ export const enContent: LandingContent = {
   statusbar: {
     allSystems: "All systems",
     statusLink: "status.moleculesai.app",
-    phase: "Phase 33 shipped · Phase 35 Marketplace public beta",
+    phase: "Phase 34 shipped · Phase 35 Marketplace public beta",
   },
   nav: {
     links: [
@@ -284,17 +291,17 @@ export const enContent: LandingContent = {
     primaryCta: "View on GitHub →",
     secondaryCta: "Try SaaS",
     stats: [
-      { to: 2452, suffix: "+", label: "tests" },
-      { to: 12, label: "runtimes" },
-      { to: 80, suffix: "+", label: "API endpoints" },
-      { to: 33, label: "phases shipped" },
+      { to: 4500, suffix: "+", label: "tests" },
+      { to: 9, label: "runtimes" },
+      { to: 200, suffix: "+", label: "API endpoints" },
+      { to: 34, label: "phases shipped" },
     ],
     heroCardUrl: "tenant.moleculesai.app/canvas",
     heroCardA2ALabel: "A2A live",
     heroCardA2ASuffix: "calls/s",
   },
   logoStrip: {
-    eyebrow: "Runtime-neutral · 12 supported, infinitely extensible",
+    eyebrow: "Runtime-neutral · 9 supported, infinitely extensible",
     runtimes: RUNTIMES,
   },
   whyNow: {
@@ -547,7 +554,7 @@ export const enContent: LandingContent = {
     sections: [
       { heading: "Product", items: ["Canvas", "Platform API", "Control Plane", "Customer App"] },
       { heading: "Marketplace", items: ["Plugins (L1)", "Agents (L2)", "Org Bundles (L3)", "Publish"] },
-      { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 more"] },
+      { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+5 more"] },
       { heading: "Trust", items: ["EU AI Act", "OWASP", "SOC 2 (in progress)", "Audit trails"] },
     ],
     legal: "© 2026 Molecule AI · Multi-agent org governance platform",
@@ -564,7 +571,7 @@ export const zhContent: LandingContent = {
   statusbar: {
     allSystems: "全部正常",
     statusLink: "status.moleculesai.app",
-    phase: "Phase 33 已交付 · Phase 35 市场公测",
+    phase: "Phase 34 已交付 · Phase 35 市场公测",
   },
   nav: {
     links: [
@@ -585,17 +592,17 @@ export const zhContent: LandingContent = {
     primaryCta: "在 GitHub 查看 →",
     secondaryCta: "试用 SaaS",
     stats: [
-      { to: 2452, suffix: "+", label: "测试" },
-      { to: 12, label: "运行时" },
-      { to: 80, suffix: "+", label: "API 端点" },
-      { to: 33, label: "Phase 已交付" },
+      { to: 4500, suffix: "+", label: "测试" },
+      { to: 9, label: "运行时" },
+      { to: 200, suffix: "+", label: "API 端点" },
+      { to: 34, label: "Phase 已交付" },
     ],
     heroCardUrl: "tenant.moleculesai.app/canvas",
     heroCardA2ALabel: "A2A 实时",
     heroCardA2ASuffix: "次/秒",
   },
   logoStrip: {
-    eyebrow: "运行时无关 · 已支持 12 种,可无限扩展",
+    eyebrow: "运行时无关 · 已支持 9 种,可无限扩展",
     runtimes: RUNTIMES,
   },
   whyNow: {
@@ -847,7 +854,7 @@ export const zhContent: LandingContent = {
     sections: [
       { heading: "产品", items: ["画布", "平台 API", "控制平面", "客户端应用"] },
       { heading: "市场", items: ["插件 (L1)", "智能体 (L2)", "组织包 (L3)", "发布"] },
-      { heading: "运行时", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 更多"] },
+      { heading: "运行时", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+5 更多"] },
       { heading: "信任", items: ["EU AI Act", "OWASP", "SOC 2(进行中)", "审计追踪"] },
     ],
     legal: "© 2026 Molecule AI · 多智能体组织治理平台",
@@ -864,7 +871,7 @@ export const frContent: LandingContent = {
   statusbar: {
     allSystems: "Tous les systèmes",
     statusLink: "status.moleculesai.app",
-    phase: "Phase 33 livrée · Phase 35 Marketplace en bêta publique",
+    phase: "Phase 34 livrée · Phase 35 Marketplace en bêta publique",
   },
   nav: {
     links: [
@@ -885,17 +892,17 @@ export const frContent: LandingContent = {
     primaryCta: "Voir sur GitHub →",
     secondaryCta: "Essayer le SaaS",
     stats: [
-      { to: 2452, suffix: "+", label: "tests" },
-      { to: 12, label: "runtimes" },
-      { to: 80, suffix: "+", label: "endpoints API" },
-      { to: 33, label: "phases livrées" },
+      { to: 4500, suffix: "+", label: "tests" },
+      { to: 9, label: "runtimes" },
+      { to: 200, suffix: "+", label: "endpoints API" },
+      { to: 34, label: "phases livrées" },
     ],
     heroCardUrl: "tenant.moleculesai.app/canvas",
     heroCardA2ALabel: "A2A en direct",
     heroCardA2ASuffix: "appels/s",
   },
   logoStrip: {
-    eyebrow: "Indépendant du runtime · 12 pris en charge, infiniment extensible",
+    eyebrow: "Indépendant du runtime · 9 pris en charge, infiniment extensible",
     runtimes: RUNTIMES,
   },
   whyNow: {
@@ -1148,7 +1155,7 @@ export const frContent: LandingContent = {
     sections: [
       { heading: "Produit", items: ["Canvas", "API Plateforme", "Control Plane", "Application client"] },
       { heading: "Marketplace", items: ["Plugins (L1)", "Agents (L2)", "Bundles Org (L3)", "Publier"] },
-      { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 autres"] },
+      { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+5 autres"] },
       { heading: "Confiance", items: ["EU AI Act", "OWASP", "SOC 2 (en cours)", "Pistes d'audit"] },
     ],
     legal: "© 2026 Molecule AI · Plateforme de gouvernance d'organisations multi-agents",
@@ -1165,7 +1172,7 @@ export const jaContent: LandingContent = {
   statusbar: {
     allSystems: "全システム正常",
     statusLink: "status.moleculesai.app",
-    phase: "Phase 33 出荷済み · Phase 35 Marketplace パブリック ベータ",
+    phase: "Phase 34 出荷済み · Phase 35 Marketplace パブリック ベータ",
   },
   nav: {
     links: [
@@ -1186,17 +1193,17 @@ export const jaContent: LandingContent = {
     primaryCta: "GitHub で見る →",
     secondaryCta: "SaaS を試す",
     stats: [
-      { to: 2452, suffix: "+", label: "テスト" },
-      { to: 12, label: "ランタイム" },
-      { to: 80, suffix: "+", label: "API エンドポイント" },
-      { to: 33, label: "出荷済み Phase" },
+      { to: 4500, suffix: "+", label: "テスト" },
+      { to: 9, label: "ランタイム" },
+      { to: 200, suffix: "+", label: "API エンドポイント" },
+      { to: 34, label: "出荷済み Phase" },
     ],
     heroCardUrl: "tenant.moleculesai.app/canvas",
     heroCardA2ALabel: "A2A ライブ",
     heroCardA2ASuffix: "calls/s",
   },
   logoStrip: {
-    eyebrow: "ランタイム中立 · 12 種をサポート、無限に拡張可能",
+    eyebrow: "ランタイム中立 · 9 種をサポート、無限に拡張可能",
     runtimes: RUNTIMES,
   },
   whyNow: {
@@ -1449,7 +1456,7 @@ export const jaContent: LandingContent = {
     sections: [
       { heading: "プロダクト", items: ["Canvas", "Platform API", "コントロール プレーン", "カスタマー アプリ"] },
       { heading: "Marketplace", items: ["Plugins (L1)", "Agents (L2)", "Org Bundles (L3)", "公開する"] },
-      { heading: "ランタイム", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 種"] },
+      { heading: "ランタイム", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+5 種"] },
       { heading: "Trust", items: ["EU AI Act", "OWASP", "SOC 2(進行中)", "監査ログ"] },
     ],
     legal: "© 2026 Molecule AI · マルチエージェント組織のガバナンス プラットフォーム",
@@ -1466,7 +1473,7 @@ export const esContent: LandingContent = {
   statusbar: {
     allSystems: "Todo operativo",
     statusLink: "status.moleculesai.app",
-    phase: "Phase 33 entregada · Phase 35 Marketplace en beta pública",
+    phase: "Phase 34 entregada · Phase 35 Marketplace en beta pública",
   },
   nav: {
     links: [
@@ -1487,17 +1494,17 @@ export const esContent: LandingContent = {
     primaryCta: "Ver en GitHub →",
     secondaryCta: "Probar SaaS",
     stats: [
-      { to: 2452, suffix: "+", label: "tests" },
-      { to: 12, label: "runtimes" },
-      { to: 80, suffix: "+", label: "endpoints API" },
-      { to: 33, label: "phases entregadas" },
+      { to: 4500, suffix: "+", label: "tests" },
+      { to: 9, label: "runtimes" },
+      { to: 200, suffix: "+", label: "endpoints API" },
+      { to: 34, label: "phases entregadas" },
     ],
     heroCardUrl: "tenant.moleculesai.app/canvas",
     heroCardA2ALabel: "A2A en vivo",
     heroCardA2ASuffix: "llamadas/s",
   },
   logoStrip: {
-    eyebrow: "Agnóstico al runtime · 12 soportados, infinitamente extensible",
+    eyebrow: "Agnóstico al runtime · 9 soportados, infinitamente extensible",
     runtimes: RUNTIMES,
   },
   whyNow: {
@@ -1750,7 +1757,7 @@ export const esContent: LandingContent = {
     sections: [
       { heading: "Producto", items: ["Canvas", "Platform API", "Control Plane", "Customer App"] },
       { heading: "Marketplace", items: ["Plugins (L1)", "Agentes (L2)", "Org Bundles (L3)", "Publicar"] },
-      { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 más"] },
+      { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+5 más"] },
       { heading: "Confianza", items: ["EU AI Act", "OWASP", "SOC 2 (en proceso)", "Trazas de auditoría"] },
     ],
     legal: "© 2026 Molecule AI · Plataforma de gobernanza de organizaciones multi-agente",
