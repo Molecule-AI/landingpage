@@ -38,3 +38,6 @@ pnpm-debug.log*
 .secrets/
 .auth-token
 .auth_token
+
+# Claude Code agent worktrees (local-only)
+.claude/
