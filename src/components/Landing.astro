@@ -235,7 +235,7 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         </div>
         <ol class="v2-hermes-steps">
           {c.architecture.hermesSteps.map((step, i) => (
-            <li>
+            <li data-reveal data-delay={200 + i * 90}>
               <span class="v2-hermes-num">{String(i + 1).padStart(2, "0")}</span>
               <span>{step}</span>
             </li>
