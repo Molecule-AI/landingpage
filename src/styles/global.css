@@ -153,8 +153,12 @@ body {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--mint) 30%, transparent);
-  color: var(--fg);
+  background: color-mix(in srgb, var(--color-mint) 30%, transparent);
+  color: var(--color-fg);
+}
+:root[data-theme="dark"] ::selection {
+  /* Dark theme needs a slightly stronger mix so the tint reads against the deep ink. */
+  background: color-mix(in srgb, var(--color-mint) 38%, transparent);
 }
 
 /* ============= responsive images/canvases ============= */
