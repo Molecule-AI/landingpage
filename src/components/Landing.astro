@@ -2662,19 +2662,26 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     });
   });
 
-  // Comparison row sweep on intersection
+  // Comparison row sweep on intersection — staggered so the table
+  // visibly draws itself row-by-row (when all rows enter view together
+  // they'd otherwise sweep simultaneously and the cascade is lost).
+  const cmpRows = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-compare-row]"),
+  );
+  const cmpIndex = new Map(cmpRows.map((el, i) => [el, i]));
   const cmpIo = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting) {
+        if (!e.isIntersecting) return;
+        const i = cmpIndex.get(e.target as HTMLElement) ?? 0;
+        const delay = prefersReducedMotion ? 0 : i * 70;
+        setTimeout(() => {
           (e.target as HTMLElement).setAttribute("data-sweep", "true");
-          cmpIo.unobserve(e.target);
-        }
+        }, delay);
+        cmpIo.unobserve(e.target);
       });
     },
     { threshold: 0.3 }
   );
-  document
-    .querySelectorAll("[data-compare-row]")
-    .forEach((el) => cmpIo.observe(el));
+  cmpRows.forEach((el) => cmpIo.observe(el));
 </script>
