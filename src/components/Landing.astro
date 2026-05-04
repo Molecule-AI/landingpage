@@ -1902,13 +1902,28 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     color: inherit;
     height: 100%;
   }
-  :root[data-theme] .v2-tier-card:hover {
+  :root[data-theme] .v2-tier-card:hover,
+  :root[data-theme] .v2-tier-card-link:focus-visible .v2-tier-card {
     border-color: var(--accent);
     /* Hover composes the lift with the JS-driven tilt vars. Without
        the rotateX/Y here, this rule would override the tilt-on-hover
-       and the card would snap flat the moment the cursor enters. */
+       and the card would snap flat the moment the cursor enters.
+       Keyboard tab also picks up this state via :focus-visible on the
+       outer link — without it, tier cards looked inert under keyboard
+       nav even though clicking them with Enter would navigate to
+       /pricing. */
     transform: translateY(-4px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     box-shadow: 0 24px 60px -24px color-mix(in srgb, var(--accent) 33%, transparent);
+  }
+  /* Removes the default focus ring on the link wrapper since the inner
+     card lift + accent border already communicate focus. Keyboard users
+     still see the inner-card treatment, screen reader hears the link
+     role, and we don't double up with a ring. */
+  :root[data-theme] .v2-tier-card-link:focus { outline: none; }
+  :root[data-theme] .v2-tier-card-link:focus-visible .v2-tier-glyph {
+    transform: translateY(-2px) scale(1.06);
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
   }
   :root[data-theme] .v2-tier-head {
     display: flex;
