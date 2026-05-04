@@ -444,8 +444,9 @@ const tierGlyphs: Record<string, string> = {
   <section class="v2-section v2-section-relative v2-final">
     <canvas data-particle data-density="0.00009" data-line="130"></canvas>
     <div class="v2-container v2-narrowest v2-section-relative" style="text-align:center">
-      <h2 class="v2-final-h2" data-reveal>
-        {c.final.h2Lead}<br />
+      <h2 class="v2-final-h2">
+        <BlurText client:visible text={c.final.h2Lead} delay={70} />
+        <br />
         <span class="v2-h1-shimmer">{c.final.h2Highlight}</span>
       </h2>
       <p class="v2-final-p" data-reveal data-delay="100">{c.final.lede}</p>
