@@ -2498,11 +2498,18 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       if (ruleApplies) {
         const mx = (x1 + x2) / 2;
         const my = (y1 + y2) / 2;
+        // Position via outer <g>'s transform attribute, animate the inner.
+        // CSS `transform` on `.v2-uc-anim` would otherwise OVERRIDE the
+        // positional attribute (CSS property always wins over SVG attr —
+        // they don't compose), collapsing every HITL chip to the SVG
+        // coordinate origin. Outer = position, inner = entrance animation.
+        const positionG = el("g", {
+          transform: `translate(${mx} ${my})`,
+        }, ucSvg);
         const g = el("g", {
           class: "v2-uc-anim",
           "data-anim": "hitl",
-          transform: `translate(${mx} ${my})`,
-        }, ucSvg);
+        }, positionG);
         el("rect", {
           x: -22,
           y: -8,
@@ -2526,11 +2533,16 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     // Agent nodes.
     positions.forEach((p, i) => {
       const slot = slots[i];
+      // Same outer-position / inner-animate split as the HITL chips —
+      // see the comment above. Without this, every agent <g> would
+      // collapse to (0, 0) and the entire ring would stack at top-left.
+      const positionG = el("g", {
+        transform: `translate(${p.x} ${p.y})`,
+      }, ucSvg);
       const g = el("g", {
         class: "v2-uc-anim",
         "data-anim": `agent-${i}`,
-        transform: `translate(${p.x} ${p.y})`,
-      }, ucSvg);
+      }, positionG);
       el("circle", {
         cx: 0,
         cy: 0,
@@ -2617,12 +2629,17 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       }
     });
 
-    // Org node last so it sits on top of all edges.
+    // Org node last so it sits on top of all edges. Outer <g> positions
+    // it at the SVG center; inner <g> carries the entrance animation
+    // class. Splitting prevents CSS `.v2-uc-anim` transform from
+    // clobbering the positional translate.
+    const orgPositionG = el("g", {
+      transform: `translate(${cx} ${cy})`,
+    }, ucSvg);
     const orgG = el("g", {
       class: "v2-uc-anim",
       "data-anim": "org",
-      transform: `translate(${cx} ${cy})`,
-    }, ucSvg);
+    }, orgPositionG);
     el("circle", {
       cx: 0,
       cy: 0,
@@ -2653,8 +2670,8 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       });
     }
     const orgKicker = el("text", {
-      x: 0,
-      y: orgR + 14,
+      x: cx,
+      y: cy + orgR + 14,
       "text-anchor": "middle",
       class: "v2-uc-sublabel",
     }, ucSvg);
