@@ -1524,6 +1524,14 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
 </style>
 
 <script>
+  // WCAG 2.3.3 — respect the OS-level reduce-motion preference for every
+  // JS-driven animation on the page. CSS animations are killed by the
+  // global rule in src/styles/global.css; this flag covers the canvas,
+  // SVG, RAF, and setInterval loops the CSS rule cannot reach.
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   // Reveal observer
   const io = new IntersectionObserver(
     (entries) => {
@@ -1540,7 +1548,8 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   );
   document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
 
-  // Counters
+  // Counters — under reduce-motion, snap to the final value instead of
+  // running the count-up RAF loop (WCAG 2.3.3 strict reading).
   const counterIo = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
@@ -1548,6 +1557,11 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         const el = e.target as HTMLElement;
         const to = parseInt(el.getAttribute("data-counter") || "0", 10);
         const suffix = el.getAttribute("data-suffix") || "";
+        if (prefersReducedMotion) {
+          el.textContent = to.toLocaleString() + suffix;
+          counterIo.unobserve(e.target);
+          return;
+        }
         const start = performance.now();
         const dur = 1400;
         const step = (now: number) => {
@@ -1564,17 +1578,25 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   );
   document.querySelectorAll("[data-counter]").forEach((el) => counterIo.observe(el));
 
-  // A2A live counter
+  // A2A live counter — under reduce-motion, render a static value once
+  // instead of mutating it every 1.2s (the constantly-changing number is
+  // motion-equivalent for this WCAG rule).
   const a2a = document.querySelector("[data-a2a]");
   if (a2a) {
-    setInterval(() => {
-      a2a.textContent = String(40 + Math.floor(Math.random() * 18));
-    }, 1200);
+    if (prefersReducedMotion) {
+      a2a.textContent = "48";
+    } else {
+      setInterval(() => {
+        a2a.textContent = String(40 + Math.floor(Math.random() * 18));
+      }, 1200);
+    }
   }
 
   // Particle field — read theme tokens at draw time so the canvas
   // matches whatever data-theme the boot script resolved. Doesn't
   // re-init on toggle (decorative) — full redraw on next nav.
+  // Under reduce-motion: render a single static frame (no RAF loop) so
+  // the design intent reads but nothing animates. WCAG 2.3.3.
   const styles = getComputedStyle(document.body);
   const accent = styles.getPropertyValue("--accent").trim() || "#3b5bdb";
   const warm = styles.getPropertyValue("--warm").trim() || "#c0532b";
@@ -1607,7 +1629,7 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         r: 1 + Math.random() * 1.5,
       }));
     };
-    const draw = () => {
+    const drawFrame = () => {
       ctx.clearRect(0, 0, w, h);
       for (let i = 0; i < parts.length; i++) {
         for (let j = i + 1; j < parts.length; j++) {
@@ -1629,20 +1651,34 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       }
       ctx.fillStyle = `color-mix(in srgb, ${color} 55%, transparent)`;
       parts.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
       });
+    };
+    const draw = () => {
+      drawFrame();
+      parts.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > w) p.vx *= -1;
+        if (p.y < 0 || p.y > h) p.vy *= -1;
+      });
       raf = requestAnimationFrame(draw);
     };
     resize();
-    draw();
-    const ro = new ResizeObserver(resize);
-    ro.observe(c);
+    if (prefersReducedMotion) {
+      drawFrame();
+      const ro = new ResizeObserver(() => {
+        resize();
+        drawFrame();
+      });
+      ro.observe(c);
+    } else {
+      draw();
+      const ro = new ResizeObserver(resize);
+      ro.observe(c);
+    }
   });
 
   // Live topology with breathing nodes + animated A2A packet streams
@@ -1836,7 +1872,16 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       });
       requestAnimationFrame(animate);
     };
-    requestAnimationFrame(animate);
+    if (prefersReducedMotion) {
+      // Render the static topology once (nodes + edges already drawn);
+      // hide the moving packet dots so the SVG reads as a still diagram.
+      pkts.forEach(({ halo, dot }) => {
+        halo.setAttribute("opacity", "0");
+        dot.setAttribute("opacity", "0");
+      });
+    } else {
+      requestAnimationFrame(animate);
+    }
   }
 
   // Use case tabs (typewriter + deploy steps)
@@ -1866,6 +1911,14 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     if (cmdEl) cmdEl.textContent = data.deploy;
     if (typeIv) clearInterval(typeIv);
     const target = data.yaml;
+    deployTimers.forEach(clearTimeout);
+    if (prefersReducedMotion) {
+      // Snap the YAML to its final form and mark every deploy step done
+      // without the typewriter / staggered reveal motion. WCAG 2.3.3.
+      yamlTarget.firstChild!.textContent = target;
+      deploySteps.forEach((el) => el.setAttribute("data-on", "true"));
+      return;
+    }
     let i = 0;
     const speed = Math.max(2, Math.floor(target.length / 60));
     yamlTarget.firstChild!.textContent = "";
@@ -1878,7 +1931,6 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         yamlTarget.firstChild!.textContent = target.slice(0, i);
       }
     }, 16);
-    deployTimers.forEach(clearTimeout);
     deploySteps.forEach((el) => el.removeAttribute("data-on"));
     [800, 1500, 2300].forEach((d, idx) => {
       deployTimers.push(setTimeout(() => deploySteps[idx]?.setAttribute("data-on", "true"), d));
