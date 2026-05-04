@@ -1478,14 +1478,46 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       border-color 0.25s ease,
       box-shadow 0.25s ease;
   }
+  /* .v2-card-hover composes with SpotlightCard's mouse-tracked spotlight:
+     the SpotlightCard JS draws a cursor-following highlight, but the card
+     itself has no onclick — `cursor: pointer` signals interactivity for
+     the hover/spotlight gesture without claiming a click target. The
+     :active scale matches the .v2-btn pattern from PR #133 (scale 0.985
+     + tight 0.06s transition) so press feedback is consistent across
+     cards and buttons. transition-delay: 0 keeps the lift snappy in case
+     a parent stagger sets a delay. */
+  :root[data-theme] .v2-card-hover {
+    cursor: pointer;
+  }
   :root[data-theme] .v2-card-hover:hover {
     transform: translateY(-3px);
     border-color: var(--ink);
     box-shadow: 0 16px 40px -20px rgba(var(--shadow-rgb), 0.18);
+    transition-delay: 0s;
+  }
+  :root[data-theme] .v2-card-hover:active {
+    transform: translateY(-2px) scale(0.985);
+    transition-duration: 0.06s;
   }
   :root[data-theme] .v2-card-warm:hover {
     transform: translateY(-2px);
     border-color: var(--warm);
+    transition-delay: 0s;
+  }
+  :root[data-theme] .v2-card-warm:active {
+    transform: translateY(-1px) scale(0.985);
+    transition-duration: 0.06s;
+  }
+  /* Reduced-motion: keep border-color and shadow affordances but drop
+     the transform animation on both hover and press so the card neither
+     lifts nor scales for users who opt out of motion. */
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-card-hover:hover,
+    :root[data-theme] .v2-card-hover:active,
+    :root[data-theme] .v2-card-warm:hover,
+    :root[data-theme] .v2-card-warm:active {
+      transform: none;
+    }
   }
   /* Why-now reason icons. Soft accent-tinted square anchors the card
      visually and provides a fast skim signal (bars / nodes / shield /
