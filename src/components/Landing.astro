@@ -265,10 +265,12 @@ const tierGlyphs: Record<string, string> = {
   {/* PLATFORM PILLARS */}
   <section class="v2-section">
     <div class="v2-container">
-      <div class="v2-section-head" data-reveal>
+      <div class="v2-section-head">
         <div>
-          <div class="v2-kicker">{c.pillars.kicker}</div>
-          <h2 class="v2-h2">{c.pillars.title}</h2>
+          <div class="v2-kicker" data-reveal>{c.pillars.kicker}</div>
+          <h2 class="v2-h2">
+            <BlurText client:visible text={c.pillars.title} delay={60} />
+          </h2>
         </div>
       </div>
       <div class="v2-grid-4 v2-grid-tight">
