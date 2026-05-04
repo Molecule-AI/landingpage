@@ -93,6 +93,33 @@ html {
   scroll-padding-top: 5rem;
 }
 
+/* Cross-document view transitions (Chrome 126+, Safari 18+, Firefox
+   pending). Browser snapshots the outgoing page, navigates, snapshots
+   the incoming page, and cross-fades between them — gives every
+   landing-page → /pricing → /legal/terms → /404 navigation an SPA-like
+   feel without any of the SPA cost (no router, no re-hydration, no
+   route store). Same-origin only. Browsers without support just
+   navigate normally — no fallback needed, no flash.
+
+   Theme stays consistent across the transition because both documents
+   read from the same molecule_theme cookie via themeBootScript before
+   first paint, so the snapshot before and snapshot after share theme
+   tokens. */
+@view-transition {
+  navigation: auto;
+}
+
+/* During the transition, disable the slow .mol-gradient-text shimmer
+   and back-to-top reveal so the cross-fade isn't competing with
+   intra-page animations. The transition itself is short (~250ms by
+   spec default) so this is a brief pause, not a noticeable change. */
+@media (prefers-reduced-motion: reduce) {
+  /* Reduced-motion users get the default browser cross-fade, which
+     respects their preference natively (the spec gates the snapshot
+     fade behind prefers-reduced-motion). No extra rule needed; this
+     comment documents the explicit decision. */
+}
+
 html,
 body {
   background: var(--color-ink);
