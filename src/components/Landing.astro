@@ -930,6 +930,15 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     font-family: inherit;
   }
   :root[data-theme] .v2-btn:hover { transform: translateY(-0.5px); }
+  /* Magnet-pulled buttons compose hover-lift with the JS-set offset:
+     translate by --magnet-x/y, then nudge up 0.5px on hover. Without
+     this override, the generic .v2-btn:hover rule above would snap
+     the button back to translateY(-0.5px) and discard the magnet
+     pull when the cursor is hovering the button itself (which is
+     when magnet pull is strongest). */
+  :root[data-theme] .v2-btn-primary.v2-btn-lg:hover {
+    transform: translate(var(--magnet-x, 0px), calc(var(--magnet-y, 0px) - 0.5px));
+  }
   :root[data-theme] .v2-btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   :root[data-theme] .v2-btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
   :root[data-theme] .v2-btn-lg { padding: 11px 20px; height: 44px; font-size: 14px; }
@@ -944,6 +953,13 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     position: relative;
     overflow: hidden;
     isolation: isolate;
+    /* Magnet-style cursor pull. JS sets --magnet-x/y based on cursor
+       proximity (see scripts block). When cursor is far, both vars
+       resolve to 0 via the fallback in the var() expression — the
+       button rests at its baseline position. The 0.18s transition
+       smooths the trail without lagging behind the cursor. */
+    transform: translate(var(--magnet-x, 0px), var(--magnet-y, 0px));
+    transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   :root[data-theme] .v2-btn-primary.v2-btn-lg::after {
     content: "";
@@ -2099,6 +2115,52 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Magnet-style cursor pull on the large primary CTAs. Listens
+  // pointermove on document; when the cursor is within `radius` of a
+  // button center, sets --magnet-x/y CSS vars to a fraction of the
+  // delta. CSS rule on .v2-btn-primary.v2-btn-lg picks up the vars
+  // via a translate(). rAF-throttled so a fast move doesn't queue
+  // paint work. Disabled under prefers-reduced-motion.
+  if (!prefersReducedMotion) {
+    const magnets = Array.from(
+      document.querySelectorAll<HTMLElement>(".v2-btn-primary.v2-btn-lg"),
+    );
+    if (magnets.length) {
+      const radius = 110; // px; cursor-to-center distance the pull starts at
+      const strength = 0.28; // fraction of (cursor - center) to translate
+      let pending = false;
+      let lastX = 0, lastY = 0;
+      const apply = () => {
+        pending = false;
+        for (const btn of magnets) {
+          const r = btn.getBoundingClientRect();
+          const cx = r.left + r.width / 2;
+          const cy = r.top + r.height / 2;
+          const dx = lastX - cx;
+          const dy = lastY - cy;
+          const dist = Math.hypot(dx, dy);
+          if (dist > radius) {
+            btn.style.setProperty("--magnet-x", "0px");
+            btn.style.setProperty("--magnet-y", "0px");
+            continue;
+          }
+          // Linear falloff: full strength at center, zero at radius.
+          const pull = (1 - dist / radius) * strength;
+          btn.style.setProperty("--magnet-x", `${(dx * pull).toFixed(1)}px`);
+          btn.style.setProperty("--magnet-y", `${(dy * pull).toFixed(1)}px`);
+        }
+      };
+      const onMove = (e: PointerEvent) => {
+        lastX = e.clientX;
+        lastY = e.clientY;
+        if (pending) return;
+        pending = true;
+        requestAnimationFrame(apply);
+      };
+      document.addEventListener("pointermove", onMove, { passive: true });
+    }
+  }
 
   // Scroll-progress fallback for browsers without animation-timeline.
   // The CSS rule covers Chrome 115+, Safari 26+, Firefox 137+ via
