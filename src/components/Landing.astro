@@ -879,6 +879,15 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       transition: none;
     }
   }
+  /* Topology label (CEO Coordinator, Engineering, etc.) inside the
+     hero card SVG. The JS draws these via createElementNS and caches
+     getComputedStyle once at load — that means the resolved hex from
+     the FIRST theme is baked into the fill attribute. CSS rule here
+     overrides the attribute so the label stays theme-reactive after
+     a toggle. */
+  :root[data-theme] svg[data-topology] .v2-topo-label {
+    fill: var(--inkMid);
+  }
   :root[data-theme] .v2-hero-card-chrome {
     display: flex;
     justify-content: space-between;
@@ -1801,6 +1810,10 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       tx.setAttribute("text-anchor", "middle");
       tx.setAttribute("font-size", "10");
       tx.setAttribute("font-family", "ui-monospace, monospace");
+      // CSS class wins over the fill attribute, so this stays theme-reactive
+      // even after the user toggles theme post-page-load (the cached `inkMid`
+      // resolved hex would otherwise stay light-theme on a dark page).
+      tx.setAttribute("class", "v2-topo-label");
       tx.setAttribute("fill", inkMid);
       tx.textContent = label;
       g.appendChild(tx);
