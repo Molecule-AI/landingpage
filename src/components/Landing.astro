@@ -362,10 +362,12 @@ const tierGlyphs: Record<string, string> = {
   {/* CREATOR — Build / List / Earn */}
   <section class="v2-section">
     <div class="v2-container">
-      <div class="v2-section-head" data-reveal>
+      <div class="v2-section-head">
         <div>
-          <div class="v2-kicker">{c.creator.kicker}</div>
-          <h2 class="v2-h2">{c.creator.title}</h2>
+          <div class="v2-kicker" data-reveal>{c.creator.kicker}</div>
+          <h2 class="v2-h2">
+            <BlurText client:visible text={c.creator.title} delay={60} />
+          </h2>
           <p class="v2-section-lede">{c.creator.subtitle}</p>
         </div>
       </div>
