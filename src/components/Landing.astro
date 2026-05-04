@@ -1522,6 +1522,17 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     white-space: nowrap;
     transition: all 0.2s ease;
   }
+  /* Hover-state on inactive tabs — color brightens to --ink + faint
+     bg tint so the user can see the tab is interactive before
+     clicking. Active tab keeps its solid bgElev + 1px ring. */
+  :root[data-theme] .v2-tab:not([data-active="true"]):hover {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--bgElev) 60%, transparent);
+  }
+  :root[data-theme] .v2-tab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
   :root[data-theme] .v2-tab[data-active="true"] {
     background: var(--bgElev);
     color: var(--ink);
