@@ -72,14 +72,20 @@ const currentEntry = LOCALES.find((l) => l.code === current) ?? LOCALES[0];
       <path d="M6 9l6 6 6-6" />
     </svg>
   </summary>
-  <ul role="menu">
+  {/* Plain <ul> + <a> intentionally — no role="menu"/menuitem.
+      ARIA menu semantics promise arrow-key navigation, Home/End, etc.,
+      which native <details> doesn't implement. Promising those keys
+      and not delivering is worse for SR users than the default tree
+      (Tab to navigate, Enter to activate, Escape to close — which
+      modern browsers do honor on <details>). The aria-current on the
+      active link carries the meaningful semantic. */}
+  <ul>
     {
       LOCALES.map((l) => (
-        <li role="none">
+        <li>
           <a
             href={l.href}
             hreflang={l.hreflang}
-            role="menuitem"
             aria-current={l.code === current ? "true" : undefined}
             data-active={l.code === current}
           >
