@@ -1406,6 +1406,14 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     align-items: center;
     justify-content: center;
     color: var(--ink);
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.25s ease,
+      border-color 0.25s ease;
+  }
+  :root[data-theme] .v2-tier-card:hover .v2-tier-glyph {
+    transform: translateY(-2px) scale(1.06);
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
   }
   :root[data-theme] .v2-tier-tag {
     font-family: ui-monospace, "JetBrains Mono", monospace;
@@ -1425,7 +1433,15 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     font-size: 11.5px;
     color: var(--inkSoft);
   }
-  :root[data-theme] .v2-tier-foot .browse { color: var(--ink); }
+  :root[data-theme] .v2-tier-foot .browse {
+    color: var(--ink);
+    display: inline-block;
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.25s ease;
+  }
+  :root[data-theme] .v2-tier-card:hover .v2-tier-foot .browse {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
 
   /* Section lede — sits under the kicker+title pair */
   :root[data-theme] .v2-section-lede {
