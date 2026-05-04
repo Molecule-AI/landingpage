@@ -1256,7 +1256,18 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     gap: 16px;
   }
   :root[data-theme] .v2-grid-tight { gap: 14px; }
-  :root[data-theme] .v2-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  :root[data-theme] .v2-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    /* perspective on the grid so each child card can rotateX/Y on
+       cursor (same TiltedCard pattern as #106 + #107). The marketplace
+       tier-card grid keeps its narrower perspective on
+       .v2-tier-card-link for the existing tier-card tilt — that inner
+       perspective scope wins for those cards; the outer 1100px applies
+       to scope / adapter / creator children. */
+    perspective: 1100px;
+  }
   :root[data-theme] .v2-card {
     padding: 22px;
     background: var(--bgElev);
@@ -1744,11 +1755,18 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     background: var(--bgElev);
     border: 1px solid var(--line);
     border-radius: 10px;
-    transition: border-color 0.25s ease, transform 0.25s ease;
+    /* Same TiltedCard treatment as PRs #106 + #107 — scope cards
+       are 3-up like tier cards, so the tilt amplitude matches (5°
+       — slightly tamer than tier cards since these aren't conversion
+       targets). Parent grid carries the perspective. */
+    transform: translateY(0) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.25s ease;
   }
   :root[data-theme] .v2-scope-card:hover {
     border-color: var(--accent);
-    transform: translateY(-2px);
+    transform: translateY(-2px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
   }
   :root[data-theme] .v2-scope-head {
     display: flex;
@@ -1821,11 +1839,14 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    transition: border-color 0.25s ease, transform 0.25s ease;
+    transform: translateY(0) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.25s ease;
   }
   :root[data-theme] .v2-adapter-card:hover {
     border-color: var(--accent);
-    transform: translateY(-2px);
+    transform: translateY(-2px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
   }
   :root[data-theme] .v2-adapter-head h3 { margin-bottom: 6px; }
   :root[data-theme] .v2-adapter-headline {
@@ -1909,11 +1930,14 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     background: var(--bgElev);
     border: 1px solid var(--line);
     border-radius: 10px;
-    transition: border-color 0.25s ease, transform 0.25s ease;
+    transform: translateY(0) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.25s ease;
   }
   :root[data-theme] .v2-creator-step:hover {
     border-color: var(--warm);
-    transform: translateY(-2px);
+    transform: translateY(-2px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
   }
   :root[data-theme] .v2-creator-num {
     font-family: ui-monospace, "JetBrains Mono", monospace;
@@ -2226,6 +2250,19 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       // Ship cards have no separate wrapper — the .v2-ships-grid
       // parent carries the perspective, so we listen on the card itself.
       tilters.push({ wrapper: c, card: c, maxDeg: 4 });
+    });
+    // Architecture scope cards, Adapter cards, Creator step cards —
+    // all 3-up grids inside .v2-grid-3 (which carries perspective).
+    // Smaller maxDeg (4°) since these aren't conversion targets and
+    // tilting nine cards at 6° feels exaggerated.
+    [
+      ".v2-scope-card",
+      ".v2-adapter-card",
+      ".v2-creator-step",
+    ].forEach((sel) => {
+      document.querySelectorAll<HTMLElement>(sel).forEach((c) => {
+        tilters.push({ wrapper: c, card: c, maxDeg: 4 });
+      });
     });
     tilters.forEach(({ wrapper, card, maxDeg }) => {
       let pending = false;
