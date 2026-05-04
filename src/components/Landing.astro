@@ -1077,6 +1077,18 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   }
   :root[data-theme] .v2-btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   :root[data-theme] .v2-btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  /* Large ghost CTAs ("Try the SaaS" / "Open Canvas") get a subtle
+     hover state — accent border + faint accent-tint background — so
+     the secondary conversion path doesn't feel inert next to the
+     gloss-sweeping primary CTA. Pure CSS, no animation cost. */
+  :root[data-theme] .v2-btn-ghost.v2-btn-lg {
+    transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+  }
+  :root[data-theme] .v2-btn-ghost.v2-btn-lg:hover {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    color: var(--accent);
+  }
   :root[data-theme] .v2-btn-lg { padding: 11px 20px; height: 44px; font-size: 14px; }
 
   /* Investor-grade gloss sweep on the large primary CTA — a thin
