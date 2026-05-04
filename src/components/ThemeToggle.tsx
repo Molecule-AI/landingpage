@@ -82,13 +82,18 @@ function ThemeButton({
       aria-checked={active}
       aria-label={label}
       onClick={() => onPick(value)}
-      className={`inline-flex h-7 w-7 items-center justify-center rounded transition-colors ${
+      className={`group inline-flex h-7 w-7 items-center justify-center rounded transition-colors ${
         active
           ? "bg-[color:var(--color-mint)]/15 text-[color:var(--color-mint)]"
           : "text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg)]"
       }`}
     >
-      {children}
+      {/* Wrap children in a span that rotates+scales on hover so the
+          theme icons feel responsive (sun wedges spin, monitor tilts,
+          moon scales). 0.35s rotation is GPU-accelerated, no JS. */}
+      <span className="inline-flex transition-transform duration-300 ease-[cubic-bezier(0.2,0.7,0.2,1)] group-hover:rotate-[18deg] group-hover:scale-110">
+        {children}
+      </span>
     </button>
   );
 }
