@@ -196,13 +196,15 @@ const tierGlyphs: Record<string, string> = {
       </div>
       <div class="v2-grid-3">
         {c.architecture.scopes.map((s, i) => (
-          <div class="v2-scope-card" data-reveal data-delay={i * 90}>
-            <div class="v2-scope-head">
-              <span class="v2-scope-tag">{c.architecture.scopeLabel}</span>
-              <span class="v2-scope-name">{s.name}</span>
-            </div>
-            <h3 class="v2-scope-title">{s.summary}</h3>
-            <p class="v2-card-body">{s.detail}</p>
+          <div data-reveal data-delay={i * 90}>
+            <SpotlightCard client:visible className="v2-scope-card h-full" spotlightColor="rgba(127,232,214,0.14)">
+              <div class="v2-scope-head">
+                <span class="v2-scope-tag">{c.architecture.scopeLabel}</span>
+                <span class="v2-scope-name">{s.name}</span>
+              </div>
+              <h3 class="v2-scope-title">{s.summary}</h3>
+              <p class="v2-card-body">{s.detail}</p>
+            </SpotlightCard>
           </div>
         ))}
       </div>
