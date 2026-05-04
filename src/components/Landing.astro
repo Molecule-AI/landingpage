@@ -3217,9 +3217,20 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     return node;
   };
 
+  // Listeners on ucSvg itself (pointermove/up/cancel for drag) survive
+  // tab swaps because we only clear ucSvg.firstChild — the SVG element
+  // and its event listeners persist across renderDiagram calls. An
+  // AbortController lets the next render kill the previous render's
+  // listeners on ucSvg in one shot, preventing N listeners after N
+  // tab clicks. Children-level listeners (pointerdown on each agent
+  // group) are removed automatically when the children are GC'd, so
+  // they don't need this treatment.
+  let dragAbortController: AbortController | null = null;
   const renderDiagram = (parsed: ParsedYaml) => {
     if (!ucSvg) return;
     while (ucSvg.firstChild) ucSvg.removeChild(ucSvg.firstChild);
+    if (dragAbortController) dragAbortController.abort();
+    dragAbortController = new AbortController();
     revealTimers.forEach(clearTimeout);
     revealTimers = [];
 
@@ -3572,7 +3583,10 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         agentPositionGs[idx].style.cursor = "grabbing";
         try { ucSvg.setPointerCapture(e.pointerId); } catch { /* noop */ }
       };
-      agentPositionGs.forEach((pg, i) => pg.addEventListener("pointerdown", onDown(i)));
+      const dragSignal = dragAbortController!.signal;
+      agentPositionGs.forEach((pg, i) =>
+        pg.addEventListener("pointerdown", onDown(i), { signal: dragSignal }),
+      );
       ucSvg.addEventListener("pointermove", (e) => {
         if (!drag) return;
         const pt = screenToSvg(e.clientX, e.clientY);
@@ -3603,15 +3617,15 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         if (hitl) {
           hitl.setAttribute("transform", `translate(${(x1 + x2) / 2} ${(y1 + y2) / 2})`);
         }
-      });
+      }, { signal: dragSignal });
       const endDrag = (e: PointerEvent) => {
         if (!drag) return;
         agentPositionGs[drag.idx].style.cursor = "grab";
         try { ucSvg.releasePointerCapture(e.pointerId); } catch { /* noop */ }
         drag = null;
       };
-      ucSvg.addEventListener("pointerup", endDrag);
-      ucSvg.addEventListener("pointercancel", endDrag);
+      ucSvg.addEventListener("pointerup", endDrag, { signal: dragSignal });
+      ucSvg.addEventListener("pointercancel", endDrag, { signal: dragSignal });
     }
   };
 
