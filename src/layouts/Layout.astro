@@ -29,8 +29,15 @@ const canonical = new URL(currentPath, site).toString();
 const imgUrl = new URL(image, site).toString();
 const imgType = image.endsWith(".jpg") || image.endsWith(".jpeg") ? "image/jpeg" : "image/png";
 
-const ogLocale = locale === "zh" ? "zh_CN" : "en_US";
-const ogAlt = locale === "zh" ? "en_US" : "zh_CN";
+const OG_LOCALES: Record<Locale, string> = {
+  en: "en_US",
+  zh: "zh_CN",
+  fr: "fr_FR",
+};
+const ogLocale = OG_LOCALES[locale];
+const ogAlt = (Object.entries(OG_LOCALES) as [Locale, string][])
+  .filter(([code]) => code !== locale)
+  .map(([, val]) => val);
 
 // Logo is the LCP-critical hero element on the landing pages (/, /zh/),
 // where Landing.astro renders it at hero scale. On interior pages
@@ -39,11 +46,17 @@ const ogAlt = locale === "zh" ? "en_US" : "zh_CN";
 // Inter woff2 fonts gating the real LCP (the page heading). Scope the
 // preload to homepages only.
 const pathname = Astro.url.pathname;
-const isHomepage = pathname === "/" || pathname === "/zh/" || pathname === "/zh";
+const isHomepage =
+  pathname === "/" ||
+  pathname === "/zh/" ||
+  pathname === "/zh" ||
+  pathname === "/fr/" ||
+  pathname === "/fr";
 
 const alternates = [
   { hreflang: "en", href: new URL(localePaths.en, site).toString() },
   { hreflang: "zh-CN", href: new URL(localePaths.zh, site).toString() },
+  { hreflang: "fr", href: new URL(localePaths.fr, site).toString() },
   { hreflang: "x-default", href: new URL(localePaths.en, site).toString() },
 ];
 
@@ -75,7 +88,7 @@ const jsonLd = {
       name: "Molecule AI",
       description: c.siteMeta.description,
       publisher: { "@id": `${site}#org` },
-      inLanguage: locale === "zh" ? "zh-CN" : "en-US",
+      inLanguage: locale === "zh" ? "zh-CN" : locale === "fr" ? "fr-FR" : "en-US",
     },
     {
       "@type": "SoftwareApplication",
@@ -164,7 +177,9 @@ const jsonLd = {
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={`${c.siteMeta.fullName} — ${c.siteMeta.tagline}`} />
     <meta property="og:locale" content={ogLocale} />
-    <meta property="og:locale:alternate" content={ogAlt} />
+    {ogAlt.map((alt) => (
+      <meta property="og:locale:alternate" content={alt} />
+    ))}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -191,7 +206,11 @@ const jsonLd = {
   </head>
   <body>
     <a href="#main" class="mol-skip-link">
-      {locale === "zh" ? "跳转到主内容" : "Skip to main content"}
+      {locale === "zh"
+        ? "跳转到主内容"
+        : locale === "fr"
+          ? "Aller au contenu principal"
+          : "Skip to main content"}
     </a>
     <slot />
     <script>

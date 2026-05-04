@@ -28,8 +28,9 @@ interface LocaleEntry {
 }
 
 const LOCALES: LocaleEntry[] = [
-  { code: "en", label: "English",  href: "/",     hreflang: "en"    },
-  { code: "zh", label: "中文",      href: "/zh/",  hreflang: "zh-CN" },
+  { code: "en", label: "English",   href: "/",     hreflang: "en"    },
+  { code: "zh", label: "中文",       href: "/zh/",  hreflang: "zh-CN" },
+  { code: "fr", label: "Français",  href: "/fr/",  hreflang: "fr"    },
 ];
 
 const currentEntry = LOCALES.find((l) => l.code === current) ?? LOCALES[0];
