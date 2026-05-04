@@ -353,18 +353,20 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       </div>
       <div class="v2-grid-3">
         {c.marketplace.tiers.map((tr, i) => (
-          <a class="v2-tier-card" data-reveal data-delay={i * 120} href="https://market.moleculesai.app">
-            <div class="v2-tier-head">
-              <div class="v2-tier-glyph" set:html={tierGlyphs[tr.glyph]} />
-              <div>
-                <span class="v2-tier-tag">{tr.tag}</span>
-                <h3 class="v2-tier-title">{tr.title}</h3>
+          <a class="v2-tier-card-link" data-reveal data-delay={i * 120} href="https://market.moleculesai.app">
+            <SpotlightCard client:visible className="v2-tier-card h-full" spotlightColor="rgba(127,232,214,0.14)">
+              <div class="v2-tier-head">
+                <div class="v2-tier-glyph" set:html={tierGlyphs[tr.glyph]} />
+                <div>
+                  <span class="v2-tier-tag">{tr.tag}</span>
+                  <h3 class="v2-tier-title">{tr.title}</h3>
+                </div>
               </div>
-            </div>
-            <p class="v2-card-body">{tr.desc}</p>
-            <div class="v2-tier-foot">
-              <span>{tr.count}</span><span class="browse">{c.marketplace.browse}</span>
-            </div>
+              <p class="v2-card-body">{tr.desc}</p>
+              <div class="v2-tier-foot">
+                <span>{tr.count}</span><span class="browse">{c.marketplace.browse}</span>
+              </div>
+            </SpotlightCard>
           </a>
         ))}
       </div>
@@ -1070,6 +1072,12 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   @keyframes v2-caret { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
   /* Tier cards */
+  :root[data-theme] .v2-tier-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
   :root[data-theme] .v2-tier-card {
     display: block;
     padding: 24px;
