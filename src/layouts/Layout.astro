@@ -214,6 +214,21 @@ const jsonLd = {
     {isHomepage && <link rel="preload" as="image" href="/logo.svg" />}
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+    {/* Progressive-enhancement fallback: [data-reveal] starts at opacity:0
+        and only becomes visible when the IntersectionObserver in
+        scripts/site.ts adds [data-visible]. With JS disabled (NoScript,
+        paranoid configs, some non-JS crawlers) the data-visible attr
+        never lands and the page renders blank. Force visible at all
+        times when JS is off — the entrance animation is a polish layer,
+        not a load-bearing one. Same fallback for .mol-entrance. */}
+    <noscript>
+      <style>{`
+        [data-reveal] { opacity: 1 !important; transform: none !important; }
+        [data-reveal="stagger"] > * { opacity: 1 !important; transform: none !important; }
+        .mol-entrance { opacity: 1 !important; transform: none !important; animation: none !important; }
+      `}</style>
+    </noscript>
   </head>
   <body>
     <a href="#main" class="mol-skip-link">
