@@ -236,10 +236,12 @@ const tierGlyphs: Record<string, string> = {
   {/* ADAPTERS — runtime/model/observability cards */}
   <section id="adapters" class="v2-section v2-section-ink">
     <div class="v2-container">
-      <div class="v2-section-head" data-reveal>
+      <div class="v2-section-head">
         <div>
-          <div class="v2-kicker">{c.adapters.kicker}</div>
-          <h2 class="v2-h2">{c.adapters.title}</h2>
+          <div class="v2-kicker" data-reveal>{c.adapters.kicker}</div>
+          <h2 class="v2-h2">
+            <BlurText client:visible text={c.adapters.title} delay={60} />
+          </h2>
           <p class="v2-section-lede">{c.adapters.subtitle}</p>
         </div>
       </div>
