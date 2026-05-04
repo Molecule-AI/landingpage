@@ -239,17 +239,19 @@ const tierGlyphs: Record<string, string> = {
       </div>
       <div class="v2-grid-3">
         {c.adapters.cards.map((card, i) => (
-          <div class="v2-adapter-card" data-reveal data-delay={i * 100}>
-            <div class="v2-adapter-head">
-              <h3 class="v2-card-title">{card.title}</h3>
-              <p class="v2-adapter-headline">{card.headline}</p>
-            </div>
-            <p class="v2-card-body">{card.detail}</p>
-            <ul class="v2-adapter-list">
-              {card.items.map((item) => (
-                <li><i class="dot dot-accent"></i>{item}</li>
-              ))}
-            </ul>
+          <div data-reveal data-delay={i * 100}>
+            <SpotlightCard client:visible className="v2-adapter-card h-full" spotlightColor="rgba(127,232,214,0.14)">
+              <div class="v2-adapter-head">
+                <h3 class="v2-card-title">{card.title}</h3>
+                <p class="v2-adapter-headline">{card.headline}</p>
+              </div>
+              <p class="v2-card-body">{card.detail}</p>
+              <ul class="v2-adapter-list">
+                {card.items.map((item) => (
+                  <li><i class="dot dot-accent"></i>{item}</li>
+                ))}
+              </ul>
+            </SpotlightCard>
           </div>
         ))}
       </div>
