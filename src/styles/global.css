@@ -235,11 +235,32 @@ img, canvas, video, svg {
 }
 
 .mol-gradient-text {
-  background: linear-gradient(120deg, var(--fg) 0%, var(--mint) 55%, var(--cyan) 100%);
+  background: linear-gradient(
+    120deg,
+    var(--fg) 0%,
+    var(--mint) 35%,
+    var(--cyan) 65%,
+    var(--mint) 100%
+  );
+  background-size: 200% 100%;
+  background-position: 0% 0%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+  animation: mol-gradient-shimmer 9s ease-in-out infinite alternate;
+}
+
+@keyframes mol-gradient-shimmer {
+  from { background-position: 0% 0%; }
+  to   { background-position: 100% 0%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mol-gradient-text {
+    animation: none;
+    background-position: 0% 0%;
+  }
 }
 
 .mol-btn-primary {
