@@ -52,6 +52,18 @@ const pillarGlyphs: ReadonlyArray<string> = [
   `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><rect x="3.4" y="2" width="7.2" height="2.4" rx="0.6" stroke="currentColor" stroke-width="0.9" fill="currentColor" fill-opacity="0.85"/><rect x="2.4" y="5.8" width="9.2" height="2.4" rx="0.6" stroke="currentColor" stroke-width="0.9" fill="currentColor" fill-opacity="0.55"/><rect x="1.4" y="9.6" width="11.2" height="2.4" rx="0.6" stroke="currentColor" stroke-width="0.9" fill="currentColor" fill-opacity="0.3"/></svg>`,
 ];
 
+// Adapter card icons — 3 glyphs for Model providers / Runtime adapters /
+// Tools-Eval-Observability. Same 14×14 currentColor pattern as
+// whyNowGlyphs and pillarGlyphs. Indexed positionally.
+const adapterGlyphs: ReadonlyArray<string> = [
+  // 0 Model providers — sparkle (model creativity)
+  `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><path d="M7 1.5 L7.9 5.1 L11.5 6 L7.9 6.9 L7 10.5 L6.1 6.9 L2.5 6 L6.1 5.1 Z" fill="currentColor" opacity="0.85"/><path d="M11 11 L11.5 12.5 L13 13 L11.5 13.5" stroke="currentColor" stroke-width="0.9" fill="none" opacity="0.55"/></svg>`,
+  // 1 Runtime adapters — gear / cog (engine swap)
+  `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="2.4" stroke="currentColor" stroke-width="1.1" fill="none"/><circle cx="7" cy="7" r="0.9" fill="currentColor"/><path d="M7 1.5 L7 3.4 M7 10.6 L7 12.5 M12.5 7 L10.6 7 M3.4 7 L1.5 7 M11.1 2.9 L9.7 4.3 M4.3 9.7 L2.9 11.1 M11.1 11.1 L9.7 9.7 M4.3 4.3 L2.9 2.9" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>`,
+  // 2 Observability — eye + scan line (telemetry)
+  `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><path d="M1.5 7 Q4 3 7 3 Q10 3 12.5 7 Q10 11 7 11 Q4 11 1.5 7 Z" stroke="currentColor" stroke-width="1.1" fill="none"/><circle cx="7" cy="7" r="1.6" fill="currentColor"/><path d="M2 12 L4.5 12" stroke="currentColor" stroke-width="0.9" opacity="0.55"/><path d="M5.5 12 L7 12" stroke="currentColor" stroke-width="0.9" opacity="0.55"/><path d="M8 12 L11.5 12" stroke="currentColor" stroke-width="0.9" opacity="0.55"/></svg>`,
+];
+
 // Plug glyph SVGs inline so the marketplace tier cards work without a separate icon component.
 const tierGlyphs: Record<string, string> = {
   plugin: `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="4" height="4" fill="currentColor"/><rect x="8" y="2" width="4" height="4" fill="currentColor" opacity="0.45"/><rect x="2" y="8" width="4" height="4" fill="currentColor" opacity="0.45"/><rect x="8" y="8" width="4" height="4" fill="currentColor"/></svg>`,
@@ -376,6 +388,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         {c.adapters.cards.map((card, i) => (
           <div data-reveal data-delay={i * 100}>
             <SpotlightCard client:visible className="v2-adapter-card h-full" spotlightColor="rgba(127,232,214,0.14)">
+              <div class="v2-card-icon" set:html={adapterGlyphs[i]} />
               <div class="v2-adapter-head">
                 <h3 class="v2-card-title">{card.title}</h3>
                 <p class="v2-adapter-headline">{card.headline}</p>
@@ -1186,7 +1199,8 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
       background 0.25s ease;
   }
-  :root[data-theme] .v2-card-hover:hover .v2-card-icon {
+  :root[data-theme] .v2-card-hover:hover .v2-card-icon,
+  :root[data-theme] .v2-adapter-card:hover .v2-card-icon {
     transform: translateY(-2px);
     background: color-mix(in srgb, var(--accent) 22%, transparent);
   }
