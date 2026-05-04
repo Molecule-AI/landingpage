@@ -19,6 +19,17 @@ const tierGlyphs: Record<string, string> = {
   agent: `<svg width="22" height="22" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/></svg>`,
   org: `<svg width="22" height="22" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="3" r="1.6" fill="currentColor"/><circle cx="3" cy="11" r="1.6" fill="currentColor"/><circle cx="11" cy="11" r="1.6" fill="currentColor"/><line x1="7" y1="4.6" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="7" x2="3" y2="9.4" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="7" x2="11" y2="9.4" stroke="currentColor" stroke-width="1.2"/></svg>`,
 };
+
+// Localized aria-label for the hero card's data-topology SVG (a JS-driven
+// animated diagram of A2A traffic between coordinator and team agents).
+// Without this, screen readers announce the SVG as "graphic" with no context.
+const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
+  en: "Live agent topology — A2A traffic between coordinator and team agents",
+  zh: "实时智能体拓扑 — 协调者与团队智能体之间的 A2A 通信",
+  es: "Topología de agentes en vivo — tráfico A2A entre coordinador y agentes del equipo",
+  fr: "Topologie d'agents en direct — trafic A2A entre coordinateur et agents d'équipe",
+  ja: "ライブのエージェント トポロジー — コーディネーターとチーム エージェントの間の A2A 通信",
+};
 ---
 
 <header class="v2-nav">
@@ -87,7 +98,7 @@ const tierGlyphs: Record<string, string> = {
           <span>{c.hero.heroCardUrl}</span>
           <span><i class="dot dot-good pulsing"></i>{c.hero.heroCardA2ALabel} · <span data-a2a>42</span> {c.hero.heroCardA2ASuffix}</span>
         </div>
-        <svg data-topology viewBox="0 0 560 420" width="100%" style="display:block"></svg>
+        <svg data-topology viewBox="0 0 560 420" width="100%" style="display:block" role="img" aria-label={heroSvgAlt[locale]}></svg>
       </div>
     </div>
   </section>
