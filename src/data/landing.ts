@@ -550,7 +550,7 @@ export const enContent: LandingContent = {
       { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 more"] },
       { heading: "Trust", items: ["EU AI Act", "OWASP", "SOC 2 (in progress)", "Audit trails"] },
     ],
-    legal: "© 2026 Molecule AI · 多智能体组织治理平台",
+    legal: "© 2026 Molecule AI · Multi-agent org governance platform",
     version: "moleculesai.app · v2026.4",
   },
 };
@@ -1151,7 +1151,7 @@ export const frContent: LandingContent = {
       { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 autres"] },
       { heading: "Confiance", items: ["EU AI Act", "OWASP", "SOC 2 (en cours)", "Pistes d'audit"] },
     ],
-    legal: "© 2026 Molecule AI · 多智能体组织治理平台",
+    legal: "© 2026 Molecule AI · Plateforme de gouvernance d'organisations multi-agents",
     version: "moleculesai.app · v2026.4",
   },
 };
@@ -1452,7 +1452,7 @@ export const jaContent: LandingContent = {
       { heading: "ランタイム", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 種"] },
       { heading: "Trust", items: ["EU AI Act", "OWASP", "SOC 2(進行中)", "監査ログ"] },
     ],
-    legal: "© 2026 Molecule AI · 多智能体組織ガバナンス プラットフォーム",
+    legal: "© 2026 Molecule AI · マルチエージェント組織のガバナンス プラットフォーム",
     version: "moleculesai.app · v2026.4",
   },
 };
@@ -1753,7 +1753,7 @@ export const esContent: LandingContent = {
       { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 más"] },
       { heading: "Confianza", items: ["EU AI Act", "OWASP", "SOC 2 (en proceso)", "Trazas de auditoría"] },
     ],
-    legal: "© 2026 Molecule AI · 多智能体组织治理平台",
+    legal: "© 2026 Molecule AI · Plataforma de gobernanza de organizaciones multi-agente",
     version: "moleculesai.app · v2026.4",
   },
 };
