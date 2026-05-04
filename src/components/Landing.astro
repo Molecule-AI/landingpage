@@ -149,6 +149,23 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     on every scroll event by passive-listening only. */}
 <div class="v2-scroll-progress" aria-hidden="true"></div>
 
+{/* Floating "back to top" — appears after the user scrolls past
+    ~600px (roughly past the hero), smooth-scrolls back to top on
+    click. Hidden state purely CSS-driven via scroll-timeline; the
+    click handler doesn't even need to feature-detect the show/hide
+    behavior. */}
+<button
+  type="button"
+  class="v2-back-to-top"
+  data-back-to-top
+  aria-label="Back to top"
+  title="Back to top"
+>
+  <svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" fill="none">
+    <path d="M7 11 L7 3 M3 6 L7 2 L11 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </svg>
+</button>
+
 <header class="v2-nav">
   <div class="v2-statusbar">
     <span>
@@ -791,6 +808,60 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       from { transform: scaleX(0); }
       to { transform: scaleX(1); }
     }
+  }
+
+  /* Back-to-top button — fixed bottom-right, appears after the user
+     has scrolled ~600px (past the hero). Modern browsers use the
+     scroll-driven animation primitive to fade in; older browsers
+     fall through to a JS scroll listener that toggles a class. */
+  .v2-back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, background 0.18s ease;
+    z-index: 90;
+    box-shadow: 0 8px 24px -8px rgba(var(--shadow-rgb), 0.25);
+  }
+  .v2-back-to-top:hover {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+  .v2-back-to-top:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  /* Modern: scroll-timeline keyframe shows the button after ~600px
+     of scroll. CSS-only show/hide, no JS. */
+  @supports (animation-timeline: scroll(root)) {
+    .v2-back-to-top {
+      animation: v2-back-to-top-show linear both;
+      animation-timeline: scroll(root);
+      animation-range: 600px 800px;
+    }
+    @keyframes v2-back-to-top-show {
+      from { opacity: 0; pointer-events: none; transform: translateY(8px); }
+      to { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    }
+  }
+  /* JS-fallback class for older browsers — scripts/site.ts equivalent
+     toggles this class on scroll. */
+  .v2-back-to-top[data-shown="true"] {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
   /* Nav */
@@ -2339,6 +2410,38 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         requestAnimationFrame(apply);
       };
       document.addEventListener("pointermove", onMove, { passive: true });
+    }
+  }
+
+  // Back-to-top button — click smoothly scrolls to (0, 0). Show/hide
+  // is CSS-driven via scroll-timeline in modern browsers; older
+  // browsers get a 600px-threshold scroll listener that toggles a
+  // [data-shown] attribute on the button. The click handler is
+  // unconditional (always wired) so even no-CSS-scroll-timeline
+  // browsers still get the click behavior.
+  const backToTop = document.querySelector<HTMLButtonElement>("[data-back-to-top]");
+  if (backToTop) {
+    backToTop.addEventListener("click", () => {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    });
+    if (!CSS.supports("animation-timeline: scroll(root)")) {
+      // Fallback: toggle [data-shown] when the user scrolls past 600px.
+      // Same rAF throttle as the scroll-progress fallback so we don't
+      // queue paint work on flick-scrolls.
+      let pending = false;
+      const updateShown = () => {
+        pending = false;
+        if (window.scrollY > 600) backToTop.setAttribute("data-shown", "true");
+        else backToTop.removeAttribute("data-shown");
+      };
+      const onScroll = () => {
+        if (pending) return;
+        pending = true;
+        requestAnimationFrame(updateShown);
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      updateShown();
     }
   }
 
