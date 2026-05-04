@@ -1415,6 +1415,14 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     color: var(--warm);
     margin-bottom: 14px;
     letter-spacing: 0.04em;
+    display: inline-block;
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      letter-spacing 0.25s ease;
+    transform-origin: left center;
+  }
+  :root[data-theme] .v2-creator-step:hover .v2-creator-num {
+    transform: translateX(2px) scale(1.04);
+    letter-spacing: 0.08em;
   }
 
   /* Comparison */
