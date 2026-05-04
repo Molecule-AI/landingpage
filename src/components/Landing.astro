@@ -2390,9 +2390,20 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     transform-origin: left center;
     transition: color 0.2s ease, transform 0.2s ease;
   }
-  :root[data-theme] .v2-footer-grid a:hover {
+  :root[data-theme] .v2-footer-grid a:hover,
+  :root[data-theme] .v2-footer-grid a:focus-visible {
     color: var(--accent);
     transform: translateX(3px);
+  }
+  /* Footer links sit on a near-black background; the default browser
+     focus ring is barely visible there. Replace with an offset accent
+     ring so keyboard users can see where they are without competing
+     against the existing slide+accent treatment we now share with
+     :hover. */
+  :root[data-theme] .v2-footer-grid a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
   :root[data-theme] .v2-footer-bottom {
     margin-top: 32px;
