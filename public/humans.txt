@@ -1,0 +1,12 @@
+/* TEAM */
+Founder: Hongming Wang
+Site: https://www.moleculesai.app
+
+/* THANKS */
+The maintainers of: Astro, Tailwind, React, reactbits, Inter, JetBrains Mono.
+
+/* SITE */
+Last update: 2026-05-04
+Standards: HTML5, CSS, ES2022
+Components: Astro, Tailwind 4, React 19 islands
+Software: Vercel
