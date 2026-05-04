@@ -285,7 +285,7 @@ export const enContent: LandingContent = {
     secondaryCta: "Try SaaS",
     stats: [
       { to: 2452, suffix: "+", label: "tests" },
-      { to: 8, label: "runtimes" },
+      { to: 12, label: "runtimes" },
       { to: 80, suffix: "+", label: "API endpoints" },
       { to: 33, label: "phases shipped" },
     ],
@@ -294,7 +294,7 @@ export const enContent: LandingContent = {
     heroCardA2ASuffix: "calls/s",
   },
   logoStrip: {
-    eyebrow: "Runtime-neutral · 8 supported, infinitely extensible",
+    eyebrow: "Runtime-neutral · 12 supported, infinitely extensible",
     runtimes: RUNTIMES,
   },
   whyNow: {
@@ -547,7 +547,7 @@ export const enContent: LandingContent = {
     sections: [
       { heading: "Product", items: ["Canvas", "Platform API", "Control Plane", "Customer App"] },
       { heading: "Marketplace", items: ["Plugins (L1)", "Agents (L2)", "Org Bundles (L3)", "Publish"] },
-      { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+5 more"] },
+      { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 more"] },
       { heading: "Trust", items: ["EU AI Act", "OWASP", "SOC 2 (in progress)", "Audit trails"] },
     ],
     legal: "© 2026 Molecule AI · 多智能体组织治理平台",
@@ -586,7 +586,7 @@ export const zhContent: LandingContent = {
     secondaryCta: "试用 SaaS",
     stats: [
       { to: 2452, suffix: "+", label: "测试" },
-      { to: 8, label: "运行时" },
+      { to: 12, label: "运行时" },
       { to: 80, suffix: "+", label: "API 端点" },
       { to: 33, label: "Phase 已交付" },
     ],
@@ -595,7 +595,7 @@ export const zhContent: LandingContent = {
     heroCardA2ASuffix: "次/秒",
   },
   logoStrip: {
-    eyebrow: "运行时无关 · 已支持 8 种,可无限扩展",
+    eyebrow: "运行时无关 · 已支持 12 种,可无限扩展",
     runtimes: RUNTIMES,
   },
   whyNow: {
@@ -847,7 +847,7 @@ export const zhContent: LandingContent = {
     sections: [
       { heading: "产品", items: ["画布", "平台 API", "控制平面", "客户端应用"] },
       { heading: "市场", items: ["插件 (L1)", "智能体 (L2)", "组织包 (L3)", "发布"] },
-      { heading: "运行时", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+5 更多"] },
+      { heading: "运行时", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 更多"] },
       { heading: "信任", items: ["EU AI Act", "OWASP", "SOC 2(进行中)", "审计追踪"] },
     ],
     legal: "© 2026 Molecule AI · 多智能体组织治理平台",
