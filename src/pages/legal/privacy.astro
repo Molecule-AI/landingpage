@@ -1,0 +1,117 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ThemeToggle from "../../components/ThemeToggle.tsx";
+
+interface Props { locale?: "en" | "zh" | "es" }
+const { locale = "en" } = Astro.props;
+---
+
+<Layout locale={locale} title="Privacy Policy — Molecule AI" description="Molecule AI Privacy Policy.">
+  {/* Same minimal sticky header as /pricing and /legal/terms — see
+      pricing.astro for why interior pages mount their own header. */}
+  <header class="sticky top-0 z-50 border-b border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink)]/85 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+      <a
+        href={locale === "zh" ? "/zh/" : locale === "es" ? "/es/" : "/"}
+        class="flex items-center gap-2.5 text-base font-semibold tracking-tight text-[color:var(--color-fg)]"
+        aria-label="Molecule AI home"
+      >
+        <img src="/logo.svg" alt="" width="28" height="28" loading="eager" decoding="async" />
+        <span>Molecule<span class="text-[color:var(--color-mint)]"> AI</span></span>
+      </a>
+      <ThemeToggle client:idle />
+    </div>
+  </header>
+
+  <main class="relative">
+    <section class="mx-auto max-w-3xl px-6 py-24 sm:py-32">
+      <p class="mol-eyebrow">Privacy Policy</p>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-5xl">Privacy Policy</h1>
+      <p class="mt-4 text-sm text-[color:var(--color-fg-muted)]">Effective date: April 21, 2026 · Molecule AI, Inc.</p>
+
+      <div class="mt-10 space-y-8 text-sm leading-relaxed text-[color:var(--color-fg-muted)]">
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">1. Scope</h2>
+          <p class="mt-2">This Privacy Policy describes how Molecule AI, Inc. ("Molecule AI", "we") collects, uses, and shares information when you use our hosted SaaS, API, documentation, or website (collectively, the "Service"). Self-hosted deployments under BSL 1.1 are operated by you; we have no visibility into data processed by your self-hosted instances.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">2. Information we collect</h2>
+          <p class="mt-2"><strong class="text-[color:var(--color-fg)]">Account information:</strong> name, email, organization, billing details (handled via Stripe — we do not store full card numbers).</p>
+          <p class="mt-2"><strong class="text-[color:var(--color-fg)]">Authentication:</strong> WorkOS handles OAuth/SSO; we receive only the identity tokens needed to authorize you.</p>
+          <p class="mt-2"><strong class="text-[color:var(--color-fg)]">Workspace content:</strong> agent configurations, prompts, plugin manifests, and outputs that you submit to your workspaces. Stored encrypted at rest (AES-256-GCM payload + AWS KMS-managed data keys via envelope encryption).</p>
+          <p class="mt-2"><strong class="text-[color:var(--color-fg)]">Usage telemetry:</strong> request counts, latency, error rates, browser/OS for the dashboard. We use OpenTelemetry, Sentry (errors), and Prometheus (infra) — no third-party advertising trackers.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">3. How we use your information</h2>
+          <p class="mt-2">To provide and operate the Service; to bill you; to send service notifications; to improve reliability and performance; to comply with legal obligations. We do not use your workspace content to train models without explicit, project-level consent.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">4. Subprocessors</h2>
+          <p class="mt-2">We rely on the following subprocessors to operate the Service:</p>
+          <ul class="mt-2 list-disc pl-6 space-y-1">
+            <li>AWS (us-east-2, Ohio, United States) — workspace EC2 compute, KMS, S3 backups</li>
+            <li>Railway — control-plane hosting</li>
+            <li>Vercel — landing page + dashboard delivery</li>
+            <li>Neon — managed Postgres for control-plane state</li>
+            <li>WorkOS — SSO / SAML / SCIM identity</li>
+            <li>Stripe — billing</li>
+            <li>Sentry — error tracking</li>
+            <li>Langfuse (self-hosted) — agent trace storage</li>
+          </ul>
+          <p class="mt-2">A current and complete list is available on request to <a href="mailto:hello@moleculesai.app" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">hello@moleculesai.app</a>.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">5. Data location & transfers</h2>
+          <p class="mt-2">Workspace content is processed in AWS us-east-2 (Ohio, United States). For customers requiring EU data residency, contact us about Enterprise self-hosted deployments. We will provide Standard Contractual Clauses (EU SCCs) on request for cross-border transfers from the EU.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">6. Your rights</h2>
+          <p class="mt-2">Depending on your jurisdiction (GDPR, CCPA, and equivalents), you may have the right to: access the personal information we hold about you; correct inaccuracies; request deletion; export your data; object to or restrict processing; lodge a complaint with a supervisory authority. Email <a href="mailto:hello@moleculesai.app" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">hello@moleculesai.app</a> to exercise any of these rights — we respond within 30 days.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">7. Retention</h2>
+          <p class="mt-2">Account data is retained for the life of the account plus 90 days after termination, then deleted unless legal retention obligations apply. Workspace content is deleted on workspace deletion. Aggregated, anonymized telemetry may be retained indefinitely for capacity planning.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">8. Cookies & similar technologies</h2>
+          <p class="mt-2">We use a single cookie (<code class="font-mono text-xs">molecule_theme</code>) to remember your light/dark/system preference. The hosted dashboard sets a <code class="font-mono text-xs">mcp_session</code> cookie after sign-in to keep you authenticated. We do not use third-party advertising or analytics cookies on the marketing site.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">9. Security</h2>
+          <p class="mt-2">Encryption in transit (TLS 1.2+) and at rest (AES-256-GCM via AWS KMS envelope). Org-scoped IAM roles and per-tenant secret namespaces prevent cross-tenant access. Audit logs are written for every privileged action. We are pursuing SOC 2 Type II — see the trust column on the homepage for current status.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">10. Children</h2>
+          <p class="mt-2">The Service is not directed to children under 18. We do not knowingly collect personal information from anyone under 18.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">11. Changes to this policy</h2>
+          <p class="mt-2">We will post any changes to this Privacy Policy on this page and update the effective date. Material changes will be notified via email to active accounts at least 30 days before they take effect.</p>
+        </section>
+
+        <section>
+          <h2 class="text-lg font-semibold text-[color:var(--color-fg)]">12. Contact</h2>
+          <p class="mt-2">Questions about this policy or our data practices: <a href="mailto:hello@moleculesai.app" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">hello@moleculesai.app</a>.</p>
+        </section>
+      </div>
+    </section>
+
+    <footer class="border-t border-[color:var(--color-ink-border)]/60 py-8 text-center">
+      <p class="text-xs text-[color:var(--color-fg-dim)]">
+        © {new Date().getFullYear()} Molecule AI — <a href="/" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Home</a>
+        · <a href="/pricing" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Pricing</a>
+        · <a href="/legal/terms" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Terms</a>
+      </p>
+    </footer>
+  </main>
+</Layout>
