@@ -888,6 +888,18 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] svg[data-topology] .v2-topo-label {
     fill: var(--inkMid);
   }
+  /* Static mid-edges (root → mid lines) — animate() never rewrites these. */
+  :root[data-theme] svg[data-topology] .v2-topo-edge-static {
+    stroke: var(--ink);
+  }
+  /* Root inner circle (CEO Coordinator) — set once with `ink` color. */
+  :root[data-theme] svg[data-topology] .v2-topo-inner-root {
+    fill: var(--ink);
+  }
+  /* Non-leaf mid inner circles (Engineering / Compliance / Finance). */
+  :root[data-theme] svg[data-topology] .v2-topo-inner-mid {
+    fill: var(--inkMid);
+  }
   :root[data-theme] .v2-hero-card-chrome {
     display: flex;
     justify-content: space-between;
@@ -1641,8 +1653,11 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   // Under reduce-motion: render a single static frame (no RAF loop) so
   // the design intent reads but nothing animates. WCAG 2.3.3.
   const styles = getComputedStyle(document.body);
-  const accent = styles.getPropertyValue("--accent").trim() || "#3b5bdb";
-  const warm = styles.getPropertyValue("--warm").trim() || "#c0532b";
+  // Mutable so a MutationObserver below can refresh on theme change.
+  // Used by the canvas particle networks AND the topology SVG animation
+  // loop — both need to follow theme without a page reload.
+  let accent = styles.getPropertyValue("--accent").trim() || "#3b5bdb";
+  let warm = styles.getPropertyValue("--warm").trim() || "#c0532b";
   document.querySelectorAll("canvas[data-particle]").forEach((cvs) => {
     const c = cvs as HTMLCanvasElement;
     const ctx = c.getContext("2d");
@@ -1769,9 +1784,15 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     const pktLayer = document.createElementNS(svgNs, "g");
     tSvg.appendChild(pktLayer);
 
-    const ink = styles.getPropertyValue("--ink").trim() || "#15181c",
-      inkMid = styles.getPropertyValue("--inkMid").trim() || "#5a5e66",
-      bgElev = styles.getPropertyValue("--bgElev").trim() || "#ffffff";
+    // Mutable so a MutationObserver on <html data-theme> can refresh
+    // the values when the user toggles theme post-load. Static SVG
+    // attributes set once below get re-painted via repaintStatic();
+    // the animate() loop reads these closures every frame and picks
+    // up new values automatically for the leaf-edge / leaf-node
+    // dynamic strokes/fills.
+    let ink = styles.getPropertyValue("--ink").trim() || "#15181c";
+    let inkMid = styles.getPropertyValue("--inkMid").trim() || "#5a5e66";
+    let bgElev = styles.getPropertyValue("--bgElev").trim() || "#ffffff";
 
     const drawNode = (
       x: number,
@@ -1802,6 +1823,12 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       inner.setAttribute("cy", String(y));
       inner.setAttribute("r", String(baseR - 7));
       inner.setAttribute("fill", opts.root ? ink : inkMid);
+      // Root + non-leaf inner circles never get rewritten by animate().
+      // CSS class wins over the cached fill attr so theme toggle works.
+      // Leaf inners are mutated every frame, so the closure-mutable
+      // `inkMid` (refreshed by the MutationObserver) handles them.
+      if (opts.root) inner.setAttribute("class", "v2-topo-inner-root");
+      else if (!opts.small) inner.setAttribute("class", "v2-topo-inner-mid");
       if (opts.small) inner.setAttribute("opacity", "0.55");
       g.appendChild(inner);
       const tx = document.createElementNS(svgNs, "text");
@@ -1830,6 +1857,9 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       ln.setAttribute("stroke", ink);
       ln.setAttribute("stroke-opacity", "0.22");
       ln.setAttribute("stroke-width", "1");
+      // Static mid-edges aren't touched by animate(); CSS class makes
+      // the stroke theme-reactive without needing repaint.
+      ln.setAttribute("class", "v2-topo-edge-static");
       edges.appendChild(ln);
     });
     const leafEdges = leaves.map((l) => {
@@ -1929,6 +1959,24 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     } else {
       requestAnimationFrame(animate);
     }
+
+    // Theme-toggle reactivity: re-read the cached color vars when
+    // <html data-theme> changes so the next animate() pass picks
+    // them up. CSS classes on static SVG attrs (added above) cover
+    // the never-rewritten elements; this handles leaf-edge strokes
+    // + leaf-inner fills + canvas particle networks that DO get
+    // rewritten every frame from the closure-captured vars.
+    new MutationObserver(() => {
+      const s = getComputedStyle(document.body);
+      ink = s.getPropertyValue("--ink").trim() || ink;
+      inkMid = s.getPropertyValue("--inkMid").trim() || inkMid;
+      bgElev = s.getPropertyValue("--bgElev").trim() || bgElev;
+      accent = s.getPropertyValue("--accent").trim() || accent;
+      warm = s.getPropertyValue("--warm").trim() || warm;
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
   }
 
   // Use case tabs (typewriter + deploy steps)
