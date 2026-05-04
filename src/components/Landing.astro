@@ -265,10 +265,12 @@ const tierGlyphs: Record<string, string> = {
       </div>
       <div class="v2-grid-4 v2-grid-tight">
         {c.pillars.items.map((p, i) => (
-          <div class="v2-card v2-card-warm" data-reveal data-delay={(i % 4) * 70}>
-            <div class="v2-keynum v2-keynum-warm">{p.k}</div>
-            <h3 class="v2-card-title v2-card-title-sm">{p.title}</h3>
-            <p class="v2-card-body v2-card-body-sm">{p.body}</p>
+          <div data-reveal data-delay={(i % 4) * 70}>
+            <SpotlightCard client:visible className="v2-card v2-card-warm h-full" spotlightColor="rgba(255,179,102,0.16)">
+              <div class="v2-keynum v2-keynum-warm">{p.k}</div>
+              <h3 class="v2-card-title v2-card-title-sm">{p.title}</h3>
+              <p class="v2-card-body v2-card-body-sm">{p.body}</p>
+            </SpotlightCard>
           </div>
         ))}
       </div>
