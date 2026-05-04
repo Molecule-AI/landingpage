@@ -762,6 +762,58 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] .v2-btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
   :root[data-theme] .v2-btn-lg { padding: 11px 20px; height: 44px; font-size: 14px; }
 
+  /* Investor-grade gloss sweep on the large primary CTA — a thin
+     diagonal highlight crosses the button every ~7s, drawing the eye
+     to the conversion target without forcing a distracting hover.
+     Scoped to .v2-btn-lg.v2-btn-primary so the small nav button stays
+     calm. Paused on hover so the user sees a clean surface at the
+     moment of intent, and disabled when prefers-reduced-motion. */
+  :root[data-theme] .v2-btn-primary.v2-btn-lg {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  :root[data-theme] .v2-btn-primary.v2-btn-lg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      transparent 38%,
+      rgba(255, 255, 255, 0.22) 50%,
+      transparent 62%,
+      transparent 100%
+    );
+    transform: translateX(-110%);
+    animation: v2-btn-gloss 7s linear infinite;
+    animation-delay: 1.4s;
+    pointer-events: none;
+    z-index: 0;
+  }
+  :root[data-theme="light"] .v2-btn-primary.v2-btn-lg::after {
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      transparent 38%,
+      rgba(255, 255, 255, 0.32) 50%,
+      transparent 62%,
+      transparent 100%
+    );
+  }
+  :root[data-theme] .v2-btn-primary.v2-btn-lg:hover::after {
+    animation-play-state: paused;
+    opacity: 0;
+  }
+  @keyframes v2-btn-gloss {
+    0% { transform: translateX(-110%); }
+    18% { transform: translateX(110%); }
+    100% { transform: translateX(110%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-btn-primary.v2-btn-lg::after { animation: none; opacity: 0; }
+  }
+
   /* Sections */
   :root[data-theme] .v2-section {
     padding: 80px 32px;
