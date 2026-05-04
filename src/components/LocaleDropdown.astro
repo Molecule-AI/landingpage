@@ -1,0 +1,89 @@
+---
+/**
+ * Native <details>-based locale dropdown for the landing page nav.
+ *
+ * Why <details> instead of <select>: gives full styling control,
+ * native click-out-to-close behaviour, keyboard-accessible (Enter
+ * / Space toggles, Tab moves through links), zero JS required.
+ *
+ * The locales list is the SINGLE SOURCE OF TRUTH for what's
+ * available — adding a new locale = add an entry here + ship the
+ * matching content + page wrapper. The dropdown auto-includes it.
+ */
+import type { Locale } from "../i18n/types";
+
+interface Props {
+  current: Locale;
+}
+const { current } = Astro.props;
+
+interface LocaleEntry {
+  code: Locale;
+  /** Display label in its OWN language so a Spanish speaker
+      recognises "Español" without first decoding English. */
+  label: string;
+  href: string;
+  /** BCP 47 tag for the hreflang attribute on the link. */
+  hreflang: string;
+}
+
+const LOCALES: LocaleEntry[] = [
+  { code: "en", label: "English",  href: "/",     hreflang: "en"    },
+  { code: "zh", label: "中文",      href: "/zh/",  hreflang: "zh-CN" },
+];
+
+const currentEntry = LOCALES.find((l) => l.code === current) ?? LOCALES[0];
+---
+
+<details class="v2-locale">
+  <summary aria-label={`Language: ${currentEntry.label}. Click to switch.`}>
+    <svg
+      class="v2-locale-globe"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+    </svg>
+    <span>{currentEntry.label}</span>
+    <svg
+      class="v2-locale-caret"
+      width="10"
+      height="10"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  </summary>
+  <ul role="menu">
+    {
+      LOCALES.map((l) => (
+        <li role="none">
+          <a
+            href={l.href}
+            hreflang={l.hreflang}
+            role="menuitem"
+            aria-current={l.code === current ? "true" : undefined}
+            data-active={l.code === current}
+          >
+            {l.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
