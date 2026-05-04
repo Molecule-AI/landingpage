@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import ShapeGrid from "../components/ShapeGrid.astro";
 import ThemeToggle from "../components/ThemeToggle.tsx";
+import BlurText from "../components/reactbits/BlurText";
 
 // Astro builds a single static /404.html. Locale-routing is per-request;
 // the 404 fires before any locale segment is matched, so it's English-
@@ -39,7 +40,7 @@ const locale = "en" as const;
           Error 404
         </p>
         <h1 class="mt-5 text-balance text-4xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-6xl">
-          Lost in the topology.
+          <BlurText client:visible text="Lost in the topology." delay={70} />
         </h1>
         <p class="mx-auto mt-6 max-w-md text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
           That URL didn't route to anything live. The page may have been deleted, renamed, or never shipped.
@@ -48,9 +49,9 @@ const locale = "en" as const;
         <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <a
             href="/"
-            class="inline-flex items-center justify-center gap-2 rounded-md bg-[color:var(--color-fg)] px-5 py-2.5 text-sm font-semibold text-[color:var(--color-bg)] transition-opacity hover:opacity-90"
+            class="group inline-flex items-center justify-center gap-2 rounded-md bg-[color:var(--color-fg)] px-5 py-2.5 text-sm font-semibold text-[color:var(--color-bg)] transition-opacity hover:opacity-90"
           >
-            Go home →
+            Go home <span class="inline-block transition-transform group-hover:translate-x-0.5">→</span>
           </a>
           <a
             href="https://github.com/Molecule-AI/molecule-monorepo"
