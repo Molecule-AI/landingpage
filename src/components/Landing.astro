@@ -2228,8 +2228,17 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     margin-bottom: 8px;
     text-decoration: none;
     cursor: pointer;
+    /* Footer links sit at the end of the read; the slide+accent on
+       hover signals "this goes somewhere" without adding visual
+       weight to the resting page. transform-origin: left so the
+       slide doesn't drift the link off its column edge. */
+    transform-origin: left center;
+    transition: color 0.2s ease, transform 0.2s ease;
   }
-  :root[data-theme] .v2-footer-grid a:hover { color: var(--ink); }
+  :root[data-theme] .v2-footer-grid a:hover {
+    color: var(--accent);
+    transform: translateX(3px);
+  }
   :root[data-theme] .v2-footer-bottom {
     margin-top: 32px;
     padding-top: 20px;
