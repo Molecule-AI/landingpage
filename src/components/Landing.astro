@@ -731,7 +731,25 @@ const tierGlyphs: Record<string, string> = {
     border-radius: 12px;
     padding: 24px;
     position: relative;
-    box-shadow: 0 30px 60px -30px rgba(var(--shadow-rgb), 0.15);
+    box-shadow:
+      0 30px 60px -30px rgba(var(--shadow-rgb), 0.15),
+      0 0 60px -20px color-mix(in srgb, var(--accent) 22%, transparent);
+    transition:
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  :root[data-theme] .v2-hero-card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 40px 80px -28px rgba(var(--shadow-rgb), 0.22),
+      0 0 80px -16px color-mix(in srgb, var(--accent) 38%, transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-hero-card,
+    :root[data-theme] .v2-hero-card:hover {
+      transform: none;
+      transition: none;
+    }
   }
   :root[data-theme] .v2-hero-card-chrome {
     display: flex;
