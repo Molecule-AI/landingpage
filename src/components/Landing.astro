@@ -134,10 +134,12 @@ const tierGlyphs: Record<string, string> = {
   {/* USE CASES */}
   <section class="v2-section v2-section-ink">
     <div class="v2-container">
-      <div class="v2-section-head" data-reveal>
+      <div class="v2-section-head">
         <div>
-          <div class="v2-kicker">{c.useCases.kicker}</div>
-          <h2 class="v2-h2">{c.useCases.title}</h2>
+          <div class="v2-kicker" data-reveal>{c.useCases.kicker}</div>
+          <h2 class="v2-h2">
+            <BlurText client:visible text={c.useCases.title} delay={60} />
+          </h2>
         </div>
       </div>
       <div class="v2-tabs" data-tabs role="tablist" data-reveal data-delay="80">
