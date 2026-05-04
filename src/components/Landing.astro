@@ -73,6 +73,19 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   fr: "Topologie d'agents en direct — trafic A2A entre coordinateur et agents d'équipe",
   ja: "ライブのエージェント トポロジー — コーディネーターとチーム エージェントの間の A2A 通信",
 };
+
+// Localized aria-label for the use-case agent topology SVG (the per-tab
+// diagram in the use-cases section). The diagram itself stays in code-
+// config English (role names, tool/plugin slugs) because investors
+// expect to see real workspace.yml syntax — but the alt text describes
+// *what the diagram represents*, which should be in the user's language.
+const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
+  en: "Agent topology — central org with surrounding role agents and their tools",
+  zh: "智能体拓扑 — 中心组织、周围角色智能体及其工具",
+  es: "Topología de agentes — organización central con agentes de rol y sus herramientas",
+  fr: "Topologie d'agents — organisation centrale avec agents de rôle et leurs outils",
+  ja: "エージェント トポロジー — 中心の組織と周囲のロール エージェント、そのツール",
+};
 ---
 
 <header class="v2-nav">
@@ -237,7 +250,7 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
               viewBox="0 0 520 360"
               preserveAspectRatio="xMidYMid meet"
               role="img"
-              aria-label="Agent topology diagram"
+              aria-label={useCaseSvgAlt[locale]}
             ></svg>
           </div>
           <pre class="v2-usecase-diagram-yaml" data-yaml-target hidden>{c.useCases.cases[0].yaml}<span class="caret"></span></pre>
@@ -2640,8 +2653,13 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       }, rtg);
       rtTextEl.textContent = rtTxt;
 
-      // Tool / plugin chips clustered around the agent node, on the
-      // outer side of the ring (away from the org).
+      // Tool / plugin chips placed HORIZONTALLY on the outer-x side of
+      // the agent. Radial placement (the previous approach) put chips
+      // along the same axis as the label+pill stack, causing them to
+      // overlap the label visually — see PR #93. Horizontal cursor-based
+      // layout keeps chips strictly to one side of the agent and walks
+      // outward by each chip's own width, so they never collide with
+      // each other and never collide with the vertical label column.
       const chips = [...slot.agent.tools, ...slot.agent.plugins].slice(0, 3);
       if (chips.length) {
         const dx = p.x - cx;
@@ -2649,14 +2667,23 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         const len = Math.sqrt(dx * dx + dy * dy) || 1;
         const ux = dx / len;
         const uy = dy / len;
-        chips.forEach((tool, j) => {
-          const offset = agentR + 14 + j * 14;
-          const tx = ux * offset;
-          const ty = uy * offset - 4;
+        // Right-side chips for agents on the right half (or center-top
+        // / center-bottom, where there's no rightward neighbor to
+        // avoid). Left-side for the rest. Falls back gracefully when
+        // ux is near zero.
+        const horizDir = ux >= 0 ? 1 : -1;
+        let xCursor = agentR + 6;
+        chips.forEach((tool) => {
           const w = Math.max(28, tool.length * 5.2 + 10);
+          const tx = horizDir * (xCursor + w / 2);
+          // Slight upward bias so chips center on a line a hair above
+          // the agent center — leaves more room for the label/pill
+          // stack rendering directly below the agent.
+          const ty = -4;
           const tg = el("g", {
             transform: `translate(${tx - w / 2} ${ty})`,
           }, g);
+          xCursor += w + 4;
           el("rect", {
             x: 0,
             y: 0,
