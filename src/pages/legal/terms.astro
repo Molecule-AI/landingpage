@@ -1,9 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import ThemeToggle from "../../components/ThemeToggle.tsx";
+import { localePaths, type Locale } from "../../i18n";
 
-interface Props { locale?: "en" | "zh" | "es" }
+interface Props { locale?: Locale }
 const { locale = "en" } = Astro.props;
+const homeHref = localePaths[locale];
 ---
 
 <Layout locale={locale} title="Terms of Service — Molecule AI" description="Molecule AI Terms of Service.">
@@ -14,7 +16,7 @@ const { locale = "en" } = Astro.props;
   <header class="sticky top-0 z-50 border-b border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink)]/85 backdrop-blur-xl">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
       <a
-        href={locale === "zh" ? "/zh/" : locale === "es" ? "/es/" : "/"}
+        href={homeHref}
         class="flex items-center gap-2.5 text-base font-semibold tracking-tight text-[color:var(--color-fg)]"
         aria-label="Molecule AI home"
       >
