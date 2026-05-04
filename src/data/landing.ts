@@ -1457,9 +1457,311 @@ export const jaContent: LandingContent = {
   },
 };
 
-export const landingContent: Record<"en" | "zh" | "fr" | "ja", LandingContent> = {
+export const esContent: LandingContent = {
+  meta: {
+    title: "Molecule AI — El SO para organizaciones de agentes de IA",
+    description:
+      "Compón equipos multi-agente como si formaras una empresa. Topología organizativa visual, protocolo A2A, memoria de tres niveles, portable entre runtimes — y un marketplace.",
+  },
+  statusbar: {
+    allSystems: "Todo operativo",
+    statusLink: "status.moleculesai.app",
+    phase: "Phase 33 entregada · Phase 35 Marketplace en beta pública",
+  },
+  nav: {
+    links: [
+      { label: "Plataforma", href: "https://app.moleculesai.app" },
+      { label: "Marketplace", href: "https://market.moleculesai.app" },
+      { label: "Docs", href: "https://doc.moleculesai.app" },
+      { label: "GitHub", href: "https://github.com/Molecule-AI" },
+    ],
+    signIn: "Iniciar sesión",
+    openCanvas: "Iniciar sesión",
+  },
+  hero: {
+    eyebrow: "Phase 35 · Beta pública del Marketplace ya disponible",
+    h1Lead: "El sistema operativo para",
+    h1Highlight: "organizaciones de agentes de IA.",
+    lede:
+      "Compón equipos multi-agente como si formaras una empresa. Topología organizativa visual, protocolo A2A, memoria de tres niveles, portable entre runtimes — y un marketplace para comprar o vender herramientas, agentes y departamentos enteros.",
+    primaryCta: "Ver en GitHub →",
+    secondaryCta: "Probar SaaS",
+    stats: [
+      { to: 2452, suffix: "+", label: "tests" },
+      { to: 12, label: "runtimes" },
+      { to: 80, suffix: "+", label: "endpoints API" },
+      { to: 33, label: "phases entregadas" },
+    ],
+    heroCardUrl: "tenant.moleculesai.app/canvas",
+    heroCardA2ALabel: "A2A en vivo",
+    heroCardA2ASuffix: "llamadas/s",
+  },
+  logoStrip: {
+    eyebrow: "Agnóstico al runtime · 12 soportados, infinitamente extensible",
+    runtimes: RUNTIMES,
+  },
+  whyNow: {
+    kicker: "Por qué ahora",
+    title: "Cuatro cambios convergen sobre lo multi-agente.",
+    reasons: [
+      {
+        k: "01",
+        title: "El número de agentes está explotando",
+        body: "Los equipos tienen 1 agente hoy, 10+ el año que viene. El cuello de botella ya no es el modelo — es cómo se coordinan los agentes.",
+      },
+      {
+        k: "02",
+        title: "A2A y MCP se convirtieron en estándares",
+        body: "Los protocolos entre agentes se están estabilizando. Lo multi-agente deja de ser un problema de ingeniería y se convierte en un problema de producto.",
+      },
+      {
+        k: "03",
+        title: "La gobernanza ya es un requisito de compra",
+        body: "EU AI Act, OWASP Agentic Top 10. Auditoría, HITL, RBAC ya no son opcionales.",
+      },
+      {
+        k: "04",
+        title: "Los runtimes se están comoditizando",
+        body: 'Cada trimestre se lanza un nuevo "mejor" runtime. La capa de plataforma gana — la portabilidad entre runtimes es la única apuesta segura.',
+      },
+    ],
+  },
+  useCases: {
+    kicker: "Casos de uso",
+    title: "Una plataforma, muchas formas.",
+    intro:
+      "Definido como código. Versionable. Bifurcable. Publicable en el marketplace. El mismo workspace.yml viaja a dev, staging y prod manteniendo la topología intacta.",
+    cmdPrefix: "$ molecule deploy",
+    deploySteps: ["topología validada", "agentes aprovisionados", "rutas A2A activas"],
+    cases: [
+      { id: "fintech", label: "Fintech · Serie A", kicker: "9 agentes · 14 plugins", yaml: USECASE_YAMLS.fintech },
+      { id: "soc", label: "Centro de Operaciones de Seguridad", kicker: "8 agentes · 21 plugins", yaml: USECASE_YAMLS.soc },
+      { id: "lab", label: "Laboratorio de investigación", kicker: "6 agentes · 9 plugins", yaml: USECASE_YAMLS.lab },
+      { id: "creator", label: "Creador en solitario", kicker: "4 agentes · 8 plugins", yaml: USECASE_YAMLS.creator },
+    ],
+  },
+  architecture: {
+    kicker: "Arquitectura",
+    title: "La memoria sigue la forma de la organización, no la de la petición.",
+    description:
+      "LOCAL es lo que vio un agente. TEAM es lo que el equipo acordó. GLOBAL es lo que aprendió la organización. Tres ámbitos, una memoria continua — versionada, acotada y entre runtimes.",
+    scopeLabel: "Ámbito",
+    scopes: [
+      {
+        name: "LOCAL",
+        summary: "Lo que vi",
+        detail:
+          "Por agente, por hilo. Memoria de trabajo para la tarea activa. Auto-destilada en TEAM al cerrar el hilo.",
+      },
+      {
+        name: "TEAM",
+        summary: "Lo que acordamos",
+        detail:
+          "Acotado al workspace. Decisiones, convenciones, runbooks. Visible para los compañeros con el mismo rol.",
+      },
+      {
+        name: "GLOBAL",
+        summary: "Lo que aprendió la organización",
+        detail:
+          "Lecciones entre workspaces. Curado por Hermes. Buscable; nunca se escribe sin política.",
+      },
+    ],
+    hermesTitle: "Hermes — la capa de destilación de skills",
+    hermesSubtitle: "Una capa de aprendizaje entre el runtime y la organización.",
+    hermesSteps: [
+      "Observa cada trayectoria exitosa entre runtimes",
+      "Destila los patrones repetidos en skills tipados",
+      "Los publica de vuelta como plugins, agentes o templates de organización",
+    ],
+  },
+  adapters: {
+    kicker: "Runtimes",
+    title: "Pluggable, no quisquilloso.",
+    subtitle:
+      "Trae el runtime, modelo y herramientas en los que ya confías. El plano de control es lo único constante.",
+    cards: [
+      {
+        title: "Proveedores de modelos",
+        headline: "Cualquier modelo, acotado por rol.",
+        detail:
+          "Elige por rol; cambia sin tocar la topología. Los roles heredan un default; sobreescribe por llamada.",
+        items: ["Anthropic Claude", "OpenAI", "NVIDIA Nemotron", "Local · Ollama / vLLM"],
+      },
+      {
+        title: "Adaptadores de runtime",
+        headline: "Cualquier runtime de agentes, A2A delante.",
+        detail:
+          "Los adaptadores envuelven cada runtime en el mismo sobre JSON-RPC para que un agente Claude Code llame a un agente CrewAI que llama a un agente LangGraph.",
+        items: [
+          "Claude Code",
+          "OpenClaw",
+          "LangGraph",
+          "CrewAI",
+          "AutoGen",
+          "DeepAgents",
+          "Hermes",
+          "+ trae el tuyo",
+        ],
+      },
+      {
+        title: "Tools · Eval · Observabilidad",
+        headline: "Plomería con estándares primero.",
+        detail:
+          "MCP para herramientas. OpenTelemetry para trazas. Langfuse para eval a nivel de prompt. NeMo Guardrails para política.",
+        items: ["Herramientas MCP", "OpenTelemetry", "Langfuse", "NeMo Guardrails"],
+      },
+    ],
+  },
+  pillars: {
+    kicker: "Plataforma",
+    title: "Ocho pilares que escribimos en el PRD.",
+    items: [
+      { k: "F1", title: "Rol > Tarea", body: "Modela el organigrama, no el flujo. Los roles heredan herramientas, ámbito de memoria y escalera de HITL." },
+      { k: "F2", title: "Equipos recursivos", body: "Los agentes pueden levantar sub-equipos dentro de su sobre de permisos. La organización crece como un árbol vivo." },
+      { k: "F3", title: "Org = Topología", body: "Cada workspace es un grafo versionado. Hazle diff, ramifícalo, compártelo, véndelo." },
+      { k: "F4", title: "A2A distribuido", body: "Los agentes hablan JSON-RPC 2.0 directamente. La plataforma enruta; nunca un único cuello de botella." },
+      { k: "F5", title: "Seguridad de 4 capas", body: "Identidad · permiso · auditoría · cifrado. Sobres AES-256-GCM, OAuth de WorkOS." },
+      { k: "F6", title: "HITL por niveles", body: "Sin aprobación, revisor único, doble revisor. Por nivel de riesgo, configurado por rol." },
+      { k: "F7", title: "Trazas entre workspaces", body: "OpenTelemetry + Langfuse — cada llamada de cada agente, en una sola línea de tiempo." },
+      { k: "F8", title: "Marketplace de 3 capas", body: "Plugin · Agente · Org. Dos capas más que GitHub Actions, dos más que GPT Store." },
+    ],
+  },
+  whatShips: {
+    kicker: "Qué entregamos",
+    title: "Stack open-core, grado producción.",
+    subtitle:
+      "El Canvas corre en tu navegador. La Plataforma corre en tu tenant. Ambos son open-core.",
+    columns: [
+      {
+        label: "Canvas",
+        name: "moleculesai.app",
+        stack: "Next.js 15 · React Flow · Zustand",
+        items: [
+          "Editor de topología con diff/branch/merge",
+          "Overlay de trazas A2A en vivo sobre el canvas",
+          "Instalación desde el Marketplace en dos clics",
+          "Roles · HITL · auditoría configurados visualmente",
+        ],
+      },
+      {
+        label: "Plataforma",
+        name: "Control Plane",
+        stack: "Go 1.25 · Gin · Postgres · Python 3.11 · Fly Machines",
+        items: [
+          "Router A2A JSON-RPC 2.0 con backpressure",
+          "Almacén de memoria de tres niveles (LOCAL/TEAM/GLOBAL)",
+          "OAuth de WorkOS · sobres de secretos AES-256-GCM",
+          "Pipeline OpenTelemetry + adaptador Langfuse",
+        ],
+      },
+    ],
+  },
+  marketplace: {
+    kicker: "Marketplace",
+    title: "Compra una herramienta. Contrata un Agente. O importa un departamento entero.",
+    openMarketplace: "Abrir el Marketplace →",
+    browse: "Explorar →",
+    tiers: [
+      { tag: "L1", title: "Plugin", desc: "Una herramienta, guardrail o hook de compliance. Conéctalo a cualquier agente.", count: "21 first-party · pronto abierto a terceros", glyph: "plugin" },
+      { tag: "L2", title: "Agente", desc: "Un rol pre-entrenado: CPA fiscal, analista SOC, PM, QA. Contrata, no entrenes.", count: "8 roles verificados en beta", glyph: "agent" },
+      { tag: "L3", title: "Org Bundle", desc: "Todo un departamento: agentes, plugins, topología, escalera HITL.", count: "6 templates publicados", glyph: "org" },
+    ],
+  },
+  creator: {
+    kicker: "Para creadores",
+    title: "Constrúyelo. Pónlo en venta. Gana con ello.",
+    subtitle:
+      "Los plugins, agentes y org bundles se entregan como manifiestos firmados. Stripe Connect gestiona los pagos. Los autores se quedan con el 80%.",
+    steps: [
+      {
+        number: "01",
+        title: "Construye",
+        description:
+          "Construye contra el mismo SDK con el que entregamos el catálogo first-party. Tests incluidos.",
+      },
+      {
+        number: "02",
+        title: "Publica",
+        description:
+          "Firma el manifiesto, fija precio, elige nivel. Revisión verificada para L2 y L3.",
+      },
+      {
+        number: "03",
+        title: "Gana",
+        description:
+          "Reparto del 80% de los ingresos. Pagado vía Stripe Connect. Republica una nueva versión cuando quieras.",
+      },
+    ],
+    primaryCta: { label: "Publica en el Marketplace →", href: "https://market.moleculesai.app" },
+    secondaryCta: { label: "Lee la guía de autor", href: "https://doc.moleculesai.app/marketplace" },
+  },
+  comparison: {
+    kicker: "Dónde encajamos",
+    title: "No es un framework. No es Ops. No es Zapier.",
+    capability: "Capacidad",
+    cols: ["Molecule", "Frameworks de agentes", "LLM Ops", "Workflow tools"],
+    rows: [
+      ["Topología multi-agente, nativa", "✓", "—", "✓", "parcial"],
+      ["Portable entre runtimes", "✓", "atado al runtime", "—", "—"],
+      ["Protocolo A2A", "✓", "—", "—", "—"],
+      ["Marketplace de tres capas", "✓", "—", "—", "—"],
+      ["Trazabilidad de auditoría · listo para EU AI Act", "✓", "parcial", "—", "parcial"],
+      ["Niveles HITL", "✓", "—", "—", "parcial"],
+      ["Versionado de templates de org", "✓", "—", "—", "—"],
+    ],
+  },
+  faq: {
+    kicker: "FAQ",
+    title: "Preguntas comunes.",
+    items: [
+      [
+        "¿Por qué no usar un solo súper-agente?",
+        "La contaminación de contexto y la alucinación se acumulan. Los agentes especializados en sus propias ventanas de contexto es como ha funcionado cada gran organización en la historia humana — y como los modelos de lenguaje se mantienen afilados.",
+      ],
+      [
+        "¿Y si el año que viene sale un mejor runtime?",
+        "Cámbialo. Los roles, la memoria y la topología son abstractos. Los adaptadores conectan los runtimes; nada en tu config cambia cuando migras.",
+      ],
+      [
+        "¿Cómo funciona el marketplace para vendedores?",
+        "Tres niveles: Plugin, Agente, Org. Pon tu precio, entrega un manifiesto firmado, cobra vía Stripe Connect. Nos quedamos el 20%.",
+      ],
+      [
+        "¿Self-hosted?",
+        "Sí — despliegue privado completo con el mismo Control Plane. Habitual en industrias reguladas; los datos nunca salen de tu tenant.",
+      ],
+      [
+        "¿Qué protocolos soportáis?",
+        "A2A (JSON-RPC 2.0) para llamadas entre agentes, MCP para exponer herramientas, OpenTelemetry para trazas.",
+      ],
+    ],
+  },
+  final: {
+    h2Lead: "Deja de cablear agentes.",
+    h2Highlight: "Empieza a operar una organización.",
+    lede:
+      "Gratis durante la beta pública. SaaS o self-hosted. Trae tu runtime, trae tu equipo — nosotros traemos la organización.",
+    primaryCta: "Explora el Marketplace",
+    secondaryCta: "Abrir Canvas",
+  },
+  footer: {
+    tagline:
+      "El sistema operativo para organizaciones de agentes de IA. Construye, despliega, gobierna — con forma de organización desde el día uno.",
+    sections: [
+      { heading: "Producto", items: ["Canvas", "Platform API", "Control Plane", "Customer App"] },
+      { heading: "Marketplace", items: ["Plugins (L1)", "Agentes (L2)", "Org Bundles (L3)", "Publicar"] },
+      { heading: "Runtimes", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 más"] },
+      { heading: "Confianza", items: ["EU AI Act", "OWASP", "SOC 2 (en proceso)", "Trazas de auditoría"] },
+    ],
+    legal: "© 2026 Molecule AI · 多智能体组织治理平台",
+    version: "moleculesai.app · v2026.4",
+  },
+};
+
+export const landingContent: Record<"en" | "zh" | "fr" | "ja" | "es", LandingContent> = {
   en: enContent,
   zh: zhContent,
   fr: frContent,
   ja: jaContent,
+  es: esContent,
 };
