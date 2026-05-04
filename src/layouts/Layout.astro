@@ -33,6 +33,7 @@ const OG_LOCALES: Record<Locale, string> = {
   en: "en_US",
   zh: "zh_CN",
   fr: "fr_FR",
+  ja: "ja_JP",
 };
 const ogLocale = OG_LOCALES[locale];
 const ogAlt = (Object.entries(OG_LOCALES) as [Locale, string][])
@@ -51,12 +52,15 @@ const isHomepage =
   pathname === "/zh/" ||
   pathname === "/zh" ||
   pathname === "/fr/" ||
-  pathname === "/fr";
+  pathname === "/fr" ||
+  pathname === "/ja/" ||
+  pathname === "/ja";
 
 const alternates = [
   { hreflang: "en", href: new URL(localePaths.en, site).toString() },
   { hreflang: "zh-CN", href: new URL(localePaths.zh, site).toString() },
   { hreflang: "fr", href: new URL(localePaths.fr, site).toString() },
+  { hreflang: "ja", href: new URL(localePaths.ja, site).toString() },
   { hreflang: "x-default", href: new URL(localePaths.en, site).toString() },
 ];
 
@@ -88,7 +92,11 @@ const jsonLd = {
       name: "Molecule AI",
       description: c.siteMeta.description,
       publisher: { "@id": `${site}#org` },
-      inLanguage: locale === "zh" ? "zh-CN" : locale === "fr" ? "fr-FR" : "en-US",
+      inLanguage:
+        locale === "zh" ? "zh-CN"
+          : locale === "fr" ? "fr-FR"
+          : locale === "ja" ? "ja-JP"
+          : "en-US",
     },
     {
       "@type": "SoftwareApplication",
@@ -210,7 +218,9 @@ const jsonLd = {
         ? "跳转到主内容"
         : locale === "fr"
           ? "Aller au contenu principal"
-          : "Skip to main content"}
+          : locale === "ja"
+            ? "メインコンテンツへスキップ"
+            : "Skip to main content"}
     </a>
     <slot />
     <script>

@@ -7,7 +7,7 @@ export default defineConfig({
   site: 'https://www.moleculesai.app',
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'zh', 'fr'],
+    locales: ['en', 'zh', 'fr', 'ja'],
     routing: {
       prefixDefaultLocale: false,
     },
@@ -24,6 +24,7 @@ export default defineConfig({
           en: 'en',
           zh: 'zh-CN',
           fr: 'fr-FR',
+          ja: 'ja-JP',
         },
       },
     }),

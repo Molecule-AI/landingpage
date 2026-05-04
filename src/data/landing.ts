@@ -1156,8 +1156,310 @@ export const frContent: LandingContent = {
   },
 };
 
-export const landingContent: Record<"en" | "zh" | "fr", LandingContent> = {
+export const jaContent: LandingContent = {
+  meta: {
+    title: "Molecule AI — AI エージェント組織のためのオペレーティング システム",
+    description:
+      "会社をスタッフィングするように、マルチエージェント チームを組成する。可視化された組織トポロジー、A2A プロトコル、3 層メモリ、ランタイム ポータブル — そして、ツール・エージェント・部門まるごとを売買できる Marketplace。",
+  },
+  statusbar: {
+    allSystems: "全システム正常",
+    statusLink: "status.moleculesai.app",
+    phase: "Phase 33 出荷済み · Phase 35 Marketplace パブリック ベータ",
+  },
+  nav: {
+    links: [
+      { label: "Platform", href: "https://app.moleculesai.app" },
+      { label: "Marketplace", href: "https://market.moleculesai.app" },
+      { label: "Docs", href: "https://doc.moleculesai.app" },
+      { label: "GitHub", href: "https://github.com/Molecule-AI" },
+    ],
+    signIn: "サインイン",
+    openCanvas: "サインイン",
+  },
+  hero: {
+    eyebrow: "Phase 35 · Marketplace パブリック ベータが稼働中",
+    h1Lead: "AI エージェント組織のための",
+    h1Highlight: "オペレーティング システム。",
+    lede:
+      "会社をスタッフィングするように、マルチエージェント チームを組成する。可視化された組織トポロジー、A2A プロトコル、3 層メモリ、ランタイム ポータブル — そして、ツール、エージェント、部門まるごとを売買できる Marketplace。",
+    primaryCta: "GitHub で見る →",
+    secondaryCta: "SaaS を試す",
+    stats: [
+      { to: 2452, suffix: "+", label: "テスト" },
+      { to: 12, label: "ランタイム" },
+      { to: 80, suffix: "+", label: "API エンドポイント" },
+      { to: 33, label: "出荷済み Phase" },
+    ],
+    heroCardUrl: "tenant.moleculesai.app/canvas",
+    heroCardA2ALabel: "A2A ライブ",
+    heroCardA2ASuffix: "calls/s",
+  },
+  logoStrip: {
+    eyebrow: "ランタイム中立 · 12 種をサポート、無限に拡張可能",
+    runtimes: RUNTIMES,
+  },
+  whyNow: {
+    kicker: "なぜ今",
+    title: "4 つの潮流が、マルチエージェントへ収束しつつあります。",
+    reasons: [
+      {
+        k: "01",
+        title: "エージェント数は爆発的に増えている",
+        body: "今日 1 体のエージェントを抱えるチームも、来年には 10 体以上になります。ボトルネックはもはやモデルではなく、エージェント同士をどう協調させるかです。",
+      },
+      {
+        k: "02",
+        title: "A2A と MCP が標準化された",
+        body: "クロス エージェント プロトコルが収束し、マルチエージェントは工学的な問題からプロダクトの問題へと変わっています。",
+      },
+      {
+        k: "03",
+        title: "ガバナンスは購買のゲートになった",
+        body: "EU AI Act、OWASP Agentic Top 10。監査、HITL、RBAC はもはやオプションではありません。",
+      },
+      {
+        k: "04",
+        title: "ランタイムはコモディティ化している",
+        body: "四半期ごとに新しい「ベスト」ランタイムが登場します。勝つのはプラットフォーム層 — ランタイム ポータブルだけが安全な賭けです。",
+      },
+    ],
+  },
+  useCases: {
+    kicker: "ユースケース",
+    title: "ひとつのプラットフォーム、多様な形。",
+    intro:
+      "コードとして定義し、バージョン管理でき、フォーク可能、Marketplace に公開可能。同じ workspace.yml を dev、staging、prod に出荷しても、トポロジーは変わりません。",
+    cmdPrefix: "$ molecule deploy",
+    deploySteps: ["トポロジー検証完了", "エージェント プロビジョニング完了", "A2A ルート稼働中"],
+    cases: [
+      { id: "fintech", label: "Fintech · Series A", kicker: "9 エージェント · 14 プラグイン", yaml: USECASE_YAMLS.fintech },
+      { id: "soc", label: "セキュリティ オペレーション センター", kicker: "8 エージェント · 21 プラグイン", yaml: USECASE_YAMLS.soc },
+      { id: "lab", label: "リサーチ ラボ", kicker: "6 エージェント · 9 プラグイン", yaml: USECASE_YAMLS.lab },
+      { id: "creator", label: "ソロ クリエイター", kicker: "4 エージェント · 8 プラグイン", yaml: USECASE_YAMLS.creator },
+    ],
+  },
+  architecture: {
+    kicker: "アーキテクチャ",
+    title: "メモリは、リクエストではなく組織の形に従って広がります。",
+    description:
+      "LOCAL は「私が見たもの」、TEAM は「私たちが合意したこと」、GLOBAL は「組織が学んだこと」。3 つのスコープに、1 つの連続するメモリ — バージョン管理され、スコープされ、ランタイムをまたぎます。",
+    scopeLabel: "スコープ",
+    scopes: [
+      {
+        name: "LOCAL",
+        summary: "私が見たもの",
+        detail:
+          "エージェント単位、スレッド単位。アクティブなタスクのワーキング メモリです。スレッド クローズ時に TEAM へ自動的に蒸留されます。",
+      },
+      {
+        name: "TEAM",
+        summary: "私たちが合意したこと",
+        detail:
+          "ワークスペース スコープ。決定事項、規約、Runbook。同じロールを持つチームメイトに共有されます。",
+      },
+      {
+        name: "GLOBAL",
+        summary: "組織が学んだこと",
+        detail:
+          "ワークスペースをまたいだ知見。Hermes がキュレーションします。検索可能、ただしポリシーなしには書き込まれません。",
+      },
+    ],
+    hermesTitle: "Hermes — スキル蒸留レイヤー",
+    hermesSubtitle: "ランタイムと組織の間に立つ学習レイヤー。",
+    hermesSteps: [
+      "ランタイムをまたいで、すべての成功した軌跡を観察する",
+      "繰り返されるパターンを型付きスキルへ蒸留する",
+      "プラグイン、エージェント、組織テンプレートとして再公開する",
+    ],
+  },
+  adapters: {
+    kicker: "ランタイム",
+    title: "プラガブル、なんでもいける。",
+    subtitle:
+      "あなたが既に信頼しているランタイム、モデル、ツールチェインをそのまま持ち込んでください。コントロール プレーンだけが唯一の定数です。",
+    cards: [
+      {
+        title: "モデル プロバイダー",
+        headline: "どんなモデルでも、ロールごとにスコープ。",
+        detail:
+          "ロール単位で選び、トポロジーに触れずに切り替え可能。ロールはデフォルトを継承し、呼び出しごとに上書きできます。",
+        items: ["Anthropic Claude", "OpenAI", "NVIDIA Nemotron", "ローカル · Ollama / vLLM"],
+      },
+      {
+        title: "ランタイム アダプター",
+        headline: "どんなエージェント ランタイムでも、A2A を前面に。",
+        detail:
+          "アダプターが各ランタイムを同じ JSON-RPC エンベロープに包むため、Claude Code エージェントが CrewAI エージェントを呼び、それが LangGraph エージェントを呼ぶことができます。",
+        items: [
+          "Claude Code",
+          "OpenClaw",
+          "LangGraph",
+          "CrewAI",
+          "AutoGen",
+          "DeepAgents",
+          "Hermes",
+          "+ 自前のランタイム",
+        ],
+      },
+      {
+        title: "ツール · 評価 · 可観測性",
+        headline: "標準ファーストの配管。",
+        detail:
+          "ツールには MCP、トレースには OpenTelemetry、プロンプト レベルの評価には Langfuse、ポリシーには NeMo Guardrails。",
+        items: ["MCP ツール", "OpenTelemetry", "Langfuse", "NeMo Guardrails"],
+      },
+    ],
+  },
+  pillars: {
+    kicker: "プラットフォーム",
+    title: "PRD に書き込んだ 8 本の柱。",
+    items: [
+      { k: "F1", title: "Role > Task", body: "ワークフローではなく、組織図をモデリング。ロールがツール、メモリ スコープ、HITL ラダーを継承します。" },
+      { k: "F2", title: "再帰的なチーム", body: "エージェントは権限の範囲内でサブチームを立ち上げられます。組織は生きた木のように成長します。" },
+      { k: "F3", title: "組織 = トポロジー", body: "すべてのワークスペースはバージョン管理されたグラフです。Diff し、ブランチを切り、共有し、販売できます。" },
+      { k: "F4", title: "分散 A2A", body: "エージェントは JSON-RPC 2.0 で直接対話します。プラットフォームはルーティングするだけで、単一のボトルネックになりません。" },
+      { k: "F5", title: "4 層セキュリティ", body: "アイデンティティ · パーミッション · 監査 · 暗号化。AES-256-GCM エンベロープ、WorkOS OAuth。" },
+      { k: "F6", title: "段階的 HITL", body: "承認なし、シングル レビュアー、ダブル レビュアー。リスクで段階分けし、ロールごとに設定。" },
+      { k: "F7", title: "ワークスペース横断トレース", body: "OpenTelemetry + Langfuse — すべてのエージェントを横断するすべての呼び出しを、1 つのタイムラインで。" },
+      { k: "F8", title: "3 層 Marketplace", body: "Plugin · Agent · Org。GitHub Actions より 2 層、GPT Store より 2 層多い。" },
+    ],
+  },
+  whatShips: {
+    kicker: "出荷物",
+    title: "オープンコア スタック、本番品質。",
+    subtitle:
+      "Canvas はあなたのブラウザで動き、Platform はあなたのテナントで動きます。どちらもオープンコアです。",
+    columns: [
+      {
+        label: "Canvas",
+        name: "moleculesai.app",
+        stack: "Next.js 15 · React Flow · Zustand",
+        items: [
+          "diff / branch / merge 対応のトポロジー エディタ",
+          "キャンバス上にライブ A2A トレースをオーバーレイ",
+          "2 クリックで Marketplace からインストール",
+          "ロール · HITL · 監査をビジュアルに設定",
+        ],
+      },
+      {
+        label: "Platform",
+        name: "コントロール プレーン",
+        stack: "Go 1.25 · Gin · Postgres · Python 3.11 · Fly Machines",
+        items: [
+          "バックプレッシャー対応の JSON-RPC 2.0 A2A ルーター",
+          "3 層メモリ ストア(LOCAL / TEAM / GLOBAL)",
+          "WorkOS OAuth · AES-256-GCM シークレット エンベロープ",
+          "OpenTelemetry パイプライン + Langfuse アダプター",
+        ],
+      },
+    ],
+  },
+  marketplace: {
+    kicker: "Marketplace",
+    title: "ツールを買う。エージェントを雇う。あるいは、部門ごと取り込む。",
+    openMarketplace: "Marketplace を開く →",
+    browse: "見る →",
+    tiers: [
+      { tag: "L1", title: "Plugin", desc: "ツール、ガードレール、コンプライアンス フック。任意のエージェントに差し込めます。", count: "21 個のファースト パーティ · まもなくサード パーティに開放", glyph: "plugin" },
+      { tag: "L2", title: "Agent", desc: "事前学習済みのロール:税務 CPA、SOC アナリスト、PM、QA。トレーニング不要、雇うだけ。", count: "8 個の認定済みロールがベータ提供中", glyph: "agent" },
+      { tag: "L3", title: "Org Bundle", desc: "部門まるごと:エージェント、プラグイン、トポロジー、HITL ラダー。", count: "6 個のテンプレートを公開", glyph: "org" },
+    ],
+  },
+  creator: {
+    kicker: "クリエイター向け",
+    title: "作って、出品して、稼ぐ。",
+    subtitle:
+      "プラグイン、エージェント、組織バンドルは署名付きマニフェストとして出荷されます。Stripe Connect が支払いを処理。作者の取り分は 80%。",
+    steps: [
+      {
+        number: "01",
+        title: "Build",
+        description:
+          "ファースト パーティ カタログを出荷しているのと同じ SDK に対して開発します。テスト同梱。",
+      },
+      {
+        number: "02",
+        title: "List",
+        description:
+          "マニフェストに署名し、価格を設定し、ティアを選びます。L2 と L3 は審査付き。",
+      },
+      {
+        number: "03",
+        title: "Earn",
+        description:
+          "80% のレベニュー シェア。Stripe Connect で支払い。新バージョンはいつでも再公開可能です。",
+      },
+    ],
+    primaryCta: { label: "Marketplace で公開する →", href: "https://market.moleculesai.app" },
+    secondaryCta: { label: "Author Guide を読む", href: "https://doc.moleculesai.app/marketplace" },
+  },
+  comparison: {
+    kicker: "私たちの立ち位置",
+    title: "フレームワークではなく、Ops でもなく、Zapier でもない。",
+    capability: "機能",
+    cols: ["Molecule", "エージェント フレームワーク", "LLM Ops", "ワークフロー ツール"],
+    rows: [
+      ["マルチエージェント トポロジー、ネイティブ", "✓", "—", "✓", "partial"],
+      ["ランタイム ポータブル", "✓", "ランタイム固定", "—", "—"],
+      ["A2A プロトコル", "✓", "—", "—", "—"],
+      ["3 層 Marketplace", "✓", "—", "—", "—"],
+      ["監査ログ · EU AI Act 対応", "✓", "partial", "—", "partial"],
+      ["HITL ティア", "✓", "—", "—", "partial"],
+      ["組織テンプレートのバージョン管理", "✓", "—", "—", "—"],
+    ],
+  },
+  faq: {
+    kicker: "FAQ",
+    title: "よくある質問。",
+    items: [
+      [
+        "なぜ 1 体のスーパー エージェントで済ませないのですか?",
+        "コンテキスト汚染とハルシネーションは複合的に悪化します。専門化されたエージェントが各自のコンテキスト ウィンドウで働く構図は、人類史上のあらゆる大規模組織が採用してきた形であり、言語モデルが鋭さを保つための形でもあります。",
+      ],
+      [
+        "来年もっと優れたランタイムが登場したら?",
+        "差し替えればよいだけです。ロール、メモリ、トポロジーは抽象化されています。アダプターがランタイムを接続するため、移行時に設定は変わりません。",
+      ],
+      [
+        "売り手にとって Marketplace はどう機能しますか?",
+        "Plugin、Agent、Org の 3 ティア。価格を設定し、署名付きマニフェストを出荷し、Stripe Connect で支払いを受け取ります。当社の手数料は 20% です。",
+      ],
+      [
+        "セルフ ホスト可能ですか?",
+        "はい — 同じコントロール プレーンで完全なプライベート デプロイが可能です。規制業界では一般的で、データはあなたのテナントから出ません。",
+      ],
+      [
+        "どのプロトコルをサポートしていますか?",
+        "エージェント間呼び出しには A2A(JSON-RPC 2.0)、ツール公開には MCP、トレースには OpenTelemetry。",
+      ],
+    ],
+  },
+  final: {
+    h2Lead: "エージェントの配線をやめましょう。",
+    h2Highlight: "組織を運営し始めましょう。",
+    lede:
+      "パブリック ベータ期間中は無料。SaaS でもセルフ ホストでも。あなたのランタイム、あなたのチームを持ち込んでください — 組織は当社が用意します。",
+    primaryCta: "Marketplace を見る",
+    secondaryCta: "Canvas を開く",
+  },
+  footer: {
+    tagline:
+      "AI エージェント組織のためのオペレーティング システム。初日から組織の形で構築・デプロイ・統治を。",
+    sections: [
+      { heading: "プロダクト", items: ["Canvas", "Platform API", "コントロール プレーン", "カスタマー アプリ"] },
+      { heading: "Marketplace", items: ["Plugins (L1)", "Agents (L2)", "Org Bundles (L3)", "公開する"] },
+      { heading: "ランタイム", items: ["LangGraph", "Claude Code", "CrewAI", "AutoGen", "+8 種"] },
+      { heading: "Trust", items: ["EU AI Act", "OWASP", "SOC 2(進行中)", "監査ログ"] },
+    ],
+    legal: "© 2026 Molecule AI · 多智能体組織ガバナンス プラットフォーム",
+    version: "moleculesai.app · v2026.4",
+  },
+};
+
+export const landingContent: Record<"en" | "zh" | "fr" | "ja", LandingContent> = {
   en: enContent,
   zh: zhContent,
   fr: frContent,
+  ja: jaContent,
 };
