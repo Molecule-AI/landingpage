@@ -1973,6 +1973,27 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] .v2-compare-row[data-sweep] {
     background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 6%, transparent) 0%, transparent 30%);
   }
+  /* Scanning a 5-column matrix row-by-row is the standard
+     investor-due-diligence motion. Highlight the row under the
+     cursor so the reader's eye doesn't lose its place when
+     comparing values across columns. The .is-us column (Molecule's
+     own values) gets a stronger accent tint so the win cells stand
+     out when the user is mid-scan. */
+  :root[data-theme] .v2-compare-row:not(.v2-compare-head):hover {
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--accent) 10%, transparent) 0%,
+      color-mix(in srgb, var(--accent) 4%, transparent) 100%
+    );
+  }
+  /* The Molecule (us) column is the second grid cell — capability is
+     first, then the four vendor columns. Make the us-cell pop on
+     hover so the answer reading "what does Molecule do for this
+     capability" lands fast. */
+  :root[data-theme] .v2-compare-row:not(.v2-compare-head):hover > div:nth-child(2) {
+    color: var(--accent);
+    font-weight: 700;
+  }
 
   /* FAQ */
   :root[data-theme] .v2-faq { display: flex; flex-direction: column; gap: 8px; }
