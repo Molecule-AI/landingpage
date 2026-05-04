@@ -2786,6 +2786,12 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
 
     // Edges first so nodes paint over them.
     const edges: SVGElement[] = [];
+    // Track HITL chip wrappers per-agent index so drag can move them
+    // along with the edge midpoint they're anchored to. Sparse — only
+    // agents that triggered a HITL rule get an entry.
+    const hitlWrappers = new Map<number, SVGElement>();
+    // Track per-agent position wrappers + drag state.
+    const agentPositionGs: SVGElement[] = new Array(slots.length);
     positions.forEach((p, i) => {
       const dx = p.x - cx;
       const dy = p.y - cy;
@@ -2833,6 +2839,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         const positionG = el("g", {
           transform: `translate(${mx} ${my})`,
         }, ucSvg);
+        hitlWrappers.set(i, positionG);
         const g = el("g", {
           class: "v2-uc-anim",
           "data-anim": "hitl",
@@ -2866,6 +2873,11 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       const positionG = el("g", {
         transform: `translate(${p.x} ${p.y})`,
       }, ucSvg);
+      // Track for drag-to-rearrange (mirrors the hero topology drag —
+      // PR #101 — but adapted to the use-case diagram's per-agent
+      // positionG / edges[i] / hitlWrappers shape).
+      agentPositionGs[i] = positionG;
+      positionG.style.cursor = "grab";
       const g = el("g", {
         class: "v2-uc-anim",
         "data-anim": `agent-${i}`,
@@ -3050,6 +3062,70 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     const edgeDelay = 220 + agentNodes.length * 80;
     reveal('[data-anim="edge"]', edgeDelay, 50);
     reveal('[data-anim="hitl"]', edgeDelay + 200, 60);
+
+    // Drag-to-rearrange agents (same shape as the hero topology drag,
+    // PR #101). Each agent's positionG carries cursor:grab; pointerdown
+    // captures and tracks {idx, offX, offY}. pointermove updates the
+    // positionG transform, the org→agent edge endpoint, and the HITL
+    // chip midpoint if one is anchored to that edge. Reduced-motion
+    // skips drag binding to match the entrance-animation skip below.
+    if (!prefersReducedMotion) {
+      const screenToSvg = (clientX: number, clientY: number) => {
+        const rect = ucSvg.getBoundingClientRect();
+        return {
+          x: ((clientX - rect.left) / rect.width) * W,
+          y: ((clientY - rect.top) / rect.height) * H,
+        };
+      };
+      let drag: { idx: number; offX: number; offY: number } | null = null;
+      const onDown = (idx: number) => (e: PointerEvent) => {
+        e.preventDefault();
+        const pt = screenToSvg(e.clientX, e.clientY);
+        drag = { idx, offX: pt.x - positions[idx].x, offY: pt.y - positions[idx].y };
+        agentPositionGs[idx].style.cursor = "grabbing";
+        try { ucSvg.setPointerCapture(e.pointerId); } catch { /* noop */ }
+      };
+      agentPositionGs.forEach((pg, i) => pg.addEventListener("pointerdown", onDown(i)));
+      ucSvg.addEventListener("pointermove", (e) => {
+        if (!drag) return;
+        const pt = screenToSvg(e.clientX, e.clientY);
+        // Clamp inside the viewBox with a 30px margin so labels/chips
+        // don't clip when dragged to the edge.
+        const nx = Math.max(30, Math.min(W - 30, pt.x - drag.offX));
+        const ny = Math.max(30, Math.min(H - 30, pt.y - drag.offY));
+        positions[drag.idx].x = nx;
+        positions[drag.idx].y = ny;
+        agentPositionGs[drag.idx].setAttribute("transform", `translate(${nx} ${ny})`);
+        // Recompute the edge endpoints for this agent. Org-side stays
+        // anchored at orgR from cx/cy in the new direction; agent-side
+        // sits at agentR inside the new position so the line touches
+        // the circle edge, not the center.
+        const dx = nx - cx, dy = ny - cy;
+        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+        const ux = dx / len, uy = dy / len;
+        const x1 = cx + ux * orgR, y1 = cy + uy * orgR;
+        const x2 = nx - ux * agentR, y2 = ny - uy * agentR;
+        const ln = edges[drag.idx] as SVGLineElement;
+        ln.setAttribute("x1", String(x1));
+        ln.setAttribute("y1", String(y1));
+        ln.setAttribute("x2", String(x2));
+        ln.setAttribute("y2", String(y2));
+        ln.style.transformOrigin = `${x1}px ${y1}px`;
+        // Move HITL chip with edge midpoint if one is anchored here.
+        const hitl = hitlWrappers.get(drag.idx);
+        if (hitl) {
+          hitl.setAttribute("transform", `translate(${(x1 + x2) / 2} ${(y1 + y2) / 2})`);
+        }
+      });
+      const endDrag = (e: PointerEvent) => {
+        if (!drag) return;
+        agentPositionGs[drag.idx].style.cursor = "grab";
+        try { ucSvg.releasePointerCapture(e.pointerId); } catch { /* noop */ }
+        drag = null;
+      };
+      ucSvg.addEventListener("pointerup", endDrag);
+      ucSvg.addEventListener("pointercancel", endDrag);
+    }
   };
 
   const playTab = (id: string) => {
