@@ -115,10 +115,12 @@ const tierGlyphs: Record<string, string> = {
       </div>
       <div class="v2-grid-4">
         {c.whyNow.reasons.map((r, i) => (
-          <div class="v2-card v2-card-hover" data-reveal data-delay={i * 90}>
-            <div class="v2-keynum">{r.k}</div>
-            <h3 class="v2-card-title">{r.title}</h3>
-            <p class="v2-card-body">{r.body}</p>
+          <div data-reveal data-delay={i * 90}>
+            <SpotlightCard client:visible className="v2-card v2-card-hover h-full" spotlightColor="rgba(127,232,214,0.14)">
+              <div class="v2-keynum">{r.k}</div>
+              <h3 class="v2-card-title">{r.title}</h3>
+              <p class="v2-card-body">{r.body}</p>
+            </SpotlightCard>
           </div>
         ))}
       </div>
