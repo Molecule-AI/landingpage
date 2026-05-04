@@ -1,0 +1,75 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ShapeGrid from "../components/ShapeGrid.astro";
+import ThemeToggle from "../components/ThemeToggle.tsx";
+
+// Astro builds a single static /404.html. Locale-routing is per-request;
+// the 404 fires before any locale segment is matched, so it's English-
+// default. The Layout's locale prop drives htmlLang + theme cookie
+// resolution; English locale here means cooke-set theme still applies
+// because the boot script reads the cookie before any locale logic.
+const locale = "en" as const;
+---
+
+<Layout
+  locale={locale}
+  title="404 — Page not found · Molecule AI"
+  description="That URL didn't match anything on Molecule AI. Try the homepage, GitHub, or docs."
+>
+  <header class="sticky top-0 z-50 border-b border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink)]/85 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+      <a
+        href="/"
+        class="flex items-center gap-2.5 text-base font-semibold tracking-tight text-[color:var(--color-fg)]"
+        aria-label="Molecule AI home"
+      >
+        <img src="/logo.svg" alt="" width="28" height="28" loading="eager" decoding="async" />
+        <span>Molecule<span class="text-[color:var(--color-mint)]"> AI</span></span>
+      </a>
+      <ThemeToggle client:idle />
+    </div>
+  </header>
+
+  <main class="relative">
+    <ShapeGrid class="-z-10 opacity-60" />
+
+    <section class="relative pt-24 pb-24 sm:pt-32 sm:pb-32">
+      <div class="mx-auto max-w-2xl px-6 text-center">
+        <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--color-mint)]">
+          Error 404
+        </p>
+        <h1 class="mt-5 text-balance text-4xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-6xl">
+          Lost in the topology.
+        </h1>
+        <p class="mx-auto mt-6 max-w-md text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+          That URL didn't route to anything live. The page may have been deleted, renamed, or never shipped.
+          Pick a known good destination below.
+        </p>
+        <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href="/"
+            class="inline-flex items-center justify-center gap-2 rounded-md bg-[color:var(--color-fg)] px-5 py-2.5 text-sm font-semibold text-[color:var(--color-bg)] transition-opacity hover:opacity-90"
+          >
+            Go home →
+          </a>
+          <a
+            href="https://github.com/Molecule-AI/molecule-monorepo"
+            class="inline-flex items-center justify-center gap-2 rounded-md border border-[color:var(--color-ink-border-strong)] bg-transparent px-5 py-2.5 text-sm font-semibold text-[color:var(--color-fg)] transition-colors hover:bg-[color:var(--color-ink-soft)]/40"
+            rel="noopener"
+            target="_blank"
+          >
+            View on GitHub
+          </a>
+          <a
+            href="https://doc.moleculesai.app"
+            class="inline-flex items-center justify-center gap-2 rounded-md border border-[color:var(--color-ink-border-strong)] bg-transparent px-5 py-2.5 text-sm font-semibold text-[color:var(--color-fg)] transition-colors hover:bg-[color:var(--color-ink-soft)]/40"
+            rel="noopener"
+            target="_blank"
+          >
+            Read the docs
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
