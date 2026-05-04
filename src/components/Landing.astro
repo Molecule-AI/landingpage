@@ -1234,15 +1234,36 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
-  :root[data-theme] .v2-stat-row > div { display: flex; align-items: baseline; gap: 6px; }
+  :root[data-theme] .v2-stat-row > div {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    /* Each stat pops on hover — counter scales up to draw the eye,
+       label tints accent. The 4 hero stats are the page's most-glanced
+       numbers; making them feel reactive primes investors to scan
+       the rest of the page expecting interactivity. */
+    transition: transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+    cursor: default;
+  }
+  :root[data-theme] .v2-stat-row > div:hover { transform: translateY(-1px); }
   :root[data-theme] .v2-counter {
     font-size: 22px;
     color: var(--ink);
     font-weight: 600;
     text-transform: none;
     font-family: "Geist", sans-serif;
+    transition: color 0.2s ease, transform 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transform-origin: left center;
   }
-  :root[data-theme] .v2-stat-row em { font-style: normal; }
+  :root[data-theme] .v2-stat-row > div:hover .v2-counter {
+    color: var(--accent);
+    transform: scale(1.06);
+  }
+  :root[data-theme] .v2-stat-row em {
+    font-style: normal;
+    transition: color 0.2s ease;
+  }
+  :root[data-theme] .v2-stat-row > div:hover em { color: var(--ink); }
   :root[data-theme] .v2-hero-card {
     background: var(--bgElev);
     border: 1px solid var(--line);
