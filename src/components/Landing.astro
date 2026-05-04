@@ -928,8 +928,29 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     cursor: pointer;
     color: inherit;
     text-decoration: none;
+    /* Grow-from-left underline on hover. Pseudo-element so the link
+       text doesn't shift when the underline appears. transition on
+       transform's scaleX is GPU-accelerated and crisp at any zoom. */
+    position: relative;
+    transition: color 0.18s ease;
+  }
+  :root[data-theme] .v2-nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1.5px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   :root[data-theme] .v2-nav-links a:hover { color: var(--ink); }
+  :root[data-theme] .v2-nav-links a:hover::after,
+  :root[data-theme] .v2-nav-links a:focus-visible::after {
+    transform: scaleX(1);
+  }
   :root[data-theme] .v2-nav-cta { display: flex; gap: 8px; align-items: center; }
 
   /* Locale dropdown — native <details> for click-out + a11y. */
