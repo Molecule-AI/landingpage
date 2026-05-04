@@ -142,6 +142,11 @@ const jsonLd = {
     {/* Both modes are supported — tells the browser to render form
         controls + scrollbars correctly in either. */}
     <meta name="color-scheme" content="light dark" />
+    {/* Disable iOS Safari's auto-link of digit-shaped strings as
+        phone/date/address. The page has many numbers (Phase 35,
+        4500+ tests, 200+ endpoints) that iOS otherwise renders as
+        tappable phone numbers, hurting both visual and tap-target UX. */}
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
     {/* Two theme-color values keyed by user pref so iOS/Android
         chrome adopt the right hue regardless of which theme the
         boot script resolves to. */}
