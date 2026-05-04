@@ -351,10 +351,12 @@ const tierGlyphs: Record<string, string> = {
       </div>
       <div class="v2-grid-3">
         {c.creator.steps.map((step, i) => (
-          <div class="v2-creator-step" data-reveal data-delay={i * 100}>
-            <div class="v2-creator-num">{step.number}</div>
-            <h3 class="v2-card-title">{step.title}</h3>
-            <p class="v2-card-body">{step.description}</p>
+          <div data-reveal data-delay={i * 100}>
+            <SpotlightCard client:visible className="v2-creator-step h-full" spotlightColor="rgba(127,232,214,0.14)">
+              <div class="v2-creator-num">{step.number}</div>
+              <h3 class="v2-card-title">{step.title}</h3>
+              <p class="v2-card-body">{step.description}</p>
+            </SpotlightCard>
           </div>
         ))}
       </div>
