@@ -1842,6 +1842,10 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 22px;
+    /* perspective on the parent so the inner cards rotateX/Y toward
+       cursor without clipping. JS sets --tilt-x/y on each .v2-ship-card
+       on pointermove (mirrors the tier-card pattern in PR #106). */
+    perspective: 1100px;
   }
   :root[data-theme] .v2-ship-card {
     padding: 28px;
@@ -1851,6 +1855,13 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     display: flex;
     flex-direction: column;
     gap: 18px;
+    transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.25s ease;
+  }
+  :root[data-theme] .v2-ship-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
   }
   :root[data-theme] .v2-ship-head h3 { margin: 6px 0 4px; font-size: 22px; letter-spacing: -0.014em; }
   :root[data-theme] .v2-ship-stack {
@@ -2158,20 +2169,31 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // 3D tilt-on-hover for the marketplace tier cards (L1 / L2 / L3).
-  // Cursor position relative to card center → rotateX/Y CSS vars set
-  // on the .v2-tier-card-link wrapper (which carries the perspective).
-  // pointerleave snaps back to 0deg via a CSS transition. Disabled
-  // under prefers-reduced-motion (a 3D rotation is exactly the kind
-  // of motion WCAG 2.3.3 calls out).
+  // 3D tilt-on-hover for the marketplace tier cards AND the WhatShips
+  // Canvas/Platform columns. Cursor position relative to card center →
+  // rotateX/Y CSS vars set on the .v2-tier-card / .v2-ship-card itself
+  // (the parent wrapper carries the perspective). pointerleave snaps
+  // back to 0deg via a CSS transition. Disabled under prefers-reduced-
+  // motion (a 3D rotation is exactly the kind of motion WCAG 2.3.3
+  // calls out).
+  //
+  // Tilt targets are described by a list of {wrapper, cardSelector,
+  // maxDeg} so different sections can tune their tilt amplitude — the
+  // tier cards are smaller + clickable so 6° feels right; the ship
+  // cards are larger + denser so 4° is plenty.
   if (!prefersReducedMotion) {
-    const tilters = Array.from(
-      document.querySelectorAll<HTMLElement>(".v2-tier-card-link"),
-    );
-    tilters.forEach((wrap) => {
-      const card = wrap.querySelector<HTMLElement>(".v2-tier-card");
-      if (!card) return;
-      const maxDeg = 6; // peak tilt angle at the card edge
+    type TiltTarget = { wrapper: HTMLElement; card: HTMLElement; maxDeg: number };
+    const tilters: TiltTarget[] = [];
+    document.querySelectorAll<HTMLElement>(".v2-tier-card-link").forEach((w) => {
+      const c = w.querySelector<HTMLElement>(".v2-tier-card");
+      if (c) tilters.push({ wrapper: w, card: c, maxDeg: 6 });
+    });
+    document.querySelectorAll<HTMLElement>(".v2-ship-card").forEach((c) => {
+      // Ship cards have no separate wrapper — the .v2-ships-grid
+      // parent carries the perspective, so we listen on the card itself.
+      tilters.push({ wrapper: c, card: c, maxDeg: 4 });
+    });
+    tilters.forEach(({ wrapper, card, maxDeg }) => {
       let pending = false;
       let lastX = 0, lastY = 0;
       const apply = () => {
@@ -2198,8 +2220,8 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         card.style.setProperty("--tilt-x", "0deg");
         card.style.setProperty("--tilt-y", "0deg");
       };
-      wrap.addEventListener("pointermove", onMove, { passive: true });
-      wrap.addEventListener("pointerleave", onLeave);
+      wrapper.addEventListener("pointermove", onMove, { passive: true });
+      wrapper.addEventListener("pointerleave", onLeave);
     });
   }
 
