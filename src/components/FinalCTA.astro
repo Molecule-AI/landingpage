@@ -1,6 +1,7 @@
 ---
 import { content, type Locale } from "../i18n";
 import ShapeGrid from "./ShapeGrid.astro";
+import BlurText from "./reactbits/BlurText";
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = content[locale].finalCta;
@@ -23,8 +24,10 @@ const c = content[locale].finalCta;
     <span class="mol-eyebrow">{c.eyebrow}</span>
 
     <h2 class="mt-6 text-balance text-3xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-4xl lg:text-6xl">
-      {c.titleTop}
-      <span class="mol-gradient-text block pt-2">{c.titleBottom}</span>
+      <BlurText client:visible text={c.titleTop} delay={70} className="justify-center" />
+      <span class="mol-gradient-text block pt-2">
+        <BlurText client:visible text={c.titleBottom} delay={70} className="justify-center" />
+      </span>
     </h2>
 
     <p class="mx-auto mt-6 max-w-xl text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
