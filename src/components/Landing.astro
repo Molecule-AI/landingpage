@@ -316,12 +316,21 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         <div class="v2-usecase-diagram" data-usecase-diagram>
           <div class="v2-usecase-diagram-chrome">
             <span data-diagram-title>workspace.topology</span>
-            <button
-              type="button"
-              class="v2-usecase-diagram-toggle"
-              data-diagram-toggle
-              aria-pressed="false"
-            >show YAML</button>
+            <span class="v2-usecase-diagram-actions">
+              <button
+                type="button"
+                class="v2-usecase-diagram-toggle"
+                data-diagram-reset
+                aria-label="Reset diagram layout"
+                title="Reset layout"
+              >↻ reset</button>
+              <button
+                type="button"
+                class="v2-usecase-diagram-toggle"
+                data-diagram-toggle
+                aria-pressed="false"
+              >show YAML</button>
+            </span>
           </div>
           <div class="v2-usecase-diagram-stage" data-diagram-stage>
             <svg
@@ -1456,6 +1465,10 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     font-size: 10.5px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
+  }
+  :root[data-theme] .v2-usecase-diagram-actions {
+    display: inline-flex;
+    gap: 6px;
   }
   :root[data-theme] .v2-usecase-diagram-toggle {
     background: transparent;
@@ -3299,9 +3312,13 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     }
   };
 
+  // Track the currently-active tab so the reset button can re-render
+  // the diagram for whichever tab the user is on.
+  let currentTabId = "";
   const playTab = (id: string) => {
     const data = yamlCache.get(id);
     if (!data) return;
+    currentTabId = id;
     if (metaKicker) metaKicker.textContent = data.kicker;
     if (metaLabel) metaLabel.textContent = data.label;
     if (cmdEl) cmdEl.textContent = data.deploy;
@@ -3324,6 +3341,17 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       deployTimers.push(setTimeout(() => deploySteps[idx]?.setAttribute("data-on", "true"), d));
     });
   };
+
+  // Reset-layout button: re-render the current tab's diagram, restoring
+  // every dragged agent to its computed-on-the-ring position. Cheaper
+  // than tracking initial positions per agent — renderDiagram already
+  // computes them deterministically from slots/ringR/cx/cy.
+  const ucReset = document.querySelector<HTMLButtonElement>("[data-diagram-reset]");
+  if (ucReset) {
+    ucReset.addEventListener("click", () => {
+      if (currentTabId) playTab(currentTabId);
+    });
+  }
 
   // Show-YAML toggle: flip the diagram container into yaml-mode and back.
   if (ucToggle && ucDiagram) {
