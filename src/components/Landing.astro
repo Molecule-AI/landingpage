@@ -1633,6 +1633,10 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     text-decoration: none;
     color: inherit;
     height: 100%;
+    /* perspective on the link so the inner .v2-tier-card can rotateX/Y
+       toward the cursor without clipping. JS sets --tilt-x/y on the
+       link element on pointermove (see scripts block). */
+    perspective: 800px;
   }
   :root[data-theme] .v2-tier-card {
     display: block;
@@ -1641,14 +1645,22 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     border: 1px solid var(--line);
     border-radius: 10px;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+    /* Compose the existing translateY(-4px) hover-lift with the
+       cursor-tracked rotateX/rotateY. CSS vars resolve to 0deg when
+       the cursor is off the card so the card rests flat. */
+    transform: translateY(0) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-style: preserve-3d;
+    transition: all 0.18s cubic-bezier(0.2, 0.7, 0.2, 1);
     text-decoration: none;
     color: inherit;
     height: 100%;
   }
   :root[data-theme] .v2-tier-card:hover {
     border-color: var(--accent);
-    transform: translateY(-4px);
+    /* Hover composes the lift with the JS-driven tilt vars. Without
+       the rotateX/Y here, this rule would override the tilt-on-hover
+       and the card would snap flat the moment the cursor enters. */
+    transform: translateY(-4px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     box-shadow: 0 24px 60px -24px color-mix(in srgb, var(--accent) 33%, transparent);
   }
   :root[data-theme] .v2-tier-head {
@@ -2145,6 +2157,51 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 3D tilt-on-hover for the marketplace tier cards (L1 / L2 / L3).
+  // Cursor position relative to card center → rotateX/Y CSS vars set
+  // on the .v2-tier-card-link wrapper (which carries the perspective).
+  // pointerleave snaps back to 0deg via a CSS transition. Disabled
+  // under prefers-reduced-motion (a 3D rotation is exactly the kind
+  // of motion WCAG 2.3.3 calls out).
+  if (!prefersReducedMotion) {
+    const tilters = Array.from(
+      document.querySelectorAll<HTMLElement>(".v2-tier-card-link"),
+    );
+    tilters.forEach((wrap) => {
+      const card = wrap.querySelector<HTMLElement>(".v2-tier-card");
+      if (!card) return;
+      const maxDeg = 6; // peak tilt angle at the card edge
+      let pending = false;
+      let lastX = 0, lastY = 0;
+      const apply = () => {
+        pending = false;
+        const r = card.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        // Inverted axes: cursor on the right tilts the card right
+        // (rotateY > 0 toward cursor); cursor below tilts down
+        // (rotateX < 0 toward cursor in the perspective-camera model).
+        const dx = (lastX - cx) / (r.width / 2);
+        const dy = (lastY - cy) / (r.height / 2);
+        card.style.setProperty("--tilt-y", `${(dx * maxDeg).toFixed(2)}deg`);
+        card.style.setProperty("--tilt-x", `${(-dy * maxDeg).toFixed(2)}deg`);
+      };
+      const onMove = (e: PointerEvent) => {
+        lastX = e.clientX;
+        lastY = e.clientY;
+        if (pending) return;
+        pending = true;
+        requestAnimationFrame(apply);
+      };
+      const onLeave = () => {
+        card.style.setProperty("--tilt-x", "0deg");
+        card.style.setProperty("--tilt-y", "0deg");
+      };
+      wrap.addEventListener("pointermove", onMove, { passive: true });
+      wrap.addEventListener("pointerleave", onLeave);
+    });
+  }
 
   // Magnet-style cursor pull on the large primary CTAs. Listens
   // pointermove on document; when the cursor is within `radius` of a
