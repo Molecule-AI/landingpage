@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import ShapeGrid from "../components/ShapeGrid.astro";
 import ThemeToggle from "../components/ThemeToggle.tsx";
+import CheckIcon from "../components/icons/CheckIcon.astro";
 
 interface Props { locale?: "en" | "zh" }
 const { locale = "en" } = Astro.props;
@@ -20,7 +21,7 @@ const { locale = "en" } = Astro.props;
         class="flex items-center gap-2.5 text-base font-semibold tracking-tight text-[color:var(--color-fg)]"
         aria-label="Molecule AI home"
       >
-        <img src="/logo.png" alt="" width="28" height="28" class="rounded-lg" loading="eager" decoding="async" />
+        <img src="/logo.svg" alt="" width="28" height="28" loading="eager" decoding="async" />
         <span>Molecule<span class="text-[color:var(--color-mint)]"> AI</span></span>
       </a>
       <ThemeToggle client:idle />
@@ -67,7 +68,7 @@ const { locale = "en" } = Astro.props;
                 "Community support on GitHub",
               ].map(item => (
                 <li class="flex items-start gap-2 text-sm text-[color:var(--color-fg-muted)]">
-                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <CheckIcon class="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" />
                   {item}
                 </li>
               ))}
@@ -99,7 +100,7 @@ const { locale = "en" } = Astro.props;
                 "Email & Slack support",
               ].map(item => (
                 <li class="flex items-start gap-2 text-sm text-[color:var(--color-fg-muted)]">
-                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <CheckIcon class="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" />
                   {item}
                 </li>
               ))}
@@ -129,7 +130,7 @@ const { locale = "en" } = Astro.props;
                 "Source code license available",
               ].map(item => (
                 <li class="flex items-start gap-2 text-sm text-[color:var(--color-fg-muted)]">
-                  <svg class="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <CheckIcon class="mt-0.5 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" />
                   {item}
                 </li>
               ))}
