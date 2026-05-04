@@ -392,10 +392,12 @@ const tierGlyphs: Record<string, string> = {
   {/* COMPARISON */}
   <section class="v2-section">
     <div class="v2-container v2-narrow">
-      <div class="v2-section-head" data-reveal>
+      <div class="v2-section-head">
         <div>
-          <div class="v2-kicker">{c.comparison.kicker}</div>
-          <h2 class="v2-h2">{c.comparison.title}</h2>
+          <div class="v2-kicker" data-reveal>{c.comparison.kicker}</div>
+          <h2 class="v2-h2">
+            <BlurText client:visible text={c.comparison.title} delay={60} />
+          </h2>
         </div>
       </div>
       <div class="v2-compare" data-reveal>
