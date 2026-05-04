@@ -189,11 +189,13 @@ const tierGlyphs: Record<string, string> = {
   {/* ARCHITECTURE — three-tier memory + Hermes */}
   <section class="v2-section">
     <div class="v2-container">
-      <div class="v2-section-head" data-reveal>
+      <div class="v2-section-head">
         <div>
-          <div class="v2-kicker">{c.architecture.kicker}</div>
-          <h2 class="v2-h2">{c.architecture.title}</h2>
-          <p class="v2-section-lede">{c.architecture.description}</p>
+          <div class="v2-kicker" data-reveal>{c.architecture.kicker}</div>
+          <h2 class="v2-h2">
+            <BlurText client:visible text={c.architecture.title} delay={60} />
+          </h2>
+          <p class="v2-section-lede" data-reveal data-delay={120}>{c.architecture.description}</p>
         </div>
       </div>
       <div class="v2-grid-3">
