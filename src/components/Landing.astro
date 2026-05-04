@@ -339,8 +339,10 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
                 <p class="v2-ship-stack">{col.stack}</p>
               </div>
               <ul class="v2-ship-list">
-                {col.items.map((item) => (
-                  <li><span class="check">✓</span>{item}</li>
+                {col.items.map((item, j) => (
+                  <li data-reveal data-delay={i * 120 + 240 + j * 70}>
+                    <span class="check" aria-hidden="true">✓</span>{item}
+                  </li>
                 ))}
               </ul>
             </SpotlightCard>
