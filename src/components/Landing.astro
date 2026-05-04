@@ -3006,7 +3006,15 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       return { g, halo, dot };
     });
 
+    // IO-gated rAF: animate() chains itself via requestAnimationFrame.
+    // When the SVG scrolls offscreen we flip animActive=false so the
+    // next chain call returns early and the loop stops. When it scrolls
+    // back into view, the IO callback restarts the chain. Saves the
+    // ~20-element-per-frame attribute writes on every page after the
+    // user scrolls past the hero (which is most of the time).
+    let animActive = true;
     const animate = () => {
+      if (!animActive) return;
       const time = performance.now() / 1000;
       [rootN, ...midNs, ...leafNs].forEach((n, i) => {
         const breathe = Math.sin(time * 1.4 + i * 0.3) * 1.2;
@@ -3070,6 +3078,20 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       });
     } else {
       requestAnimationFrame(animate);
+      // Pause the rAF chain when the SVG scrolls offscreen so the live-
+      // topology animation isn't burning CPU on every page below the
+      // hero. 100px rootMargin restarts a tick before it re-enters
+      // view, hiding the resume from the user.
+      new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting && !animActive) {
+            animActive = true;
+            requestAnimationFrame(animate);
+          } else if (!e.isIntersecting && animActive) {
+            animActive = false;
+          }
+        }
+      }, { rootMargin: "100px" }).observe(tSvg);
     }
 
     // Theme-toggle reactivity: re-read the cached color vars when
