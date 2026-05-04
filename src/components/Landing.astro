@@ -2,6 +2,7 @@
 import { landingContent, type LandingContent } from "../data/landing";
 import ThemeToggle from "./ThemeToggle.tsx";
 import BlurText from "./reactbits/BlurText";
+import SpotlightCard from "./reactbits/SpotlightCard";
 
 interface Props {
   locale: "en" | "zh";
@@ -282,17 +283,19 @@ const tierGlyphs: Record<string, string> = {
       </div>
       <div class="v2-ships-grid">
         {c.whatShips.columns.map((col, i) => (
-          <div class="v2-ship-card" data-reveal data-delay={i * 120}>
-            <div class="v2-ship-head">
-              <span class="v2-kicker v2-kicker-accent">{col.label}</span>
-              <h3 class="v2-card-title">{col.name}</h3>
-              <p class="v2-ship-stack">{col.stack}</p>
-            </div>
-            <ul class="v2-ship-list">
-              {col.items.map((item) => (
-                <li><span class="check">✓</span>{item}</li>
-              ))}
-            </ul>
+          <div data-reveal data-delay={i * 120}>
+            <SpotlightCard client:visible className="v2-ship-card" spotlightColor="rgba(127,232,214,0.16)">
+              <div class="v2-ship-head">
+                <span class="v2-kicker v2-kicker-accent">{col.label}</span>
+                <h3 class="v2-card-title">{col.name}</h3>
+                <p class="v2-ship-stack">{col.stack}</p>
+              </div>
+              <ul class="v2-ship-list">
+                {col.items.map((item) => (
+                  <li><span class="check">✓</span>{item}</li>
+                ))}
+              </ul>
+            </SpotlightCard>
           </div>
         ))}
       </div>
