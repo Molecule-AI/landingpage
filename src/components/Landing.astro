@@ -316,10 +316,12 @@ const tierGlyphs: Record<string, string> = {
   <section id="marketplace" class="v2-section v2-section-ink v2-section-relative">
     <canvas data-particle data-density="0.00004" data-line="140" data-color="warm"></canvas>
     <div class="v2-container v2-section-relative">
-      <div class="v2-section-head" data-reveal>
+      <div class="v2-section-head">
         <div>
-          <div class="v2-kicker">{c.marketplace.kicker}</div>
-          <h2 class="v2-h2">{c.marketplace.title}</h2>
+          <div class="v2-kicker" data-reveal>{c.marketplace.kicker}</div>
+          <h2 class="v2-h2">
+            <BlurText client:visible text={c.marketplace.title} delay={60} />
+          </h2>
         </div>
         <a class="v2-btn v2-btn-primary" href="https://market.moleculesai.app"
           >{c.marketplace.openMarketplace}</a
