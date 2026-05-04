@@ -6,7 +6,7 @@ import BlurText from "./reactbits/BlurText";
 import SpotlightCard from "./reactbits/SpotlightCard";
 
 interface Props {
-  locale: "en" | "zh";
+  locale: "en" | "zh" | "fr";
 }
 
 const { locale } = Astro.props;
@@ -26,7 +26,7 @@ const tierGlyphs: Record<string, string> = {
     <span>{c.statusbar.phase}</span>
   </div>
   <div class="v2-nav-row">
-    <a class="v2-brand" href={locale === "zh" ? "/zh/" : "/"}>
+    <a class="v2-brand" href={locale === "zh" ? "/zh/" : locale === "fr" ? "/fr/" : "/"}>
       <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
         <circle cx="14" cy="6" r="2.5" fill="currentColor" />
         <circle cx="6" cy="20" r="2.5" fill="currentColor" />
