@@ -601,10 +601,15 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       </div>
       <div class="v2-faq">
         {c.faq.items.map(([q, a], i) => (
-          <details class="v2-faq-item" open={i === 0}>
+          /* `name="v2-faq"` makes this an exclusive accordion — opening
+             one item auto-closes the others (HTML 2024+ accordion
+             grouping, supported in Chrome 120+, Safari 17+, Firefox
+             138+). Older browsers fall through to "any can be open"
+             which is acceptable graceful degradation. */
+          <details class="v2-faq-item" name="v2-faq" open={i === 0}>
             <summary>
               <span>{q}</span>
-              <span class="plus">+</span>
+              <span class="plus" aria-hidden="true">+</span>
             </summary>
             <div class="v2-faq-a">{a}</div>
           </details>
