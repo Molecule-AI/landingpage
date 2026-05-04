@@ -1358,6 +1358,15 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     outline-offset: 4px;
     border-radius: 4px;
   }
+  /* When hovering a specific runtime tile, brighten its accent dot to
+     full opacity and start the v2-pulse halo. The marquee already
+     pauses on hover (#85) and the label tints accent (#104); the
+     dot pulse completes the "this is the active item" cue. */
+  :root[data-theme] .v2-marquee-item:hover .dot,
+  :root[data-theme] .v2-marquee-item:focus-visible .dot {
+    opacity: 1;
+    animation: v2-pulse 1.4s ease-out infinite;
+  }
 
   /* Cards */
   :root[data-theme] .v2-grid-4 {
