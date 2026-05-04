@@ -1,0 +1,36 @@
+# Molecule AI
+
+> Open-core control plane for heterogeneous AI agent teams. Workspaces are org roles, the org chart is topology, governance is built in. Seven runtimes, hierarchical memory, skill evolution, zero lock-in.
+
+Molecule AI lets engineering teams compose multi-agent systems by treating each AI agent as a workspace and the org chart as the topology. Adapter contracts let runtimes from Anthropic Claude Code, OpenAI Codex, LangGraph, CrewAI, AutoGen, NousResearch Hermes, OpenClaw, and others plug into the same control plane with one configuration shape. Memory is hierarchical (LOCAL workspace, TEAM, GLOBAL). A2A messaging routes between workspaces with audit trails. Available open-core under BSL 1.1, or hosted SaaS at $29/workspace/month with zero ops overhead.
+
+## Product
+- [Landing page](https://www.moleculesai.app/): Architecture overview, why-now, runtime adapters, hierarchical memory, FAQ.
+- [Pricing](https://www.moleculesai.app/pricing): Free open-core (self-host), Team SaaS ($29/workspace/mo), Enterprise (custom).
+- [Hosted Dashboard](https://app.moleculesai.app): Sign-in / canvas / workspace orchestration UI.
+- [Marketplace](https://market.moleculesai.app): Adapter / runtime listings.
+- [Documentation](https://doc.moleculesai.app): Architecture deep-dives, adapter authoring guide, deployment runbooks.
+- [API](https://api.moleculesai.app): REST + JSON-RPC control plane endpoints.
+
+## Source code
+- [molecule-monorepo (BSL 1.1)](https://github.com/Molecule-AI/molecule-monorepo): Open-core control plane, runtime adapters, canvas UI, MCP integrations.
+- [Workspace template repos](https://github.com/Molecule-AI): Per-runtime templates (claude-code, codex, hermes, openclaw) used by the provisioner to launch new workspaces.
+
+## Concepts
+- **Workspace**: One AI agent + its config, memory scope, and runtime container. A team's workspaces compose into an org tree.
+- **Runtime adapter**: Pluggable contract that lets any agent SDK (LangGraph, Claude Code, CrewAI, etc.) speak the same lifecycle + A2A protocol.
+- **Hierarchical memory**: LOCAL (per-workspace) → TEAM (sibling-shared) → GLOBAL (org-wide); writes propagate; reads cascade.
+- **A2A protocol**: Agent-to-agent JSON-RPC routed by the control plane between workspaces, with HITL gates and audit logs.
+- **Canvas**: Real-time visual editor of the agent topology — drag workspaces, draw connections, watch traffic.
+
+## Legal
+- [Privacy Policy](https://www.moleculesai.app/legal/privacy): Subprocessors (AWS us-east-2, Railway, Vercel, Neon, WorkOS, Stripe, Sentry, Langfuse), data retention, GDPR/CCPA rights.
+- [Terms of Service](https://www.moleculesai.app/legal/terms): Hosted SaaS terms; self-host governed by BSL 1.1.
+- [License (BSL 1.1)](https://github.com/Molecule-AI/molecule-monorepo/blob/main/LICENSE): Self-host freely except commercial resale as a competing hosted service.
+
+## Optional
+- [Status page](https://status.moleculesai.app): Uptime + incident history for the hosted SaaS.
+- [Locale: 中文](https://www.moleculesai.app/zh/): Simplified Chinese landing page.
+- [Locale: Français](https://www.moleculesai.app/fr/): French landing page.
+- [Locale: 日本語](https://www.moleculesai.app/ja/): Japanese landing page.
+- [Locale: Español](https://www.moleculesai.app/es/): Spanish landing page.
