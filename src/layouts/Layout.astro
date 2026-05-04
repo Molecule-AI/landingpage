@@ -29,38 +29,40 @@ const canonical = new URL(currentPath, site).toString();
 const imgUrl = new URL(image, site).toString();
 const imgType = image.endsWith(".jpg") || image.endsWith(".jpeg") ? "image/jpeg" : "image/png";
 
+// Map every locale to its OG facebook-style tag. Adding a locale here
+// (and to localePaths) auto-extends og:locale + og:locale:alternate
+// without another ternary.
 const OG_LOCALES: Record<Locale, string> = {
   en: "en_US",
   zh: "zh_CN",
   fr: "fr_FR",
   ja: "ja_JP",
+  es: "es_ES",
 };
 const ogLocale = OG_LOCALES[locale];
 const ogAlt = (Object.entries(OG_LOCALES) as [Locale, string][])
   .filter(([code]) => code !== locale)
   .map(([, val]) => val);
 
-// Logo is the LCP-critical hero element on the landing pages (/, /zh/),
+// Logo is the LCP-critical hero element on the landing pages (/, /zh/, /fr/, /es/),
 // where Landing.astro renders it at hero scale. On interior pages
 // (/pricing, /legal/terms) it's a 28×28 navbar mark — preloading it
 // there wastes a high-priority connection slot that should go to the
 // Inter woff2 fonts gating the real LCP (the page heading). Scope the
-// preload to homepages only.
+// preload to homepages only, derived from localePaths so adding a locale
+// auto-extends without a long pathname OR chain.
 const pathname = Astro.url.pathname;
-const isHomepage =
-  pathname === "/" ||
-  pathname === "/zh/" ||
-  pathname === "/zh" ||
-  pathname === "/fr/" ||
-  pathname === "/fr" ||
-  pathname === "/ja/" ||
-  pathname === "/ja";
+const homepagePaths = new Set(
+  Object.values(localePaths).flatMap((p) => (p === "/" ? [p] : [p, p.replace(/\/$/, "")])),
+);
+const isHomepage = homepagePaths.has(pathname);
 
 const alternates = [
   { hreflang: "en", href: new URL(localePaths.en, site).toString() },
   { hreflang: "zh-CN", href: new URL(localePaths.zh, site).toString() },
   { hreflang: "fr", href: new URL(localePaths.fr, site).toString() },
   { hreflang: "ja", href: new URL(localePaths.ja, site).toString() },
+  { hreflang: "es", href: new URL(localePaths.es, site).toString() },
   { hreflang: "x-default", href: new URL(localePaths.en, site).toString() },
 ];
 
@@ -92,11 +94,7 @@ const jsonLd = {
       name: "Molecule AI",
       description: c.siteMeta.description,
       publisher: { "@id": `${site}#org` },
-      inLanguage:
-        locale === "zh" ? "zh-CN"
-          : locale === "fr" ? "fr-FR"
-          : locale === "ja" ? "ja-JP"
-          : "en-US",
+      inLanguage: c.htmlLang,
     },
     {
       "@type": "SoftwareApplication",
@@ -220,7 +218,9 @@ const jsonLd = {
           ? "Aller au contenu principal"
           : locale === "ja"
             ? "メインコンテンツへスキップ"
-            : "Skip to main content"}
+            : locale === "es"
+              ? "Saltar al contenido principal"
+              : "Skip to main content"}
     </a>
     <slot />
     <script>

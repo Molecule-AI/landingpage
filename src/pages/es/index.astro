@@ -1,0 +1,16 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Landing from "../../components/Landing.astro";
+import { esContent } from "../../data/landing";
+
+const locale = "es" as const;
+---
+
+<Layout
+  locale={locale}
+  theme="light"
+  title={esContent.meta.title}
+  description={esContent.meta.description}
+>
+  <Landing locale={locale} />
+</Layout>
