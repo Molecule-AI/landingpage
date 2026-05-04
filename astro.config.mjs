@@ -28,6 +28,24 @@ export default defineConfig({
           es: 'es-ES',
         },
       },
+      // Per-URL priority + changefreq override. Marketing landing pages
+      // are the conversion target (priority 1.0, weekly); pricing is
+      // important but stable (0.7, monthly); legal pages exist for
+      // compliance — search engines should rank them low + index rarely
+      // (0.3, yearly).
+      serialize(item) {
+        const path = new URL(item.url).pathname;
+        if (path === '/' || /^\/(zh|es|fr|ja)\/$/.test(path)) {
+          return { ...item, priority: 1.0, changefreq: 'weekly' };
+        }
+        if (path === '/pricing/') {
+          return { ...item, priority: 0.7, changefreq: 'monthly' };
+        }
+        if (path.startsWith('/legal/')) {
+          return { ...item, priority: 0.3, changefreq: 'yearly' };
+        }
+        return item;
+      },
     }),
   ],
   vite: {
