@@ -1341,6 +1341,14 @@ const tierGlyphs: Record<string, string> = {
     border: 1px solid var(--line);
     border-radius: 8px;
     overflow: hidden;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  :root[data-theme] .v2-faq-item:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+    box-shadow: 0 4px 16px -8px color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+  :root[data-theme] .v2-faq-item[open] {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
   }
   :root[data-theme] .v2-faq-item summary {
     list-style: none;
@@ -1352,6 +1360,12 @@ const tierGlyphs: Record<string, string> = {
     font-size: 15px;
     font-weight: 500;
     color: var(--ink);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-faq-item,
+    :root[data-theme] .v2-faq-item:hover {
+      transition: none;
+    }
   }
   :root[data-theme] .v2-faq-item summary::-webkit-details-marker { display: none; }
   :root[data-theme] .v2-faq-item .plus {
