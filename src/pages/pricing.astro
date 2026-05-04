@@ -61,7 +61,7 @@ const { locale = "en" } = Astro.props;
               {[
                 "Full monorepo (Go + Python + Next.js)",
                 "Up to 5 workspaces",
-                "All 6 runtime adapters",
+                "All 9 runtime adapters",
                 "Hierarchical memory (LOCAL/TEAM/GLOBAL)",
                 "Canvas UI + 10-tab ops panel",
                 "MCP tools & A2A routing",
@@ -93,9 +93,9 @@ const { locale = "en" } = Astro.props;
               {[
                 "Everything in Free",
                 "Unlimited workspaces",
-                "Auto-provisioning on Fly Machines",
+                "Auto-provisioning on AWS EC2",
                 "Real-time topology over WebSocket",
-                "Org-scoped secrets & RBAC",
+                "Org-scoped secrets & KMS envelopes",
                 "JSON Lines audit trail",
                 "Email & Slack support",
               ].map(item => (
@@ -157,6 +157,7 @@ const { locale = "en" } = Astro.props;
       <p class="text-xs text-[color:var(--color-fg-dim)]">
         © {new Date().getFullYear()} Molecule AI — <a href="/" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Home</a>
         · <a href="/legal/terms" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Terms</a>
+        · <a href="/legal/privacy" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Privacy</a>
       </p>
     </footer>
   </main>
