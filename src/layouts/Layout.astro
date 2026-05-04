@@ -49,7 +49,7 @@ const jsonLd = {
       url: site,
       logo: {
         "@type": "ImageObject",
-        url: new URL("/logo.png", site).toString(),
+        url: new URL("/logo.svg", site).toString(),
         width: 256,
         height: 256,
       },
@@ -121,7 +121,7 @@ const jsonLd = {
     <meta name="theme-color" content="#050912" media="(prefers-color-scheme: dark)" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.svg" />
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
@@ -177,7 +177,7 @@ const jsonLd = {
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" as="image" href="/logo.png" />
+    <link rel="preload" as="image" href="/logo.svg" />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   </head>

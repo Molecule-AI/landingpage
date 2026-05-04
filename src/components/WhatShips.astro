@@ -1,6 +1,7 @@
 ---
 import { content, type Locale } from "../i18n";
 import SpotlightCard from "./reactbits/SpotlightCard";
+import CheckIcon from "./icons/CheckIcon.astro";
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const c = content[locale].whatShips;
@@ -38,21 +39,7 @@ const c = content[locale].whatShips;
                 {
                   col.items.map((item) => (
                     <li class="flex items-start gap-3 text-sm leading-relaxed text-[color:var(--color-fg)]">
-                      <svg
-                        class="mt-1 flex-shrink-0"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        style="color: var(--color-mint);"
-                        aria-hidden="true"
-                      >
-                        <path d="M20 6L9 17l-5-5" />
-                      </svg>
+                      <CheckIcon class="mt-1 flex-shrink-0 text-[color:var(--color-mint)]" size={14} />
                       <span>{item}</span>
                     </li>
                   ))

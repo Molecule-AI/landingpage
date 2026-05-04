@@ -1,0 +1,32 @@
+---
+/**
+ * Mint-stroke checkmark used in feature lists.
+ *
+ * Was duplicated across WhatShips / UseCases / pricing — both as
+ * `<path d="M20 6L9 17l-5-5"/>` and `<polyline points="20 6 9 17 4 12"/>`.
+ * Both render identically; this component standardizes on the path form.
+ *
+ * Usage:
+ *   <CheckIcon class="mt-1 h-4 w-4 shrink-0 text-[color:var(--color-mint)]" />
+ *
+ * The h-/w- utility classes drive size; the `size` prop is a fallback
+ * for callers without a Tailwind h-/w- class (sets width/height attrs).
+ */
+interface Props {
+  class?: string;
+  size?: number;
+}
+const { class: className = "", size = 16 } = Astro.props;
+---
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+><path d="M20 6L9 17l-5-5"/></svg>
