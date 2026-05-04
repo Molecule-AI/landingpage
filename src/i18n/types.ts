@@ -1,4 +1,4 @@
-export type Locale = "en" | "zh" | "fr";
+export type Locale = "en" | "zh" | "fr" | "ja";
 
 export interface NavItem {
   label: string;
