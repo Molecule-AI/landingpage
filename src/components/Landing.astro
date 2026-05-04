@@ -20,6 +20,49 @@ const tierGlyphs: Record<string, string> = {
   org: `<svg aria-hidden="true" width="22" height="22" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="3" r="1.6" fill="currentColor"/><circle cx="3" cy="11" r="1.6" fill="currentColor"/><circle cx="11" cy="11" r="1.6" fill="currentColor"/><line x1="7" y1="4.6" x2="7" y2="7" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="7" x2="3" y2="9.4" stroke="currentColor" stroke-width="1.2"/><line x1="7" y1="7" x2="11" y2="9.4" stroke="currentColor" stroke-width="1.2"/></svg>`,
 };
 
+// Footer link destinations — one source of truth, indexed by section
+// position (0=Product, 1=Marketplace, 2=Runtimes, 3=Trust) so that
+// localized labels in landing.ts stay decoupled from URLs (the URL
+// for "Canvas" / "画布" / "Toile" is the same regardless of locale).
+//
+// Why position-keyed instead of label-keyed: the section heading is
+// localized — keying by English heading would silently fail for zh/fr/
+// ja/es. The order of `c.footer.sections` is stable across locales by
+// convention; this map mirrors that order. If a locale ever reorders
+// sections, the wrong URLs would attach — but the type system would
+// surface it via index drift in the test fixture.
+const footerHrefs: ReadonlyArray<ReadonlyArray<string>> = [
+  // Product: Canvas, Platform API, Control Plane, Customer App
+  [
+    "https://app.moleculesai.app",
+    "https://doc.moleculesai.app",
+    "https://doc.moleculesai.app/architecture/control-plane",
+    "https://app.moleculesai.app",
+  ],
+  // Marketplace: Plugins (L1), Agents (L2), Org Bundles (L3), Publish
+  [
+    "https://market.moleculesai.app/?tier=L1",
+    "https://market.moleculesai.app/?tier=L2",
+    "https://market.moleculesai.app/?tier=L3",
+    "https://doc.moleculesai.app/marketplace/publish",
+  ],
+  // Runtimes: LangGraph, Claude Code, CrewAI, AutoGen, +5 more
+  [
+    "https://doc.moleculesai.app/adapters/langgraph",
+    "https://doc.moleculesai.app/adapters/claude-code",
+    "https://doc.moleculesai.app/adapters/crewai",
+    "https://doc.moleculesai.app/adapters/autogen",
+    "https://doc.moleculesai.app/adapters",
+  ],
+  // Trust: EU AI Act, OWASP, SOC 2 (in progress), Audit trails
+  [
+    "https://doc.moleculesai.app/trust/eu-ai-act",
+    "https://doc.moleculesai.app/trust/owasp",
+    "https://doc.moleculesai.app/trust/soc2",
+    "https://doc.moleculesai.app/trust/audit-trails",
+  ],
+];
+
 // Localized aria-label for the hero card's data-topology SVG (a JS-driven
 // animated diagram of A2A traffic between coordinator and team agents).
 // Without this, screen readers announce the SVG as "graphic" with no context.
@@ -513,11 +556,15 @@ const heroSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       </div>
       <p>{c.footer.tagline}</p>
     </div>
-    {c.footer.sections.map((sec) => (
+    {c.footer.sections.map((sec, i) => (
       <div>
         <div class="v2-footer-h">{sec.heading}</div>
-        {sec.items.map((it) => (
-          <a>{it}</a>
+        {sec.items.map((it, j) => (
+          <a
+            href={footerHrefs[i]?.[j] ?? footerHrefs[i]?.[footerHrefs[i].length - 1] ?? "#"}
+            rel="noopener"
+            target={(footerHrefs[i]?.[j] ?? "").startsWith("http") ? "_blank" : undefined}
+          >{it}</a>
         ))}
       </div>
     ))}
