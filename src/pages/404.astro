@@ -42,11 +42,26 @@ const locale = "en" as const;
         <h1 class="mt-5 text-balance text-4xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-6xl">
           <BlurText client:visible text="Lost in the topology." delay={70} />
         </h1>
-        <p class="mx-auto mt-6 max-w-md text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+        {/* Secondary-content reveal stagger:
+            BlurText runs the h1 word-by-word (~880ms total at delay=70).
+            Sequence the description + CTA row to land just as the hero
+            settles — pure additive polish, owned by the global
+            [data-reveal] CSS in global.css and the IO observer in
+            site.ts. Inline transition-delay sequences this pair the
+            same way pricing.astro stages its tier cards. */}
+        <p
+          data-reveal
+          style="transition-delay: 600ms;"
+          class="mx-auto mt-6 max-w-md text-pretty text-base text-[color:var(--color-fg-muted)] sm:text-lg"
+        >
           That URL didn't route to anything live. The page may have been deleted, renamed, or never shipped.
           Pick a known good destination below.
         </p>
-        <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div
+          data-reveal
+          style="transition-delay: 750ms;"
+          class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+        >
           <a
             href="/"
             class="group inline-flex items-center justify-center gap-2 rounded-md bg-[color:var(--color-fg)] px-5 py-2.5 text-sm font-semibold text-[color:var(--color-bg)] transition-opacity hover:opacity-90"
