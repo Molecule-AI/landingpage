@@ -1985,6 +1985,35 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     min-height: 360px;
     overflow: hidden;
   }
+  /* Subtle scroll-driven entrance for the use-case diagram. As the
+     wrapper scrolls into view the diagram fades up + scales from 0.95
+     to 1, mirroring the hero .mol-orb parallax pattern (PR #152).
+     Pure CSS via animation-timeline:view() — no JS, no IO callback,
+     no scroll listener. Range cover 0% → cover 50% means the
+     animation completes by the time the wrapper is half-revealed,
+     so the diagram is settled before the user reaches the drag UI.
+     transform-origin centers the scale so nodes don't drift sideways
+     during the bloom. Opacity floors at 0.6 and the scale delta is
+     small (0.95 → 1) so pointer-events stay reliable throughout —
+     drag interactivity on the agent nodes is unaffected even mid-
+     animation. Browsers without animation-timeline:view() (older
+     Safari/FF) keep the static baseline; prefers-reduced-motion
+     pins to the final state. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      :root[data-theme] .v2-usecase-diagram {
+        animation: v2-usecase-diagram-enter linear both;
+        animation-timeline: view();
+        animation-range: cover 0% cover 50%;
+        transform-origin: 50% 50%;
+        will-change: transform, opacity;
+      }
+      @keyframes v2-usecase-diagram-enter {
+        from { opacity: 0.6; transform: scale(0.95); }
+        to   { opacity: 1;   transform: scale(1); }
+      }
+    }
+  }
   :root[data-theme] .v2-usecase-diagram-chrome {
     display: flex;
     justify-content: space-between;
