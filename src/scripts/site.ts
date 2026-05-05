@@ -432,6 +432,55 @@ function initThemeShortcut(signal: AbortSignal) {
   );
 }
 
+// ---------------- locale dropdown keyboard shortcut ----------------
+// Cmd+K (macOS) / Ctrl+K (everywhere else) opens the language picker
+// and focuses its <summary>. Mirrors the initThemeShortcut shape:
+// AbortController per script lifecycle (PR #127), input/contentEditable
+// guard so users typing in a future search field don't get their
+// shortcut hijacked.
+//
+// We also stamp a platform-aware "Cmd+K" / "Ctrl+K" hint into the
+// summary's title attribute so the affordance is discoverable on
+// hover without bloating the visible label.
+function initLocaleShortcut(signal: AbortSignal) {
+  const summary = document.querySelector<HTMLElement>(".v2-locale > summary");
+  if (!summary) return;
+
+  const isMac =
+    typeof navigator !== "undefined" &&
+    /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent || "");
+  const hint = isMac ? "⌘K" : "Ctrl+K";
+  // Append rather than replace so the existing aria-label stays the
+  // primary announcement for screen readers; the title is a sighted
+  // hover hint only.
+  const existingTitle = summary.getAttribute("title");
+  summary.setAttribute("title", existingTitle ? `${existingTitle} (${hint})` : hint);
+
+  document.documentElement.addEventListener(
+    "keydown",
+    (e) => {
+      // Match either Cmd+K or Ctrl+K. Browsers like Firefox bind
+      // Ctrl+K to the URL-bar search; we only hijack it OUTSIDE
+      // input contexts (guard below) so address-bar focus is
+      // unaffected (it isn't a DOM input).
+      if (!(e.metaKey || e.ctrlKey)) return;
+      if (e.shiftKey || e.altKey) return;
+      if (e.key !== "k" && e.key !== "K") return;
+      const target = document.activeElement as HTMLElement | null;
+      if (target) {
+        const tag = target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+        if (target.isContentEditable) return;
+      }
+      e.preventDefault();
+      const details = summary.parentElement as HTMLDetailsElement | null;
+      if (details && !details.open) details.open = true;
+      summary.focus();
+    },
+    { signal },
+  );
+}
+
 // ---------------- boot ----------------
 const lifecycle = new AbortController();
 
@@ -444,6 +493,7 @@ function boot() {
   initPulseOnView(lifecycle.signal);
   initBrandScrollToTop(lifecycle.signal);
   initThemeShortcut(lifecycle.signal);
+  initLocaleShortcut(lifecycle.signal);
 }
 
 if (document.readyState === "loading") {
