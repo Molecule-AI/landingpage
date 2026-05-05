@@ -548,6 +548,7 @@ main[tabindex="-1"]:focus {
 }
 
 .mol-live-dot {
+  position: relative;
   width: 7px;
   height: 7px;
   border-radius: 999px;
@@ -556,9 +557,27 @@ main[tabindex="-1"]:focus {
   animation: mol-pulse 1.8s ease-in-out infinite;
 }
 
+.mol-live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid var(--color-ok);
+  /* slow radar ring; longer than the inner pulse so the two beats stay
+     out of phase and the result reads as calm, not anxious. */
+  animation: mol-live-ping 2.8s cubic-bezier(0.25, 0.65, 0.35, 1) infinite;
+  pointer-events: none;
+}
+
 @keyframes mol-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@keyframes mol-live-ping {
+  0%   { transform: scale(1);   opacity: 0.55; }
+  80%  { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
 }
 
 .mol-dashboard-body {
