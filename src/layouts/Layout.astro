@@ -253,10 +253,18 @@ const jsonLd = {
     <link rel="dns-prefetch" href="https://doc.moleculesai.app" />
     <link rel="dns-prefetch" href="https://market.moleculesai.app" />
     <link rel="dns-prefetch" href="https://github.com" />
+    {/* fetchpriority="high" on the Inter CSS preload — the stylesheet is
+        the gating resource for the woff2 weight files that paint the
+        Hero h1 (LCP element). Without an explicit hint Chromium queues
+        this behind other head resources at "low"; bumping to "high"
+        pulls the CSS bytes in the same priority class as the logo
+        preload above (PR #168) so the woff2 chain unblocks LCP sooner.
+        Chrome/Edge respect, Firefox/Safari ignore — additive only. */}
     <link
       rel="preload"
       as="style"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      fetchpriority="high"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
