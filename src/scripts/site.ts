@@ -367,6 +367,36 @@ function initPulseOnView(signal: AbortSignal) {
   signal.addEventListener("abort", () => io.disconnect(), { once: true });
 }
 
+// ---------------- brand click → scroll-to-top ----------------
+// When the brand logo's <a> targets the page the user is already on,
+// the default navigation is a no-op visually (or — with cross-doc
+// view-transitions enabled, PR #137 — crossfades the page to itself).
+// Intercept that case and smooth-scroll to the top instead, which is
+// the affordance most landing pages use for a logo-click on the home
+// page. Any other path (e.g. clicking the logo from /about/) falls
+// through to normal navigation.
+//
+// Reduced-motion users get an instant jump (`behavior: 'auto'`) so the
+// motion budget honours their preference.
+function initBrandScrollToTop(signal: AbortSignal) {
+  const brand = document.querySelector<HTMLAnchorElement>("a.v2-brand");
+  if (!brand) return;
+  brand.addEventListener(
+    "click",
+    (e) => {
+      // Modifier-click (open-in-new-tab/window) and middle/right-click
+      // (button !== 0) should always navigate normally.
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (e.button !== 0) return;
+      const target = e.currentTarget as HTMLAnchorElement;
+      if (window.location.pathname !== target.pathname) return;
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    },
+    { signal },
+  );
+}
+
 // ---------------- theme keyboard shortcut ----------------
 // Shift+T cycles dark → light → system → dark. Listener lives on
 // <html> with the lifecycle AbortController so HMR reloads cleanly
@@ -412,6 +442,7 @@ function boot() {
   initAllGrids();
   initNavScrollSpy(lifecycle.signal);
   initPulseOnView(lifecycle.signal);
+  initBrandScrollToTop(lifecycle.signal);
   initThemeShortcut(lifecycle.signal);
 }
 
