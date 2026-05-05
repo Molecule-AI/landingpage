@@ -120,6 +120,55 @@ html {
      comment documents the explicit decision. */
 }
 
+/* Persistent-element morph during the cross-doc cross-fade.
+   By default @view-transition snapshots the whole page and crossfades
+   between snapshots — the brand mark in the header just fades with
+   everything else, even though the same logo lives at the same place
+   on the next page. Naming the brand mark with view-transition-name
+   lifts it out of the page snapshot and gives the browser a separate
+   morph track for that element: it animates from its outgoing
+   position+size to its incoming position+size during the same ~250ms
+   window, so the molecule logo appears to slide between pages instead
+   of dissolve. Matching name on both sides of the navigation is what
+   makes the morph fire — Landing.astro's .v2-brand and the interior-
+   page sticky-header brand link (pricing.astro / 404.astro / legal/*)
+   both resolve to `site-brand`.
+
+   The footer brand only exists on Landing.astro so its `footer-brand`
+   name has no peer on /pricing etc. — that's fine: with no matching
+   element on the other side, the named element falls back to the
+   default exit/enter fade, identical to today's behaviour. We keep
+   the name on the footer so Landing↔Landing locale swaps (e.g. /
+   ↔ /zh/) morph it too.
+
+   Browsers without view-transitions ignore `view-transition-name`
+   entirely (graceful no-op). prefers-reduced-motion is gated by the
+   browser at the @view-transition layer above. Each name is unique
+   per page — site-brand fires once in the header, footer-brand fires
+   once in the footer; no double-name collision. */
+.v2-brand {
+  view-transition-name: site-brand;
+}
+
+.v2-footer-brand {
+  view-transition-name: footer-brand;
+}
+
+/* Interior-page header brand link (pricing.astro, 404.astro, legal/*)
+   uses inline-Tailwind utilities instead of the .v2-brand class — but
+   the same identity, same logo, same destination. Pinning the same
+   `site-brand` name here is what makes the morph carry across a
+   landing→pricing or pricing→legal navigation; without this rule the
+   site-brand track would have no incoming snapshot and the brand
+   would just cross-fade with the rest of the page. The aria-label
+   selector matches every interior-page brand link in this codebase
+   (verified 2026-05-04) and is stable: aria-label is the link's
+   accessible name, not a styling hook, so it won't drift under
+   Tailwind refactors. */
+a[aria-label="Molecule AI home"] {
+  view-transition-name: site-brand;
+}
+
 html,
 body {
   background: var(--color-ink);
