@@ -674,6 +674,12 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
 
 {/* FOOTER */}
 <footer class="v2-footer">
+  {/* Atmospheric mint glow over the brand cell. Mirrors the hero's
+     mol-orb depth without the parallax animation — footer is a
+     resting surface, not a kinetic one. Scoped to .v2-footer-orb
+     so it doesn't pull in the global .mol-orb scroll-driven
+     parallax keyframes. */}
+  <div class="v2-footer-orb" aria-hidden="true"></div>
   <div class="v2-container v2-footer-grid">
     <div>
       <div class="v2-footer-brand">
@@ -2112,6 +2118,24 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     color: var(--accent);
     font-weight: 600;
     letter-spacing: 0.06em;
+    display: inline-block;
+    transform-origin: left center;
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      letter-spacing 0.25s ease;
+  }
+  /* Same family as the why-now keynum hover (#1624) — the parent
+     scope-card lift on :hover triggers a small slide+tracking-expand
+     on the mono scope name (Memory.X) so the accent token reads as
+     the hover anchor without adding a new color shift. */
+  :root[data-theme] .v2-scope-card:hover .v2-scope-name {
+    transform: translateX(2px);
+    letter-spacing: 0.12em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-scope-card:hover .v2-scope-name {
+      transform: none;
+      letter-spacing: 0.06em;
+    }
   }
   :root[data-theme] .v2-scope-title {
     margin: 0 0 8px;
@@ -2316,6 +2340,18 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] .v2-compare-head .is-us { color: var(--accent); }
   :root[data-theme] .v2-compare-row > div { padding: 14px 18px; font-size: 13.5px; color: var(--ink); }
   :root[data-theme] .v2-compare-row .val { text-align: center; font-size: 13px; }
+  /* Persistent column band on the Molecule (us) column. Without this,
+     the only orientation cue across body rows is the row-hover sweep —
+     so a static reader has no fast way to scan "what does Molecule do
+     here" down the table. The 2nd grid cell maps to the Molecule
+     column (capability is 1st, then four vendor columns). The band
+     uses a very low accent mix so it reads as a region, not a button,
+     and the existing row-hover gradient + .is-us:nth-child(2) hover
+     boost cleanly stack on top. Header row keeps its own bgInk
+     background (border-bottom isolates the band visually). */
+  :root[data-theme] .v2-compare-row:not(.v2-compare-head) > div:nth-child(2) {
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+  }
   :root[data-theme] .v2-compare-row .ok { color: var(--good); font-weight: 600; }
   :root[data-theme] .v2-compare-row .no { color: var(--inkSoft); }
   :root[data-theme] .v2-compare-row .partial { color: var(--warm); font-family: ui-monospace, "JetBrains Mono", monospace; }
@@ -2433,7 +2469,38 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   }
 
   /* Footer */
-  :root[data-theme] .v2-footer { background: var(--bgInk); padding: 48px 32px 28px; }
+  :root[data-theme] .v2-footer {
+    background: var(--bgInk);
+    padding: 48px 32px 28px;
+    /* relative+overflow:hidden contain the decorative orb so its
+       blur halo can't bleed into siblings or grow page width on
+       narrow viewports. isolation: isolate creates a stacking
+       context so the orb's mix-blend-mode resolves against the
+       footer surface, not whatever paints behind it. */
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* Single decorative orb: mint radial glow, low opacity, anchored
+     over the brand cell (top-left of the footer grid). Static — no
+     scroll-driven animation, no breathing. Pure atmosphere. */
+  :root[data-theme] .v2-footer-orb {
+    position: absolute;
+    top: -160px;
+    left: -120px;
+    width: 460px;
+    height: 460px;
+    border-radius: 9999px;
+    background: radial-gradient(circle, var(--mint), transparent 70%);
+    filter: blur(80px);
+    opacity: 0.15;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* Lift the footer's actual content above the orb so links remain
+     fully readable and clickable regardless of the blend mode. */
+  :root[data-theme] .v2-footer > .v2-container { position: relative; z-index: 1; }
   :root[data-theme] .v2-footer-grid {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
