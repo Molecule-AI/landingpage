@@ -877,8 +877,12 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
      fall through to a JS scroll listener that toggles a class. */
   .v2-back-to-top {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    /* max(24px, env(...)) lifts the button above the home indicator on
+       notched iPhones and inboard of the landscape notch — env() is 0
+       on devices without insets so desktop/Android offsets are
+       unchanged. */
+    bottom: max(24px, env(safe-area-inset-bottom));
+    right: max(24px, env(safe-area-inset-right));
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -933,11 +937,20 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     background: color-mix(in srgb, var(--bg) 92%, transparent);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
+    /* iOS notch / Dynamic Island: when the user scrolls and the nav is
+       pinned to the top of the viewport, paint past the safe-area top
+       so the bg+blur extend up under the status bar instead of leaving
+       a white strip. The .v2-nav-row inner element holds the actual
+       content padding so links don't slide under the notch. env() is
+       0 on non-notched devices — no desktop impact. */
+    padding-top: env(safe-area-inset-top);
   }
   :root[data-theme] .v2-statusbar {
     background: var(--bgInk);
     border-bottom: 1px solid var(--lineSoft);
-    padding: 5px 32px;
+    /* Match the .v2-nav-row left/right safe-area handling so the
+       statusbar text doesn't tuck under the notch in landscape. */
+    padding: 5px max(32px, env(safe-area-inset-right)) 5px max(32px, env(safe-area-inset-left));
     font-size: 11px;
     color: var(--inkSoft);
     font-family: ui-monospace, "JetBrains Mono", monospace;
@@ -968,7 +981,10 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] .v2-nav-row {
     max-width: 1320px;
     margin: 0 auto;
-    padding: 14px 32px;
+    /* max(32px, env(...)) preserves the existing 32px gutter on desktop
+       (env() returns 0 there) and pushes content inboard of the notch
+       on landscape iPhones. */
+    padding: 14px max(32px, env(safe-area-inset-right)) 14px max(32px, env(safe-area-inset-left));
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2618,7 +2634,13 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   /* Footer */
   :root[data-theme] .v2-footer {
     background: var(--bgInk);
-    padding: 48px 32px 28px;
+    /* Safe-area insets so the home indicator on notched iPhones doesn't
+       overlap the legal/copyright row at the bottom and the notch
+       doesn't overlap brand/links in landscape. max() preserves the
+       existing 48/32/28px values on desktop where env() is 0. */
+    padding: 48px max(32px, env(safe-area-inset-right))
+             max(28px, env(safe-area-inset-bottom))
+             max(32px, env(safe-area-inset-left));
     /* relative+overflow:hidden contain the decorative orb so its
        blur halo can't bleed into siblings or grow page width on
        narrow viewports. isolation: isolate creates a stacking
@@ -2815,8 +2837,20 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     :root[data-theme] .v2-section { padding: 56px 20px; }
     :root[data-theme] .v2-hero { padding: 56px 20px 40px; }
     :root[data-theme] .v2-final { padding: 72px 20px; }
-    :root[data-theme] .v2-footer { padding: 40px 20px 24px; }
-    :root[data-theme] .v2-nav-row { padding: 12px 20px; gap: 12px; }
+    /* Mobile breakpoint is the ONLY one that runs on actual notched
+       iPhones — re-apply safe-area-inset here or the desktop rules
+       get clobbered before iOS ever sees them. env() returns 0 on
+       non-notched mobile devices (e.g. older iPads, Android) so the
+       max() collapses to the original 20/24/40 numbers. */
+    :root[data-theme] .v2-footer {
+      padding: 40px max(20px, env(safe-area-inset-right))
+               max(24px, env(safe-area-inset-bottom))
+               max(20px, env(safe-area-inset-left));
+    }
+    :root[data-theme] .v2-nav-row {
+      padding: 12px max(20px, env(safe-area-inset-right)) 12px max(20px, env(safe-area-inset-left));
+      gap: 12px;
+    }
     :root[data-theme] .v2-grid-4 { grid-template-columns: 1fr; }
     :root[data-theme] .v2-statusbar { display: none; }
     :root[data-theme] .v2-nav-links { display: none; }

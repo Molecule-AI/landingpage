@@ -19,9 +19,13 @@ const homeHref = localePaths[locale];
       Landing.astro, but the theme toggle has to be reachable on every
       page; otherwise users who open /pricing as a deep link are stuck
       on whatever theme the cookie last set. Mirrors the chrome on
-      Landing.astro v2-nav so the swap is visually consistent. */}
-  <header class="sticky top-0 z-50 border-b border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink)]/85 backdrop-blur-xl">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+      Landing.astro v2-nav so the swap is visually consistent.
+      pt-[env(safe-area-inset-top)] paints the bg under the iOS notch
+      when this sticky bar pins to the viewport top; the inner row
+      uses px-[max(...)] so links stay inboard of the landscape notch.
+      env() is 0 on non-notched devices — desktop layout unchanged. */}
+  <header class="sticky top-0 z-50 border-b border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink)]/85 backdrop-blur-xl pt-[env(safe-area-inset-top)]">
+    <div class="mx-auto flex max-w-7xl items-center justify-between pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] py-3">
       <a
         href={homeHref}
         class="flex items-center gap-2.5 text-base font-semibold tracking-tight text-[color:var(--color-fg)]"
@@ -193,7 +197,10 @@ const homeHref = localePaths[locale];
     </section>
 
     <!-- Footer stub (re-use the site footer) -->
-    <footer class="border-t border-[color:var(--color-ink-border)]/60 py-8 text-center">
+    {/* pb-[max(2rem,env(safe-area-inset-bottom))] so the copyright row
+        clears the iOS home indicator without disturbing desktop
+        spacing (env() returns 0 there). */}
+    <footer class="border-t border-[color:var(--color-ink-border)]/60 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))] text-center">
       <p class="text-xs text-[color:var(--color-fg-dim)]">
         © {new Date().getFullYear()} Molecule AI — <a href="/" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Home</a>
         · <a href="/legal/terms" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Terms</a>

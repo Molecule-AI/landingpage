@@ -11,8 +11,10 @@ const homeHref = localePaths[locale];
 <Layout locale={locale} title="Privacy Policy — Molecule AI" description="Molecule AI Privacy Policy.">
   {/* Same minimal sticky header as /pricing and /legal/terms — see
       pricing.astro for why interior pages mount their own header. */}
-  <header class="sticky top-0 z-50 border-b border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink)]/85 backdrop-blur-xl">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+  {/* iOS safe-area: header pads under the notch when pinned, inner row
+      stays inboard of landscape notches. See pricing.astro / Layout.astro. */}
+  <header class="sticky top-0 z-50 border-b border-[color:var(--color-ink-border)]/60 bg-[color:var(--color-ink)]/85 backdrop-blur-xl pt-[env(safe-area-inset-top)]">
+    <div class="mx-auto flex max-w-7xl items-center justify-between pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))] py-3">
       <a
         href={homeHref}
         class="flex items-center gap-2.5 text-base font-semibold tracking-tight text-[color:var(--color-fg)]"
@@ -126,7 +128,8 @@ const homeHref = localePaths[locale];
       </div>
     </section>
 
-    <footer class="border-t border-[color:var(--color-ink-border)]/60 py-8 text-center">
+    {/* pb safe-area: clear iOS home indicator on notched devices. */}
+    <footer class="border-t border-[color:var(--color-ink-border)]/60 pt-8 pb-[max(2rem,env(safe-area-inset-bottom))] text-center">
       <p class="text-xs text-[color:var(--color-fg-dim)]">
         © {new Date().getFullYear()} Molecule AI — <a href="/" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Home</a>
         · <a href="/pricing" class="underline underline-offset-4 hover:text-[color:var(--color-mint)]">Pricing</a>
