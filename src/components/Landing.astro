@@ -192,7 +192,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       <span class="v2-brand-name">Molecule</span>
       <span class="v2-brand-tag">AI</span>
     </a>
-    <nav class="v2-nav-links">
+    <nav class="v2-nav-links" aria-label="Primary">
       {c.nav.links.map((l) => (
         <a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
       ))}
