@@ -669,7 +669,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
              grouping, supported in Chrome 120+, Safari 17+, Firefox
              138+). Older browsers fall through to "any can be open"
              which is acceptable graceful degradation. */
-          <details class="v2-faq-item" name="v2-faq" open={i === 0}>
+          <details class="v2-faq-item" name="v2-faq" open={i === 0} data-reveal data-delay={i * 120}>
             <summary>
               <span>{q}</span>
               <span class="plus" aria-hidden="true">+</span>
