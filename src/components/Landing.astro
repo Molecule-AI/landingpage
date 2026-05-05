@@ -201,6 +201,37 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       <LocaleDropdown current={locale} />
       <ThemeToggle client:idle />
       <a class="v2-btn v2-btn-primary" href="https://app.moleculesai.app">{c.nav.signIn}</a>
+      {/* Mobile hamburger — native <details> for click-out + a11y, mirrors
+          the <LocaleDropdown> shape. Hidden on desktop; shown via the
+          same 640px breakpoint that hides .v2-nav-links. */}
+      <details class="v2-nav-mobile">
+        <summary aria-label="Navigation menu" aria-haspopup="true">
+          <svg
+            class="v2-nav-mobile-icon"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <line x1="4" y1="7" x2="20" y2="7" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="17" x2="20" y2="17" />
+          </svg>
+        </summary>
+        <nav aria-label="Mobile navigation">
+          <ul>
+            {c.nav.links.map((l) => (
+              <li>
+                <a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </details>
     </div>
   </div>
 </header>
@@ -1090,6 +1121,64 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       transition: none;
       transform: none;
     }
+  }
+
+  /* Mobile hamburger nav — native <details>, mirrors .v2-locale.
+     display: none here means desktop hides it; the 640px media-query
+     below flips it back to inline-flex when .v2-nav-links is hidden. */
+  :root[data-theme] .v2-nav-mobile {
+    position: relative;
+    display: none;
+  }
+  :root[data-theme] .v2-nav-mobile > summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--inkMid);
+    transition: border-color 0.12s ease, color 0.12s ease;
+  }
+  :root[data-theme] .v2-nav-mobile > summary::-webkit-details-marker { display: none; }
+  :root[data-theme] .v2-nav-mobile > summary:hover { border-color: var(--ink); color: var(--ink); }
+  :root[data-theme] .v2-nav-mobile[open] > summary { border-color: var(--ink); color: var(--ink); }
+  :root[data-theme] .v2-nav-mobile-icon { display: block; }
+  :root[data-theme] .v2-nav-mobile > nav > ul {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 200px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--bgElev);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 12px 32px -16px rgba(var(--shadow-rgb), 0.22);
+    z-index: 50;
+  }
+  :root[data-theme] .v2-nav-mobile > nav > ul > li > a {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--ink);
+    text-decoration: none;
+    transition: background 0.12s ease;
+  }
+  :root[data-theme] .v2-nav-mobile > nav > ul > li > a:hover {
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+  :root[data-theme] .v2-nav-mobile > nav > ul > li > a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
   }
 
   /* Buttons */
@@ -2661,6 +2750,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     :root[data-theme] .v2-grid-4 { grid-template-columns: 1fr; }
     :root[data-theme] .v2-statusbar { display: none; }
     :root[data-theme] .v2-nav-links { display: none; }
+    :root[data-theme] .v2-nav-mobile { display: inline-flex; }
     :root[data-theme] .v2-h1 { font-size: 36px; }
     :root[data-theme] .v2-h2 { font-size: 22px; }
     :root[data-theme] .v2-final-h2 { font-size: 32px; }
@@ -2682,6 +2772,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     :root[data-theme] .v2-footer-bottom { flex-direction: column; align-items: flex-start; gap: 6px; }
     :root[data-theme] .v2-nav-cta { gap: 6px; }
     :root[data-theme] .v2-locale > ul { right: -8px; min-width: 160px; }
+    :root[data-theme] .v2-nav-mobile > nav > ul { right: -8px; min-width: 180px; }
     :root[data-theme] .v2-h1 { font-size: 32px; }
     :root[data-theme] .v2-final-h2 { font-size: 28px; }
     :root[data-theme] .v2-lede { font-size: 16px; }
