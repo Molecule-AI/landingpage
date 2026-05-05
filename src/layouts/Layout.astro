@@ -191,6 +191,21 @@ const jsonLd = {
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/logo.svg" />
+    {/* Safari pinned-tab mask icon — Safari renders a monochrome SVG
+        recolored to this hex when the user pins the tab. Brand mint
+        (#7fe8d6) keeps the pinned-tab pill visually consistent with
+        the rest of the Molecule brand surface. */}
+    <link rel="mask-icon" href="/favicon.svg" color="#7fe8d6" />
+    {/* iOS Add-to-Home-Screen overrides — without these the home
+        screen tile inherits the per-page <title> (long, locale-suffixed)
+        and the in-app status bar paints solid white over the dark
+        theme. apple-mobile-web-app-title pins the tile label to the
+        brand name; status-bar-style "black-translucent" lets the
+        dark theme paint into the status bar region only when the
+        page is launched from the home screen, so regular Safari
+        browsing is untouched. */}
+    <meta name="apple-mobile-web-app-title" content="Molecule" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
