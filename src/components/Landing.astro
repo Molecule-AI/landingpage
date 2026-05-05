@@ -2536,6 +2536,30 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     font-size: 15px;
     color: var(--ink);
   }
+  /* Mirror of the header .v2-brand hover micro-anim (PR #147): a small
+     rotation + slight scale on the 3-node mark when the user hovers the
+     footer brand. The footer brand is a non-link <div>, so the hover
+     trigger is the wrapper itself; pointer-events: auto on the SVG keeps
+     the hit-test reliable across themes. Honors prefers-reduced-motion. */
+  :root[data-theme] .v2-footer-brand svg {
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      color 0.25s ease;
+    transform-origin: 50% 50%;
+    will-change: transform;
+    pointer-events: auto;
+  }
+  :root[data-theme] .v2-footer-brand:hover svg {
+    transform: rotate(8deg) scale(1.06);
+    color: var(--accent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-footer-brand svg {
+      transition: color 0.25s ease;
+    }
+    :root[data-theme] .v2-footer-brand:hover svg {
+      transform: none;
+    }
+  }
   :root[data-theme] .v2-footer-grid p {
     margin: 0;
     font-size: 13px;
