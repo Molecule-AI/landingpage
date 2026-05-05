@@ -254,7 +254,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         <p class="v2-lede" data-reveal data-delay="160">{c.hero.lede}</p>
         <div class="v2-cta-row" data-reveal data-delay="240">
           <a class="v2-btn v2-btn-primary v2-btn-lg" href="https://github.com/Molecule-AI/molecule-monorepo" rel="noopener noreferrer" target="_blank">{c.hero.primaryCta}</a>
-          <a class="v2-btn v2-btn-ghost v2-btn-lg" href="https://app.moleculesai.app" rel="noopener noreferrer" target="_blank">{c.hero.secondaryCta}</a>
+          <a class="v2-btn v2-btn-ghost v2-btn-lg" href="https://app.moleculesai.app" rel="noopener noreferrer" target="_blank" data-pulse-on-view>{c.hero.secondaryCta}</a>
         </div>
         <div class="v2-stat-row" data-reveal data-delay="320">
           {c.hero.stats.map((s) => (
@@ -1241,6 +1241,25 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     border-color: var(--accent);
     background: color-mix(in srgb, var(--accent) 8%, transparent);
     color: var(--accent);
+  }
+  /* One-shot attention pulse on the hero secondary CTA. Fires once when
+     the button enters the viewport (data-pulse-once attr added by IO in
+     site.ts), drawing the eye to the secondary conversion path without
+     the persistent gloss-sweep / magnet pull reserved for the primary.
+     Single 600ms scale 1 → 1.04 → 1, then back to rest. Scoped to
+     [data-pulse-once] so other ghost CTAs stay calm; reduced-motion
+     suppresses the animation entirely. */
+  :root[data-theme] .v2-btn-ghost.v2-btn-lg[data-pulse-once] {
+    animation: v2-cta-pulse-once 600ms cubic-bezier(0.4, 0, 0.2, 1) 1;
+    transform-origin: center;
+  }
+  @keyframes v2-cta-pulse-once {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-btn-ghost.v2-btn-lg[data-pulse-once] { animation: none; }
   }
   :root[data-theme] .v2-btn-lg { padding: 11px 20px; height: 44px; font-size: 14px; }
 

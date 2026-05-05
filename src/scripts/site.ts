@@ -329,6 +329,36 @@ function initAllGrids() {
     .forEach((c) => initShapeGrid(c));
 }
 
+// ---------------- one-shot attention pulse ----------------
+// Adds [data-pulse-once] to any [data-pulse-on-view] element the first
+// time it enters the viewport. CSS in Landing.astro keys the 600ms
+// scale 1 → 1.04 → 1 keyframe off [data-pulse-once] so the trigger is
+// visible-on-scroll, not on first paint (the hero CTA is above the
+// fold, so this still fires immediately on landing — but on slow
+// connections / fold-clipped viewports it waits until intersection).
+//
+// IO is unobserved on first hit so the pulse never re-fires; the
+// observer itself is disconnected on lifecycle abort, mirroring the
+// AbortController pattern from initNavScrollSpy.
+function initPulseOnView(signal: AbortSignal) {
+  if (reduced) return;
+  const els = document.querySelectorAll<HTMLElement>("[data-pulse-on-view]");
+  if (!els.length) return;
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const el = entry.target as HTMLElement;
+        el.setAttribute("data-pulse-once", "");
+        io.unobserve(el);
+      }
+    },
+    { threshold: 0.6 },
+  );
+  els.forEach((el) => io.observe(el));
+  signal.addEventListener("abort", () => io.disconnect(), { once: true });
+}
+
 // ---------------- theme keyboard shortcut ----------------
 // Shift+T cycles dark → light → system → dark. Listener lives on
 // <html> with the lifecycle AbortController so HMR reloads cleanly
@@ -373,6 +403,7 @@ function boot() {
   initTabs();
   initAllGrids();
   initNavScrollSpy(lifecycle.signal);
+  initPulseOnView(lifecycle.signal);
   initThemeShortcut(lifecycle.signal);
 }
 
