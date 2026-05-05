@@ -41,8 +41,16 @@ function initNavScrollSpy(signal: AbortSignal) {
   let active: HTMLAnchorElement | null = null;
   const setActive = (next: HTMLAnchorElement | null) => {
     if (next === active) return;
-    if (active) active.removeAttribute("data-active");
-    if (next) next.setAttribute("data-active", "");
+    if (active) {
+      active.removeAttribute("data-active");
+      active.removeAttribute("aria-current");
+    }
+    if (next) {
+      next.setAttribute("data-active", "");
+      // "location" is the ARIA value for current in-page anchor
+      // (vs "page" which is for whole-page navigation).
+      next.setAttribute("aria-current", "location");
+    }
     active = next;
   };
 
