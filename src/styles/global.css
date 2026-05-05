@@ -256,25 +256,48 @@ img, canvas, video, svg {
   height: auto;
 }
 
-/* ============= skip-to-content link (a11y) ============= */
+/* ============= skip-to-content link (a11y) =============
+   Hidden off-screen until a keyboard user tabs to it. Switched to
+   :focus-visible so a stray mouse focus (user clicks near, then it
+   regains focus) doesn't flash the link — only keyboard / AT focus
+   reveals it. min-width/min-height pin a 44x44 CSS-px hit area
+   (WCAG 2.5.5 enhanced target). transition is gated on
+   prefers-reduced-motion below so motion-sensitive users get an
+   instant snap-in instead of a slide. */
 .mol-skip-link {
   position: absolute;
   top: -100px;
   left: 1rem;
   z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   padding: 0.625rem 1rem;
   background: var(--mint);
   color: var(--mint-fg);
   font-weight: 600;
   font-size: 0.875rem;
   border-radius: 0.5rem;
-  transition: top 160ms ease;
+  transition: top 180ms ease, box-shadow 180ms ease;
 }
 
-.mol-skip-link:focus {
+.mol-skip-link:focus-visible {
   top: 1rem;
-  outline: 2px solid var(--fg);
-  outline-offset: 2px;
+  outline: 3px solid var(--fg);
+  outline-offset: 3px;
+  /* Halo backstop: the ring stays distinguishable even when the
+     fixed-position link sits over a gradient/hero/banner. Inner ring
+     uses --ink (page bg) to gap the outline from any underlying
+     pattern; outer drop-shadow lifts the pill off the page. */
+  box-shadow: 0 0 0 2px var(--ink, #fff), 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mol-skip-link {
+    transition: none;
+  }
 }
 
 /* Skip-link target — <main id="main" tabindex="-1"> receives focus
@@ -306,7 +329,7 @@ main[tabindex="-1"]:focus {
    rendering is untouched. */
 @media (forced-colors: active) {
   :focus-visible,
-  .mol-skip-link:focus,
+  .mol-skip-link:focus-visible,
   .mol-tab:focus-visible,
   .mol-legal-toc > a:focus-visible {
     forced-color-adjust: none;
