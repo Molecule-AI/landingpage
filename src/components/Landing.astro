@@ -174,7 +174,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       <i class="dot dot-good pulsing" aria-hidden="true"></i>
       {c.statusbar.allSystems}
       <span aria-hidden="true"> · </span>
-      <a class="v2-status-link" href="https://status.moleculesai.app" rel="noopener" target="_blank">{c.statusbar.statusLink}</a>
+      <a class="v2-status-link" href="https://status.moleculesai.app" rel="noopener noreferrer" target="_blank">{c.statusbar.statusLink}</a>
     </span>
     <span>{c.statusbar.phase}</span>
   </div>
@@ -253,8 +253,8 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         </h1>
         <p class="v2-lede" data-reveal data-delay="160">{c.hero.lede}</p>
         <div class="v2-cta-row" data-reveal data-delay="240">
-          <a class="v2-btn v2-btn-primary v2-btn-lg" href="https://github.com/Molecule-AI/molecule-monorepo" rel="noopener" target="_blank">{c.hero.primaryCta}</a>
-          <a class="v2-btn v2-btn-ghost v2-btn-lg" href="https://app.moleculesai.app" rel="noopener" target="_blank">{c.hero.secondaryCta}</a>
+          <a class="v2-btn v2-btn-primary v2-btn-lg" href="https://github.com/Molecule-AI/molecule-monorepo" rel="noopener noreferrer" target="_blank">{c.hero.primaryCta}</a>
+          <a class="v2-btn v2-btn-ghost v2-btn-lg" href="https://app.moleculesai.app" rel="noopener noreferrer" target="_blank">{c.hero.secondaryCta}</a>
         </div>
         <div class="v2-stat-row" data-reveal data-delay="320">
           {c.hero.stats.map((s) => (
@@ -291,7 +291,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
             <a
               class="v2-marquee-item"
               href={`https://doc.moleculesai.app/adapters/${slug}`}
-              rel="noopener"
+              rel="noopener noreferrer"
               target="_blank"
               aria-label={`${n} adapter docs`}
             >
@@ -730,7 +730,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         {sec.items.map((it, j) => (
           <a
             href={footerHrefs[i]?.[j] ?? footerHrefs[i]?.[footerHrefs[i].length - 1] ?? "#"}
-            rel="noopener"
+            rel="noopener noreferrer"
             target={(footerHrefs[i]?.[j] ?? "").startsWith("http") ? "_blank" : undefined}
           >{it}</a>
         ))}
