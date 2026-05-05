@@ -443,6 +443,27 @@ main[tabindex="-1"]:focus {
   box-shadow: 0 0 12px var(--mint);
 }
 
+/* Hero description: short gradient hairline above the paragraph. Echoes the
+   eyebrow chip's mint accent (dot vs line) without competing with it. The
+   ::before is decorative; reduced-motion users still get the static accent. */
+.mol-hero-description {
+  position: relative;
+}
+
+.mol-hero-description::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 1px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--mint) 70%, transparent) 50%,
+    transparent 100%
+  );
+}
+
 /* ============= legal pages (terms, privacy) =============
    Visual hierarchy for long, numbered legal copy: each <section> auto-numbers
    via CSS counters and renders the index as a font-mono mint accent above an
