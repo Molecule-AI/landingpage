@@ -491,6 +491,41 @@ main[tabindex="-1"]:focus {
   margin-top: 0.625rem;
 }
 
+/* Inline jump-list TOC for /legal/terms and /legal/privacy. Horizontal-wrap
+   chip list inside the existing max-w-3xl column — anchors clear the sticky
+   header via the global scroll-padding-top:5rem already set on :root. */
+.mol-legal-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  border: 1px solid var(--color-ink-border);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-ink) 40%, transparent);
+}
+
+.mol-legal-toc > a {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-fg-muted);
+  border: 1px solid var(--color-ink-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-ink) 60%, transparent);
+  text-decoration: none;
+  transition: color 120ms ease, border-color 120ms ease, background-color 120ms ease;
+}
+
+.mol-legal-toc > a:hover,
+.mol-legal-toc > a:focus-visible {
+  color: var(--color-mint);
+  border-color: color-mix(in srgb, var(--color-mint) 50%, var(--color-ink-border));
+  background: color-mix(in srgb, var(--color-mint) 10%, transparent);
+}
+
 /* ============= dashboard mockup ============= */
 .mol-dashboard {
   position: relative;
