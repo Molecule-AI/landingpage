@@ -547,6 +547,24 @@ main[tabindex="-1"]:focus {
   background: color-mix(in srgb, var(--color-mint) 10%, transparent);
 }
 
+/* Opt-in list marker for prose-style bullet lists (legal subprocessors,
+   future FAQ longform answers). Mint diamond replaces the default UA disc
+   so bullets read as intentional brand chrome instead of generic browser
+   dots that drift between Chromium / Firefox / Safari renderings. Scoped
+   to .mol-list so Tailwind utility lists in cards/nav/grids are untouched.
+   `list-style: disc` is the graceful fallback for any engine that ignores
+   `::marker { content }` (Safari < 17 still picks up the color hint). */
+.mol-list {
+  list-style-type: disc;
+  list-style-position: outside;
+}
+
+.mol-list > li::marker {
+  content: "◆  ";
+  color: var(--color-mint);
+  font-size: 0.85em;
+}
+
 /* ============= dashboard mockup ============= */
 .mol-dashboard {
   position: relative;
