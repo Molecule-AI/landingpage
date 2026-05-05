@@ -1723,6 +1723,12 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
      a parent stagger sets a delay. */
   :root[data-theme] .v2-card-hover {
     cursor: pointer;
+    /* Layout+style containment: card is an isolated visual region — its
+       hover lift / spotlight / icon translateY don't reflow or restyle
+       siblings. `paint` is intentionally OMITTED because the :hover
+       box-shadow (40px blur) escapes the border box and would be
+       clipped under paint containment. */
+    contain: layout style;
   }
   :root[data-theme] .v2-card-hover:hover {
     transform: translateY(-3px);
@@ -2168,6 +2174,12 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     text-decoration: none;
     color: inherit;
     height: 100%;
+    /* Layout+style containment: each tier card is an isolated tilt+lift
+       region. `paint` is OMITTED because the :hover box-shadow (60px
+       blur, accent-tinted) escapes the border box, and because the
+       preserve-3d rotateX/Y can render outside the box-shadow area —
+       paint containment would clip both. */
+    contain: layout style;
   }
   :root[data-theme] .v2-tier-card:hover,
   :root[data-theme] .v2-tier-card-link:focus-visible .v2-tier-card {
@@ -2366,6 +2378,12 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     transform-style: preserve-3d;
     transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
       border-color 0.25s ease;
+    /* Layout+style containment: adapter cards are isolated tilt regions
+       with no escaping shadows, but `paint` is still OMITTED because
+       preserve-3d rotateX/Y under paint containment can clip the 3D
+       projection at the border box on some engines. layout+style is
+       enough to skip cross-card invalidation on the hover-heavy grid. */
+    contain: layout style;
   }
   :root[data-theme] .v2-adapter-card:hover {
     border-color: var(--accent);
@@ -2477,6 +2495,12 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     transform-style: preserve-3d;
     transition: transform 0.18s cubic-bezier(0.2, 0.7, 0.2, 1),
       border-color 0.25s ease;
+    /* Layout+style containment: creator steps are isolated tilt regions
+       — the only hover effects are border-color, translateY, and an
+       inner number translate+scale, all confined to the card. `paint`
+       is OMITTED to leave preserve-3d rotateX/Y unclipped, mirroring
+       the adjacent .v2-adapter-card / .v2-tier-card decisions. */
+    contain: layout style;
   }
   :root[data-theme] .v2-creator-step:hover {
     border-color: var(--warm);
