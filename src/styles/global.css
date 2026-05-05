@@ -1153,6 +1153,18 @@ main[tabindex="-1"]:focus {
   font-size: clamp(2.25rem, 4vw + 1rem, 4rem);
 }
 
+/* Section h2 — replaces stepped `text-3xl ... sm:text-5xl` cascade with a
+   smooth scale. Ramp matches the original step:
+   - ≤320px viewport  → clamps to 1.875rem (30px), parity with `text-3xl`
+   - ~1024px viewport → ~2.6rem (41.6px), smooth pass through laptop range
+   - ≥1280px viewport → clamps to 3rem (48px), parity with `sm:text-5xl`
+   Additive: leave the Tailwind size classes on the element as a fallback —
+   in the Tailwind v4 single-bundle build, global.css emits after utilities
+   so this rule wins the cascade tie when both load. */
+.mol-h2-fluid {
+  font-size: clamp(1.875rem, 2.5vw + 1rem, 3rem);
+}
+
 /* ============= rotating text ============= */
 .mol-rotator {
   display: inline-block;
