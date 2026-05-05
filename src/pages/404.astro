@@ -42,7 +42,9 @@ const locale = "en" as const;
           Error 404
         </p>
         <h1 class="mt-5 text-balance text-4xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-6xl">
-          <BlurText client:visible text="Lost in the topology." delay={70} />
+          <span class="mol-gradient-text">
+            <BlurText client:visible text="Lost in the topology." delay={70} />
+          </span>
         </h1>
         {/* Secondary-content reveal stagger:
             BlurText runs the h1 word-by-word (~880ms total at delay=70).
