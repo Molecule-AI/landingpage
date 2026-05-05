@@ -131,6 +131,32 @@ body {
   overflow-x: hidden;
 }
 
+/* ============= text-wrap base styles =============
+ *
+ * `text-wrap: balance` (Chrome 114+, Safari 17.5+, Firefox 121+)
+ * gives multi-line headings balanced line lengths so the last line
+ * isn't a one-word orphan. Capped at 6 lines per the spec — long
+ * blocks fall back to normal wrap automatically.
+ *
+ * `text-wrap: pretty` (Chrome 117+, Safari 17.5+, Firefox 124+)
+ * smooths paragraph wrapping by avoiding orphan lines at the end of
+ * a paragraph and improving hyphenation breakpoints.
+ *
+ * Older browsers ignore both — graceful no-op. Single-line elements
+ * (the property only affects wrapped text) are unaffected, so this
+ * is safe to apply as a base style. Components/utilities that already
+ * set `text-balance` / `text-pretty` (Tailwind utilities) or an
+ * explicit `text-wrap: ...` continue to work — the cascade picks the
+ * more specific rule.
+ */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+main p {
+  text-wrap: pretty;
+}
+
 html:lang(zh-CN),
 html:lang(zh) {
   font-family: "Inter", "PingFang SC", "Hiragino Sans GB",
