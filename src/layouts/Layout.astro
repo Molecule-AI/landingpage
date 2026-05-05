@@ -66,6 +66,42 @@ const alternates = [
   { hreflang: "x-default", href: new URL(localePaths.en, site).toString() },
 ];
 
+// FAQ rich-snippet schema is only meaningful on the homepage where the
+// FAQ section actually renders (Landing.astro #faq). Emitting it on
+// /pricing or /legal/* would advertise content that doesn't exist on
+// those URLs and risks Search Console "Unmatched FAQ" warnings, so we
+// gate by isHomepage. Locale-specific question text flows through c.faq
+// so each /zh, /fr, /ja, /es homepage gets correctly-localized snippets.
+const faqPageEntity = isHomepage
+  ? {
+      "@type": "FAQPage",
+      "@id": `${canonical}#faq`,
+      isPartOf: { "@id": canonical },
+      mainEntity: c.faq.items.map(({ q, a }) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: { "@type": "Answer", text: a },
+      })),
+    }
+  : null;
+
+const webPageEntity: Record<string, unknown> = {
+  "@type": "WebPage",
+  "@id": canonical,
+  url: canonical,
+  name: pageTitle,
+  description: pageDescription,
+  isPartOf: { "@id": `${site}#site` },
+  inLanguage: c.htmlLang,
+  primaryImageOfPage: imgUrl,
+};
+if (faqPageEntity) {
+  // Cross-link the WebPage to its FAQPage so Google can pair them up
+  // when ranking the rich-snippet block, instead of treating FAQPage
+  // as a free-floating entity in the graph.
+  webPageEntity.mainEntity = { "@id": faqPageEntity["@id"] };
+}
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -110,16 +146,8 @@ const jsonLd = {
       keywords:
         "AI agents, multi-agent systems, agent orchestration, LangGraph, CrewAI, AutoGen, Claude Code, DeepAgents, Hermes, Gemini CLI, OpenClaw, control plane, MCP, A2A protocol",
     },
-    {
-      "@type": "WebPage",
-      "@id": canonical,
-      url: canonical,
-      name: pageTitle,
-      description: pageDescription,
-      isPartOf: { "@id": `${site}#site` },
-      inLanguage: c.htmlLang,
-      primaryImageOfPage: imgUrl,
-    },
+    webPageEntity,
+    ...(faqPageEntity ? [faqPageEntity] : []),
   ],
 };
 ---
