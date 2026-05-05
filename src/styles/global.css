@@ -188,6 +188,16 @@ img, canvas, video, svg {
   outline-offset: 2px;
 }
 
+/* Skip-link target — <main id="main" tabindex="-1"> receives focus
+   programmatically when the user activates the skip-link. tabindex=-1
+   is the standard a11y pattern (lets us .focus() without making main
+   reachable via Tab). Suppress the focus ring on this synthetic
+   focus — keyboard users have already traversed the link, and a
+   page-wide outline on <main> reads as a visual bug. */
+main[tabindex="-1"]:focus {
+  outline: none;
+}
+
 /* Focus-visible defaults for keyboard users.
    Outlines follow each element's own border-radius (CSS Outline L3),
    so don't set border-radius here — doing so would flatten pill / round
