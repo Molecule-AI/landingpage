@@ -1208,8 +1208,24 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   /* Sections */
   :root[data-theme] .v2-section {
     padding: 80px 32px;
-    border-bottom: 1px solid var(--line);
     position: relative;
+  }
+  /* Subtle section divider — a center-anchored hairline that fades to
+     transparent at the viewport edges, replacing a hard edge-to-edge
+     border-bottom. Scoped via the adjacent-sibling selector so the
+     hairline only sits BETWEEN sections (never above the first one
+     or below the last). 1px tall, 80% width, line color from the
+     theme so it's near-invisible on both warm-paper and ink. */
+  :root[data-theme] .v2-section + .v2-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(80%, 1100px);
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--line) 50%, transparent 100%);
+    pointer-events: none;
   }
   :root[data-theme] .v2-section-ink { background: var(--bgInk); }
   :root[data-theme] .v2-section-relative { overflow: hidden; }
