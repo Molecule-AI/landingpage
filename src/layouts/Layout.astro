@@ -15,17 +15,33 @@ interface Props {
    * "dark" preserves the brand identity for crawlers; landing
    * pages opt into "light" explicitly. */
   theme?: "light" | "dark";
+  /** Tell crawlers not to index this page. Set on the 404 fallback
+   * (a static /404.html that fires for every unknown URL — indexing
+   * it would surface the error page in search results) and on any
+   * future utility/preview routes that shouldn't compete with the
+   * marketing surface. Suppresses the canonical + hreflang links
+   * too: a canonical on a noindex page is contradictory, and 404s
+   * shouldn't anchor link equity to themselves. */
+  noindex?: boolean;
 }
 
-const { locale, title, description, image = "/og-image.jpg", theme = "dark" } = Astro.props;
+const { locale, title, description, image = "/og-image.jpg", theme = "dark", noindex = false } = Astro.props;
 const c = content[locale];
 
 const pageTitle = title ?? `${c.siteMeta.fullName} — ${c.siteMeta.tagline}`;
 const pageDescription = description ?? c.siteMeta.metaDescription;
 
 const site = Astro.site?.toString() ?? "https://www.moleculesai.app/";
-const currentPath = localePaths[locale];
-const canonical = new URL(currentPath, site).toString();
+// Canonical must reflect the ACTUAL URL of this page, not the locale's
+// homepage. localePaths[locale] only knows about /, /zh/, /fr/, /ja/,
+// /es/ — so when Layout was used on /pricing/, /legal/terms/,
+// /legal/privacy/, or /404 every canonical collapsed onto the homepage,
+// which is exactly the duplicate-content signal canonicals exist to
+// prevent (Google would treat /pricing as a copy of /). Derive from
+// Astro.url.pathname so canonical, og:url, and JSON-LD WebPage @id all
+// resolve to the page actually being served. Pathname strips query
+// strings + hash by construction, so `?utm=*` variants don't leak.
+const canonical = new URL(Astro.url.pathname, site).toString();
 const imgUrl = new URL(image, site).toString();
 const imgType = image.endsWith(".jpg") || image.endsWith(".jpeg") ? "image/jpeg" : "image/png";
 
@@ -213,10 +229,18 @@ const jsonLd = {
         browsing is untouched. */}
     <meta name="apple-mobile-web-app-title" content="Molecule" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="canonical" href={canonical} />
+    {/* Canonical + hreflang are duplicate-content signals — only emit
+        on indexable pages. On the 404 fallback (noindex=true) a
+        canonical would either point at a non-page (the URL the user
+        typed, materialized as /404/) or, worse, anchor link equity
+        from the error page back to itself; suppress entirely so
+        Googlebot drops the URL on the 404 status alone. Same logic
+        for hreflang: claiming this URL is the en/zh/fr/... translation
+        of an alternate is a false signal on a 404. */}
+    {!noindex && <link rel="canonical" href={canonical} />}
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    {
+    {!noindex &&
       alternates.map((alt) => (
         <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
       ))
@@ -231,7 +255,11 @@ const jsonLd = {
     <meta name="author" content="Molecule-AI" />
     <meta
       name="robots"
-      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+      content={
+        noindex
+          ? "noindex, nofollow"
+          : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+      }
     />
 
     <!-- Open Graph -->
