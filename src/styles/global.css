@@ -1118,6 +1118,18 @@ main[tabindex="-1"]:focus {
   filter: drop-shadow(0 0 40px rgba(127, 232, 214, 0.2));
 }
 
+/* ============= fluid heading utility =============
+   Replaces stepped Tailwind sizes (text-[2.25rem] sm:text-5xl lg:text-6xl)
+   with a smooth scale across viewports. Ramp matches the original cascade:
+   - ≤320px viewport  → clamps to 2.25rem (36px), original mobile size
+   - ~1024px viewport → ~3.78rem (60.4px), parity with lg:text-6xl
+   - ≥1200px viewport → clamps to 4rem (64px), modest bump on wide screens
+   Keep this additive — the Tailwind classes remain on the element as a
+   fallback for environments where utility CSS loads but global.css fails. */
+.mol-h1-fluid {
+  font-size: clamp(2.25rem, 4vw + 1rem, 4rem);
+}
+
 /* ============= rotating text ============= */
 .mol-rotator {
   display: inline-block;
