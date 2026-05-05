@@ -90,7 +90,21 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  /* Sticky chrome on desktop = .v2-statusbar (~22px) + .v2-nav row
+     (~68px logo + 14px*2 padding) ≈ 92px. 5rem (80px) clipped the
+     section title under the nav on deep-link jumps to /#why-now
+     etc. 6rem (96px) clears the full sticky stack. On mobile the
+     statusbar is hidden, so the extra ~16px is a harmless gap. */
+  scroll-padding-top: 6rem;
+}
+
+/* Belt-and-suspenders for any anchor target on the page (sections,
+   FAQ items, footnotes). scroll-padding-top above already covers the
+   document, but per-element scroll-margin-top defends against nested
+   scroll containers and against future overrides on the html element
+   that would otherwise silently re-clip the target under .v2-nav. */
+:where([id]) {
+  scroll-margin-top: 6rem;
 }
 
 /* Cross-document view transitions (Chrome 126+, Safari 18+, Firefox
