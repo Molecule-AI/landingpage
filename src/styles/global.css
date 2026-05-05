@@ -234,6 +234,24 @@ main[tabindex="-1"]:focus {
   outline-offset: 2px;
 }
 
+/* Windows High Contrast Mode (forced-colors).
+   Browsers replace authored colors with system colors, which can clobber
+   our mint focus ring with Highlight/HighlightText and make the ring blend
+   into the focused element. Pin focus rings to the system Highlight color
+   and opt out of further forced-color substitution so the ring stays
+   visible against any background HCM paints. Wrapped in @media so standard
+   rendering is untouched. */
+@media (forced-colors: active) {
+  :focus-visible,
+  .mol-skip-link:focus,
+  .mol-tab:focus-visible,
+  .mol-legal-toc > a:focus-visible {
+    forced-color-adjust: none;
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
 /* ============= hex honeycomb background ============= */
 .mol-hex-glow {
   animation: mol-hex-pulse 5s ease-in-out infinite;
