@@ -191,6 +191,13 @@ const jsonLd = {
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/logo.svg" />
+    {/* PWA install affordance — Chrome/Edge/Safari mobile surface an
+        "Install Molecule AI" prompt when a manifest is present, and even
+        without a service worker the manifest still drives custom
+        name/short_name on home-screen shortcuts, theme_color on browser
+        chrome, and OS-level icons for bookmarks. Static-served from
+        public/, no build step. */}
+    <link rel="manifest" href="/manifest.json" />
     {/* Safari pinned-tab mask icon — Safari renders a monochrome SVG
         recolored to this hex when the user pins the tab. Brand mint
         (#7fe8d6) keeps the pinned-tab pill visually consistent with

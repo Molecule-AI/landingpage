@@ -1,0 +1,13 @@
+{
+  "name": "Molecule AI",
+  "short_name": "Molecule",
+  "description": "The org-native control plane for heterogeneous AI agent teams.",
+  "start_url": "/",
+  "display": "minimal-ui",
+  "background_color": "#050912",
+  "theme_color": "#050912",
+  "icons": [
+    { "src": "/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
