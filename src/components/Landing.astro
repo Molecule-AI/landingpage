@@ -6,6 +6,7 @@ import BlurText from "./reactbits/BlurText";
 import ShinyText from "./reactbits/ShinyText";
 import SpotlightCard from "./reactbits/SpotlightCard";
 import DecryptedText from "./reactbits/DecryptedText";
+import SplitText from "./reactbits/SplitText";
 
 interface Props {
   locale: "en" | "zh" | "fr" | "ja" | "es";
@@ -277,7 +278,9 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     <div class="v2-container">
       <div class="v2-section-head">
         <div>
-          <div class="v2-kicker" data-reveal>{c.whyNow.kicker}</div>
+          <div class="v2-kicker" data-reveal>
+            <SplitText client:visible text={c.whyNow.kicker} delay={45} animateBy="chars" />
+          </div>
           <h2 class="v2-h2">
             <BlurText client:visible text={c.whyNow.title} delay={60} />
           </h2>
