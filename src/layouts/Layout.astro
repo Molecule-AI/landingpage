@@ -308,13 +308,57 @@ const jsonLd = {
         paranoid configs, some non-JS crawlers) the data-visible attr
         never lands and the page renders blank. Force visible at all
         times when JS is off — the entrance animation is a polish layer,
-        not a load-bearing one. Same fallback for .mol-entrance. */}
-    <noscript>
-      <style>{`
+        not a load-bearing one. Same fallback for .mol-entrance.
+
+        Additional rules unblock the motion-island words inside Astro's
+        <astro-island> hydration wrappers (BlurText, SplitText): their
+        SSR HTML carries inline `style="opacity:0;..."` on every <span>
+        and only flips to visible when motion/react hydrates. Without JS
+        the hero h1 (LCP element) and every section kicker render blank.
+        Targeting `astro-island [style*="opacity:0"]` reaches both
+        components without coupling to their internal class names.
+
+        The empty `svg[data-topology]` and `canvas[data-particle]` are
+        100% JS-populated decoration; with JS off they leave large blank
+        rectangles. Hide the hero card (whose only contents are that
+        empty SVG) and the canvas backgrounds so the text-only content
+        carries the layout. Marquee tracks have their animation halted
+        so the chip lists render statically.
+
+        NB: `is:raw` keeps Astro from parsing the inner CSS as JSX
+        children; without it any literal `{` in the rules would either
+        be evaluated as an expression or, worse, ship to the browser as
+        part of a top-level qualified-rule prelude that CSS
+        error-recovery silently discards (the prior 3-rule fallback
+        shipped that way and never applied in any browser). */}
+    <noscript is:raw>
+      <style>
         [data-reveal] { opacity: 1 !important; transform: none !important; }
         [data-reveal="stagger"] > * { opacity: 1 !important; transform: none !important; }
         .mol-entrance { opacity: 1 !important; transform: none !important; animation: none !important; }
-      `}</style>
+        astro-island [style*="opacity:0"],
+        astro-island [style*="opacity: 0"] {
+          opacity: 1 !important;
+          filter: none !important;
+          transform: none !important;
+        }
+        svg[data-topology],
+        canvas[data-particle] { display: none !important; }
+        .v2-hero-card { display: none !important; }
+        .mol-marquee-track,
+        .v2-marquee-track { animation: none !important; transform: none !important; }
+        .mol-noscript-banner {
+          display: block;
+          padding: 0.625rem 1rem;
+          font-size: 0.8125rem;
+          line-height: 1.4;
+          text-align: center;
+          color: #1a1a1a;
+          background: #ffe066;
+          border-bottom: 1px solid #d4a017;
+          font-family: system-ui, -apple-system, sans-serif;
+        }
+      </style>
     </noscript>
   </head>
   <body>
@@ -325,6 +369,25 @@ const jsonLd = {
         as a 0-width invisible bar — graceful no-op fallback. Sits
         above the skip-link and the rest of the page chrome. */}
     <div class="mol-scroll-progress" aria-hidden="true"></div>
+    {/* Body-level no-JS banner — a single short line above the
+        skip-link explaining that polish (animations, marquee scroll,
+        live hero topology) is gone but the content is intact. The
+        styling rule lives in the <head> noscript stylesheet above so
+        the banner only paints when JS is disabled. role="status"
+        announces it once to assistive tech without grabbing focus. */}
+    <noscript>
+      <div class="mol-noscript-banner" role="status">
+        {locale === "zh"
+          ? "已禁用 JavaScript。部分动画和交互无法使用，但所有内容均可正常阅读。"
+          : locale === "fr"
+            ? "JavaScript est désactivé. Certaines animations et interactions ne fonctionneront pas, mais le contenu reste entièrement lisible."
+            : locale === "ja"
+              ? "JavaScript が無効になっています。一部のアニメーションや操作は動作しませんが、コンテンツはすべて表示されます。"
+              : locale === "es"
+                ? "JavaScript está desactivado. Algunas animaciones e interacciones no funcionarán, pero el contenido sigue siendo totalmente legible."
+                : "JavaScript is disabled. Some animations and interactivity won't work, but the content is fully readable."}
+      </div>
+    </noscript>
     <a href="#main" class="mol-skip-link">
       {locale === "zh"
         ? "跳转到主内容"
