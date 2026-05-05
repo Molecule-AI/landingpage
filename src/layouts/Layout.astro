@@ -165,7 +165,15 @@ const jsonLd = {
     <script is:inline set:html={themeBootScript} />
 
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {/* viewport-fit=cover lets the page paint into the iOS safe-area
+        regions (notch, Dynamic Island, home indicator). Without it
+        Safari letterboxes content with white margins on notched
+        iPhones in both portrait + landscape. Pairs with the
+        env(safe-area-inset-*) padding on .v2-nav-row, the sticky
+        chrome on /pricing + /legal, the v2-footer, and the
+        viewport-pinned .v2-back-to-top — env() returns 0 on
+        non-notched devices so desktop layout is untouched. */}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="generator" content={Astro.generator} />
     {/* Both modes are supported — tells the browser to render form
         controls + scrollbars correctly in either. */}
