@@ -1476,3 +1476,110 @@ main[tabindex="-1"]:focus {
     animation: none !important;
   }
 }
+
+/* ============= print =============
+ *
+ * Investors who screenshot or print the page get a clean, ink-friendly
+ * copy: no dark backgrounds blasting toner, no animations or marquees
+ * mid-frame, no decorative SVG topology, no magnet/tilt transforms
+ * frozen at a random angle. Force the light token palette regardless of
+ * the user's resolved theme so :root + [data-theme="dark"] pages render
+ * identically on paper. Print-only — every rule lives inside
+ * @media print so the screen render is untouched. */
+@media print {
+  /* Force light tokens. Override [data-theme="dark"] by re-stamping
+   * every var on :root, since the dark block targets the [data-theme]
+   * attribute and would otherwise still win on dark-mode prints. */
+  :root,
+  [data-theme="dark"] {
+    --ink: #ffffff;
+    --ink-soft: #ffffff;
+    --ink-panel: #ffffff;
+    --ink-border: #cccccc;
+    --ink-border-strong: #999999;
+    --mint: #0a7a68;
+    --mint-soft: #0f9f87;
+    --mint-dim: #075a4d;
+    --cyan: #0d8a78;
+    --danger: #a83b1a;
+    --warn: #8a5a10;
+    --ok: #1f5a37;
+    --fg: #000000;
+    --fg-muted: #333333;
+    --fg-dim: #555555;
+    --mint-fg: #ffffff;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Strip animations and transitions across the board so nothing
+   * renders mid-keyframe or with a half-applied transition value. */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Hide decorative chrome that doesn't belong on paper:
+   *   - hex-grid background canvas (ShapeGrid)
+   *   - hero parallax orbs
+   *   - live status pulse dot
+   *   - runtime marquee (infinite scroll, useless static)
+   *   - mobile hamburger button + menu (desktop-print context)
+   *   - dashboard mockup (decorative product screenshot, not content)
+   *   - theme toggle (no theme on paper) */
+  [data-hex-grid],
+  .mol-orb,
+  .mol-live,
+  .mol-live-dot,
+  .mol-marquee,
+  #mol-mobile-menu-btn,
+  #mol-mobile-menu,
+  .mol-dashboard,
+  [data-theme-toggle] {
+    display: none !important;
+  }
+
+  /* Strip magnet/tilt transforms on cards + buttons so they print
+   * flat. The vars stay untouched on screen; we just neutralise them
+   * for the print pass. */
+  * {
+    --magnet-x: 0px !important;
+    --magnet-y: 0px !important;
+    --tilt-x: 0deg !important;
+    --tilt-y: 0deg !important;
+  }
+
+  /* Reveal-on-scroll content that JS would otherwise leave at
+   * opacity:0 if print fires before the IntersectionObserver tick. */
+  [data-reveal],
+  .mol-entrance {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Show URLs after links so the printout is self-contained. Skip
+   * internal in-page anchors (#section) — they're useless on paper —
+   * and skip javascript:/mailto: where the href IS the visible text. */
+  a[href]:not([href^="#"]):not([href^="javascript:"]):not([href^="mailto:"])::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555555;
+    word-break: break-all;
+  }
+
+  /* Avoid awkward page breaks inside headings and figures. */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  img, svg, figure, pre, blockquote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
