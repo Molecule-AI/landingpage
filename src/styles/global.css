@@ -247,6 +247,47 @@ main[tabindex="-1"]:focus {
   background: radial-gradient(circle, var(--mint-dim), transparent 70%);
 }
 
+/* Hero orb scroll-driven parallax.
+   Three orbs translate vertically at different speeds as the user
+   scrolls past the hero, faking depth. Pure CSS via scroll-driven
+   animations — no JS, no scroll listener, no rAF tick. Browsers
+   without animation-timeline:scroll() (older Safari/FF) keep the
+   static positioning baseline.
+   Range: 0 → 100vh of root scroll (exit-range). The mint orb is
+   centered horizontally via inline translateX(-50%), so its keyframes
+   preserve that axis while animating Y. Cyan + deep have no inline
+   transform, so a plain translateY suffices. Speeds: mint 30px (slow,
+   far back), cyan 60px (mid), deep 90px (fast, near). prefers-reduced-
+   motion pins everything to the static baseline. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .mol-orb--mint {
+      animation: mol-orb-mint-parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+    .mol-orb--cyan {
+      animation: mol-orb-cyan-parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+    .mol-orb--deep {
+      animation: mol-orb-deep-parallax linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+    @keyframes mol-orb-mint-parallax {
+      to { transform: translateX(-50%) translateY(-30px); }
+    }
+    @keyframes mol-orb-cyan-parallax {
+      to { transform: translateY(-60px); }
+    }
+    @keyframes mol-orb-deep-parallax {
+      to { transform: translateY(-90px); }
+    }
+  }
+}
+
 /* ============= panels & buttons ============= */
 .mol-panel {
   background: linear-gradient(
