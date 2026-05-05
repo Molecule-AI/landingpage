@@ -254,7 +254,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         <p class="v2-lede" data-reveal data-delay="160">{c.hero.lede}</p>
         <div class="v2-cta-row" data-reveal data-delay="240">
           <a class="v2-btn v2-btn-primary v2-btn-lg" href="https://github.com/Molecule-AI/molecule-monorepo" rel="noopener noreferrer" target="_blank">{c.hero.primaryCta}</a>
-          <a class="v2-btn v2-btn-ghost v2-btn-lg" href="https://app.moleculesai.app" rel="noopener noreferrer" target="_blank" data-pulse-on-view>{c.hero.secondaryCta}</a>
+          <a class="v2-btn v2-btn-ghost v2-btn-lg" href="https://app.moleculesai.app" rel="noopener noreferrer" target="_blank" data-pulse-on-view>{c.hero.secondaryCta}<span class="v2-btn-arrow" aria-hidden="true">→</span></a>
         </div>
         <div class="v2-stat-row" data-reveal data-delay="320">
           {c.hero.stats.map((s) => (
@@ -616,7 +616,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       </div>
       <div class="v2-cta-row v2-cta-center" data-reveal data-delay="300">
         <a class="v2-btn v2-btn-primary" href={c.creator.primaryCta.href}>{c.creator.primaryCta.label}</a>
-        <a class="v2-btn v2-btn-ghost" href={c.creator.secondaryCta.href}>{c.creator.secondaryCta.label}</a>
+        <a class="v2-btn v2-btn-ghost" href={c.creator.secondaryCta.href}>{c.creator.secondaryCta.label}<span class="v2-btn-arrow" aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -696,7 +696,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
           >{c.final.primaryCta}</a
         >
         <a class="v2-btn v2-btn-ghost v2-btn-lg" href="https://app.moleculesai.app"
-          >{c.final.secondaryCta}</a
+          >{c.final.secondaryCta}<span class="v2-btn-arrow" aria-hidden="true">→</span></a
         >
       </div>
     </div>
@@ -1307,6 +1307,29 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     border-color: var(--accent);
     background: color-mix(in srgb, var(--accent) 8%, transparent);
     color: var(--accent);
+  }
+  /* Inline trailing arrow on every ghost CTA. Sits inside the button as a
+     decorative span (aria-hidden — the link text already names the
+     destination); slides 4px right on :hover/:focus-visible. Same family
+     as the footer-link translateX(3px) treatment, but tuned a touch
+     longer to read on a button-sized hit target. Reduced-motion users
+     keep the arrow but skip the slide. */
+  :root[data-theme] .v2-btn-arrow {
+    display: inline-block;
+    margin-left: 0.4em;
+    transition: transform 0.2s ease;
+    will-change: transform;
+  }
+  :root[data-theme] .v2-btn-ghost:hover .v2-btn-arrow,
+  :root[data-theme] .v2-btn-ghost:focus-visible .v2-btn-arrow {
+    transform: translateX(4px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-btn-arrow { transition: none; }
+    :root[data-theme] .v2-btn-ghost:hover .v2-btn-arrow,
+    :root[data-theme] .v2-btn-ghost:focus-visible .v2-btn-arrow {
+      transform: none;
+    }
   }
   /* One-shot attention pulse on the hero secondary CTA. Fires once when
      the button enters the viewport (data-pulse-once attr added by IO in
