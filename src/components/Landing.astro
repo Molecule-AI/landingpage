@@ -2663,7 +2663,19 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     line-height: 1;
     transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
+  /* Hover micro-anim: lift + scale the + glyph when hovering a closed
+     item, mirroring the .v2-card-hover .v2-card-icon family
+     (translateY(-2px) scale(1.06) over 250ms). For open items the
+     rotation is the dominant state cue, so we compose scale only and
+     keep the 45deg rotation on hover. Reduced-motion strips the
+     scale-and-lift but preserves the rotate(45deg) state cue. */
+  :root[data-theme] .v2-faq-item:hover .plus { transform: translateY(-2px) scale(1.06); }
   :root[data-theme] .v2-faq-item[open] .plus { transform: rotate(45deg); }
+  :root[data-theme] .v2-faq-item[open]:hover .plus { transform: rotate(45deg) scale(1.06); }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-faq-item:hover .plus { transform: none; }
+    :root[data-theme] .v2-faq-item[open]:hover .plus { transform: rotate(45deg); }
+  }
   :root[data-theme] .v2-faq-a { padding: 0 22px 20px; font-size: 14px; color: var(--inkMid); line-height: 1.6; }
 
   /* Smooth open/close on FAQ items via the modern ::details-content
