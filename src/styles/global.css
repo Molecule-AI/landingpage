@@ -1538,6 +1538,52 @@ main[tabindex="-1"]:focus {
   }
 }
 
+/* ============= data-saver =============
+ *
+ * `prefers-reduced-data: reduce` (Chrome 95+ behind Save-Data signals,
+ * Opera Mini, mobile Lite Mode) lets users on metered or constrained
+ * connections opt out of bandwidth-heavy decorative elements. The
+ * landing page's hero topology SVG, Aurora canvas, parallax orbs, and
+ * runtime marquee are visual flourishes — none of them carry product
+ * meaning, so we hide them entirely for data-saver users.
+ *
+ * Kept additive: browsers without support for prefers-reduced-data
+ * (Safari, Firefox today) ignore the at-rule and render normally —
+ * graceful no-op, no JS gate, no fallback flash. The hero topology JS
+ * rAF loop continues to run because the SVG element is still in the
+ * DOM (display:none doesn't stop rAF); a follow-up can gate the loop
+ * via matchMedia('(prefers-reduced-data: reduce)') to recover those
+ * CPU cycles too. CSS-level wins (paint, blur filter, network for
+ * Aurora's gradient layers) ship first.
+ */
+@media (prefers-reduced-data: reduce) {
+  /* Hero parallax orbs — pure visual flourish, three blurred radial
+     gradients composited at 80px blur. Skip the paint cost entirely. */
+  .mol-orb {
+    display: none !important;
+  }
+
+  /* Aurora floating-blob backdrop on Hero — four animated rounded
+     blobs behind the wordmark; decorative, no product meaning. */
+  .aurora-container {
+    display: none !important;
+  }
+
+  /* Runtime marquee — infinite-scroll logo strip on Landing. The
+     animation alone is moot for data-saver, but the row also pulls
+     extra glyphs on first paint. */
+  .mol-marquee {
+    display: none !important;
+  }
+
+  /* Hero topology SVG — animated A2A packet stream. JS rAF loop is
+     untouched (see follow-up note above), but hiding the SVG stops
+     paint + composite for the live edges. */
+  svg[data-topology] {
+    display: none !important;
+  }
+}
+
 /* ============= print =============
  *
  * Investors who screenshot or print the page get a clean, ink-friendly
