@@ -4,6 +4,7 @@ import {
   applyTheme,
   getThemePreference,
   setThemePreference,
+  THEME_CHANGE_EVENT,
   watchSystemTheme,
   type Theme,
 } from "../scripts/theme";
@@ -15,17 +16,29 @@ import {
  * cookie on mount; if the boot script in Layout.astro already
  * stamped ``data-theme`` correctly, this is a no-op cosmetic
  * sync — no flash, no shift.
+ *
+ * Also re-syncs whenever ``THEME_CHANGE_EVENT`` fires, so the
+ * radiogroup stays correct when the Shift+T keyboard shortcut (or
+ * any other surface) writes the cookie out-of-band.
  */
 export default function ThemeToggle() {
   const [pref, setPref] = useState<Theme>("system");
 
   useEffect(() => {
     setPref(getThemePreference());
-    return watchSystemTheme(() => {
+    const stopSystemWatch = watchSystemTheme(() => {
       // Re-resolve when system flips; only matters when pref === "system"
       // but watchSystemTheme already gates on that internally.
       applyTheme(getThemePreference());
     });
+    // Re-sync local state when another surface (Shift+T shortcut, etc.)
+    // writes the cookie outside this component's click handler.
+    const onExternalChange = () => setPref(getThemePreference());
+    window.addEventListener(THEME_CHANGE_EVENT, onExternalChange);
+    return () => {
+      stopSystemWatch();
+      window.removeEventListener(THEME_CHANGE_EVENT, onExternalChange);
+    };
   }, []);
 
   function pick(next: Theme) {
@@ -37,6 +50,8 @@ export default function ThemeToggle() {
     <div
       role="radiogroup"
       aria-label="Theme"
+      aria-keyshortcuts="Shift+T"
+      title="Theme (Shift+T to cycle)"
       className="inline-flex items-center gap-0.5 rounded-md border border-[color:var(--color-ink-border-strong)] bg-[color:var(--color-ink-soft)]/60 p-0.5"
     >
       <ThemeButton current={pref} value="system" label="System" onPick={pick}>
