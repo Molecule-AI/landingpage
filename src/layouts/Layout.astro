@@ -230,6 +230,21 @@ const jsonLd = {
     <!-- Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    {/* dns-prefetch for the third-party domains every CTA on the page
+        points at: app (sign-in / dashboard), doc (every adapter +
+        trust + architecture link), market (pricing tier links),
+        github (primary hero CTA + footer source links). Resolving
+        DNS while the user is reading the hero saves ~50–200ms off
+        the first click-through, with no resource cost — dns-prefetch
+        is fire-and-forget and ignored by browsers that don't
+        support it. Kept distinct from preconnect because we don't
+        want to spend a TCP+TLS slot on click-targets that may
+        never fire; preconnect stays reserved for fonts which
+        block first paint. */}
+    <link rel="dns-prefetch" href="https://app.moleculesai.app" />
+    <link rel="dns-prefetch" href="https://doc.moleculesai.app" />
+    <link rel="dns-prefetch" href="https://market.moleculesai.app" />
+    <link rel="dns-prefetch" href="https://github.com" />
     <link
       rel="preload"
       as="style"
@@ -239,7 +254,13 @@ const jsonLd = {
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    {isHomepage && <link rel="preload" as="image" href="/logo.svg" />}
+    {/* fetchpriority="high" reinforces the LCP signal on the homepage
+        logo preload. Header.astro's <img> already carries it; pairing
+        it on the preload <link> tells the browser to prioritise the
+        bytes from the moment the head is parsed, before the <img>
+        tag is reached. Chrome/Edge respect it, Firefox/Safari ignore
+        it gracefully — additive, no regression risk. */}
+    {isHomepage && <link rel="preload" as="image" href="/logo.svg" fetchpriority="high" />}
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
 
