@@ -192,7 +192,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       <span class="v2-brand-name">Molecule</span>
       <span class="v2-brand-tag">AI</span>
     </a>
-    <nav class="v2-nav-links">
+    <nav class="v2-nav-links" aria-label="Primary">
       {c.nav.links.map((l) => (
         <a href={l.href} target="_blank" rel="noopener noreferrer">{l.label}</a>
       ))}
@@ -758,6 +758,38 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   <div class="v2-container v2-footer-bottom">
     <span>{c.footer.legal}</span>
     <span>{c.footer.version}</span>
+  </div>
+  {/* Built-with credit row — sits below the legal/version line as a
+     subtle taste signal. Lower visual weight than v2-footer-bottom
+     (no top border, smaller leading, single-column). Each tool
+     links to its homepage with target=_blank + noopener. */}
+  <div class="v2-container v2-footer-builtwith-row">
+    <p class="v2-footer-builtwith">
+      Built with{" "}
+      <a
+        href="https://astro.build"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Astro — the web framework for content-driven websites"
+        >Astro</a
+      >
+      {" · "}
+      <a
+        href="https://tailwindcss.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Tailwind CSS — utility-first CSS framework"
+        >Tailwind CSS</a
+      >
+      {" · "}
+      <a
+        href="https://vercel.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Vercel — frontend cloud platform"
+        >Vercel</a
+      >
+    </p>
   </div>
 </footer>
 
@@ -2763,6 +2795,39 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     font-family: ui-monospace, "JetBrains Mono", monospace;
     gap: 12px;
     flex-wrap: wrap;
+  }
+  /* Built-with credit row — engineering-taste signal beneath legal/
+     version. Mirrors v2-footer-h tracked-mono treatment but at lower
+     visual weight: no border, no margin-top above the legal line,
+     and slightly tighter leading. Links inherit color and only shift
+     to --accent on hover/focus, keeping the resting page calm. */
+  :root[data-theme] .v2-footer-builtwith-row {
+    margin-top: 10px;
+  }
+  :root[data-theme] .v2-footer-builtwith {
+    margin: 0;
+    font-size: 11px;
+    color: var(--inkSoft);
+    font-family: ui-monospace, "JetBrains Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+  }
+  :root[data-theme] .v2-footer-builtwith a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--lineSoft);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  :root[data-theme] .v2-footer-builtwith a:hover,
+  :root[data-theme] .v2-footer-builtwith a:focus-visible {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  :root[data-theme] .v2-footer-builtwith a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
   /* Social-icons row — sits under the brand tagline as a community
      signal. Mirrors the footer-link micro-anim (color shift +
