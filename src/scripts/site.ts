@@ -1,6 +1,12 @@
 // Client-side animation + interaction orchestrator.
 // Kept intentionally small — no framework, no dependencies.
 
+import {
+  getThemePreference,
+  nextThemeInCycle,
+  setThemePreference,
+} from "./theme";
+
 const reduced =
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -323,6 +329,41 @@ function initAllGrids() {
     .forEach((c) => initShapeGrid(c));
 }
 
+// ---------------- theme keyboard shortcut ----------------
+// Shift+T cycles dark → light → system → dark. Listener lives on
+// <html> with the lifecycle AbortController so HMR reloads cleanly
+// drop the prior set instead of stacking (PR #127 pattern).
+//
+// Guards:
+// - Skip when a modifier other than Shift is held (avoids stomping
+//   on browser/OS shortcuts like Cmd+T new-tab).
+// - Skip when focus is in a text input, textarea, select, or
+//   contentEditable surface so users typing capital T don't flip
+//   the page out from under them.
+function initThemeShortcut(signal: AbortSignal) {
+  document.documentElement.addEventListener(
+    "keydown",
+    (e) => {
+      if (!e.shiftKey) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key !== "T" && e.key !== "t") return;
+      const target = document.activeElement as HTMLElement | null;
+      if (target) {
+        const tag = target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+        if (target.isContentEditable) return;
+      }
+      e.preventDefault();
+      const current = getThemePreference();
+      const next = nextThemeInCycle(current);
+      // setThemePreference handles cookie + applyTheme + custom-event fan-out;
+      // any mounted ThemeToggle picks the change up via THEME_CHANGE_EVENT.
+      setThemePreference(next);
+    },
+    { signal },
+  );
+}
+
 // ---------------- boot ----------------
 const lifecycle = new AbortController();
 
@@ -332,6 +373,7 @@ function boot() {
   initTabs();
   initAllGrids();
   initNavScrollSpy(lifecycle.signal);
+  initThemeShortcut(lifecycle.signal);
 }
 
 if (document.readyState === "loading") {

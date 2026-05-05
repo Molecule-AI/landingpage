@@ -20,6 +20,25 @@ export const THEME_COOKIE = "molecule_theme";
 export const COOKIE_DOMAIN = ".moleculesai.app";
 
 /**
+ * Custom event fired on ``window`` whenever the persisted theme
+ * preference changes. The ThemeToggle React component listens for
+ * this so the radiogroup re-renders when the keyboard shortcut (or
+ * any other surface) cycles the theme without a click.
+ */
+export const THEME_CHANGE_EVENT = "molecule:theme-change";
+
+/** Cycle order matches the visual order of the ThemeToggle: dark → light → system → dark. */
+const CYCLE_ORDER: Theme[] = ["dark", "light", "system"];
+
+/** Return the next theme in the dark → light → system cycle. */
+export function nextThemeInCycle(current: Theme): Theme {
+  const idx = CYCLE_ORDER.indexOf(current);
+  // -1 (unknown value) lands at index 0 → dark, mirroring the boot fallback.
+  const nextIdx = (idx + 1) % CYCLE_ORDER.length;
+  return CYCLE_ORDER[nextIdx] ?? "dark";
+}
+
+/**
  * Inline-able boot script. Reads the cookie, resolves system →
  * light/dark via ``matchMedia``, and stamps the resolved value on
  * ``<html>`` BEFORE first paint. On error, leaves the SSR-stamped
@@ -55,6 +74,12 @@ export function setThemePreference(pref: Theme): void {
   const secureAttr = window.location.protocol === "https:" ? "; secure" : "";
   document.cookie = `${THEME_COOKIE}=${encodeURIComponent(pref)}; path=/; max-age=${oneYear}; samesite=lax${domainAttr}${secureAttr}`;
   applyTheme(pref);
+  // Fan-out: notify any mounted ThemeToggle (or other surface) so it can
+  // re-sync its local state when the cookie was written by something
+  // other than its own click handler — e.g. the Shift+T shortcut.
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: { pref } }));
+  }
 }
 
 /** Resolve system → light/dark and stamp it on ``<html>``. */
