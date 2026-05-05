@@ -443,6 +443,54 @@ main[tabindex="-1"]:focus {
   box-shadow: 0 0 12px var(--mint);
 }
 
+/* ============= legal pages (terms, privacy) =============
+   Visual hierarchy for long, numbered legal copy: each <section> auto-numbers
+   via CSS counters and renders the index as a font-mono mint accent above an
+   enlarged h2. Markup stays clean — sections need no explicit "01."/"02.".
+   Pattern: <div class="mol-legal"><section><h2>Title</h2><p>...</p></section></div>
+*/
+.mol-legal {
+  counter-reset: mol-legal-section;
+}
+
+.mol-legal > section {
+  counter-increment: mol-legal-section;
+}
+
+.mol-legal > section + section {
+  margin-top: 2.75rem;
+}
+
+.mol-legal > section > h2 {
+  position: relative;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-fg);
+  margin: 0;
+}
+
+.mol-legal > section > h2::before {
+  content: counter(mol-legal-section, decimal-leading-zero) ".";
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--color-mint);
+}
+
+.mol-legal > section > p,
+.mol-legal > section > ul {
+  margin-top: 0.875rem;
+}
+
+.mol-legal > section > p + p {
+  margin-top: 0.625rem;
+}
+
 /* ============= dashboard mockup ============= */
 .mol-dashboard {
   position: relative;
