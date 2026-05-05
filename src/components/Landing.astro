@@ -2316,6 +2316,19 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] .v2-compare-head .is-us { color: var(--accent); }
   :root[data-theme] .v2-compare-row > div { padding: 14px 18px; font-size: 13.5px; color: var(--ink); }
   :root[data-theme] .v2-compare-row .val { text-align: center; font-size: 13px; }
+  /* Persistent column band on the Molecule (us) column. Without this,
+     the only orientation cue across body rows is the row-hover sweep —
+     so a static reader has no fast way to scan "what does Molecule do
+     here" down the table. The 2nd grid cell maps to the Molecule
+     column (capability is 1st, then four vendor columns). The band
+     uses a very low accent mix so it reads as a region, not a button,
+     and the existing row-hover gradient + .is-us:nth-child(2) hover
+     boost cleanly stack on top. Header row keeps its own bgInk
+     background — explicitly excluding .v2-compare-head here ensures
+     the header's tint is unchanged. */
+  :root[data-theme] .v2-compare-row:not(.v2-compare-head) > div:nth-child(2) {
+    background: color-mix(in srgb, var(--accent) 5%, transparent);
+  }
   :root[data-theme] .v2-compare-row .ok { color: var(--good); font-weight: 600; }
   :root[data-theme] .v2-compare-row .no { color: var(--inkSoft); }
   :root[data-theme] .v2-compare-row .partial { color: var(--warm); font-family: ui-monospace, "JetBrains Mono", monospace; }
