@@ -2368,7 +2368,8 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
      uses a very low accent mix so it reads as a region, not a button,
      and the existing row-hover gradient + .is-us:nth-child(2) hover
      boost cleanly stack on top. Header row keeps its own bgInk
-     background (border-bottom isolates the band visually). */
+     background — explicitly excluding .v2-compare-head here ensures
+     the header's tint is unchanged. */
   :root[data-theme] .v2-compare-row:not(.v2-compare-head) > div:nth-child(2) {
     background: color-mix(in srgb, var(--accent) 5%, transparent);
   }
