@@ -3602,9 +3602,14 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     // back into view, the IO callback restarts the chain. Saves the
     // ~20-element-per-frame attribute writes on every page after the
     // user scrolls past the hero (which is most of the time).
+    // topologyHovered adds a second pause condition: while the user is
+    // hovering the SVG, the loop short-circuits so subtle motion isn't
+    // distracting them while they read. pointerleave kicks the rAF
+    // back into life if the IO still considers the SVG onscreen.
     let animActive = true;
+    let topologyHovered = false;
     const animate = () => {
-      if (!animActive) return;
+      if (!animActive || topologyHovered) return;
       const time = performance.now() / 1000;
       [rootN, ...midNs, ...leafNs].forEach((n, i) => {
         const breathe = Math.sin(time * 1.4 + i * 0.3) * 1.2;
@@ -3676,12 +3681,26 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
         for (const e of entries) {
           if (e.isIntersecting && !animActive) {
             animActive = true;
-            requestAnimationFrame(animate);
+            if (!topologyHovered) requestAnimationFrame(animate);
           } else if (!e.isIntersecting && animActive) {
             animActive = false;
           }
         }
       }, { rootMargin: "100px" }).observe(tSvg);
+      // Hover-pause: some users find the breathing nodes + packet
+      // streams distracting while reading. Hovering the SVG flips the
+      // flag so animate() short-circuits; pointerleave clears it and
+      // restarts the rAF if the IO still has us onscreen. Listeners
+      // use AbortController so a future re-render can revoke them
+      // (PR #127 pattern), even though this block currently runs once.
+      const hoverAbort = new AbortController();
+      tSvg.addEventListener("pointerenter", () => {
+        topologyHovered = true;
+      }, { signal: hoverAbort.signal });
+      tSvg.addEventListener("pointerleave", () => {
+        topologyHovered = false;
+        if (animActive) requestAnimationFrame(animate);
+      }, { signal: hoverAbort.signal });
     }
 
     // Theme-toggle reactivity: re-read the cached color vars when
