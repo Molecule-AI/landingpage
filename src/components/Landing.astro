@@ -2253,6 +2253,26 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     font-size: 12px;
     color: var(--inkSoft);
     letter-spacing: 0.02em;
+    display: inline-block;
+    transform-origin: left center;
+    transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      letter-spacing 0.25s ease,
+      color 0.25s ease;
+  }
+  /* Same family as the why-now keynum (#1624) and scope-name (#2130)
+     hovers — the parent ship-card border-tint on :hover triggers a
+     small slide+tracking-expand on the mono stack label so the eye
+     gets a second hover anchor below the title. Color stays inkSoft
+     to keep the title dominant. */
+  :root[data-theme] .v2-ship-card:hover .v2-ship-stack {
+    transform: translateX(2px);
+    letter-spacing: 0.06em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :root[data-theme] .v2-ship-card:hover .v2-ship-stack {
+      transform: none;
+      letter-spacing: 0.02em;
+    }
   }
   :root[data-theme] .v2-ship-list {
     list-style: none;
