@@ -143,15 +143,15 @@ const d = c.dashboard;
                 const num = parseInt(stat.value, 10);
                 const isNumeric = !isNaN(num) && String(num) === stat.value;
                 return (
-                  <div class="mol-stat">
-                    <div class="mol-stat-val">
+                  <div class="mol-stat" aria-label={`${stat.value} ${stat.label}`}>
+                    <div class="mol-stat-val" aria-hidden="true">
                       {isNumeric ? (
                         <CountUp client:visible to={num} duration={2000} />
                       ) : (
                         stat.value
                       )}
                     </div>
-                    <div class="mol-stat-label">{stat.label}</div>
+                    <div class="mol-stat-label" aria-hidden="true">{stat.label}</div>
                   </div>
                 );
               })
