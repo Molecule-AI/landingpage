@@ -571,7 +571,7 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
       </div>
       <div class="v2-grid-3">
         {c.marketplace.tiers.map((tr, i) => (
-          <a class="v2-tier-card-link" data-reveal data-delay={i * 120} href="https://market.moleculesai.app">
+          <div class="v2-tier-card-link" data-reveal data-delay={i * 120}>
             <SpotlightCard client:visible className="v2-tier-card h-full" spotlightColor="rgba(127,232,214,0.14)">
               <div class="v2-tier-head">
                 <div class="v2-tier-glyph" set:html={tierGlyphs[tr.glyph]} />
@@ -582,10 +582,22 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
               </div>
               <p class="v2-card-body">{tr.desc}</p>
               <div class="v2-tier-foot">
-                <span>{tr.count}</span><span class="browse">{c.marketplace.browse}</span>
+                <span>{tr.count}</span>
+                <a class="browse" href="https://market.moleculesai.app">{c.marketplace.browse}</a>
               </div>
+              {/* Purchase button — funding-demo Mock #1. Redirects to
+                  the canvas with a query param the canvas reads on
+                  mount to show a success modal. Tenant slug is
+                  hard-coded to `hongming` per spec. */}
+              <button
+                type="button"
+                class="v2-tier-purchase"
+                data-purchase-tier={tr.title}
+              >
+                Purchase
+              </button>
             </SpotlightCard>
-          </a>
+          </div>
         ))}
       </div>
     </div>
@@ -2309,6 +2321,39 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     transform: translateX(4px);
   }
 
+  /* Demo Purchase button — funding-demo Mock #1.
+     Positioned at the bottom of the tier card under the foot row.
+     Uses the accent color as a soft tinted fill so it reads as a
+     primary action without competing with the in-page primary CTA
+     ("Open the marketplace" header button). */
+  :root[data-theme] .v2-tier-purchase {
+    margin-top: 14px;
+    width: 100%;
+    padding: 9px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+  }
+  :root[data-theme] .v2-tier-purchase:hover {
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    color: var(--ink);
+    transform: translateY(-0.5px);
+  }
+  :root[data-theme] .v2-tier-purchase:active {
+    transform: translateY(0.5px) scale(0.985);
+    transition-duration: 0.06s;
+  }
+  :root[data-theme] .v2-tier-purchase:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
   /* Section lede — sits under the kicker+title pair */
   :root[data-theme] .v2-section-lede {
     margin: 14px 0 0;
@@ -3058,6 +3103,30 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   const prefersReducedMotion =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Demo Purchase handler (funding-demo Mock #1). Each
+  // [data-purchase-tier] button on the marketplace section redirects
+  // the user to the canvas at hongming.moleculesai.app with the
+  // purchase_success flag the canvas reads on mount to show a
+  // success modal. No real billing surface; tenant slug is
+  // hard-coded per spec — Hongming demos with his own tenant.
+  {
+    const TENANT_CANVAS_URL = "https://hongming.moleculesai.app";
+    document
+      .querySelectorAll<HTMLButtonElement>("[data-purchase-tier]")
+      .forEach((btn) => {
+        btn.addEventListener("click", (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          const tier = btn.dataset.purchaseTier ?? "agent";
+          const url =
+            TENANT_CANVAS_URL +
+            "/?purchase_success=1&item=" +
+            encodeURIComponent(tier);
+          window.location.href = url;
+        });
+      });
+  }
 
   // 3D tilt-on-hover for the marketplace tier cards AND the WhatShips
   // Canvas/Platform columns. Cursor position relative to card center →
