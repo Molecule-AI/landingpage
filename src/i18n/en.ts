@@ -12,7 +12,7 @@ export const en: ContentShape = {
     metaDescription:
       "Molecule AI is the open-core control plane for heterogeneous AI agent teams. Seven runtimes, hierarchical memory, skill evolution — shipping on main under BSL 1.1.",
     github: "https://git.moleculesai.app/molecule-ai",
-    monorepo: "https://git.moleculesai.app/molecule-ai/molecule-monorepo",
+    monorepo: "https://git.moleculesai.app/molecule-ai/molecule-core",
     docs: "https://doc.moleculesai.app",
     app: "https://app.moleculesai.app",
     api: "https://api.moleculesai.app",
@@ -46,7 +46,7 @@ export const en: ContentShape = {
     ],
     primaryCta: { label: "Open Dashboard", href: "https://app.moleculesai.app" },
     secondaryCta: { label: "Read the docs", href: "https://doc.moleculesai.app" },
-    tertiaryCta: { label: "View on GitHub", href: "https://git.moleculesai.app/molecule-ai/molecule-monorepo" },
+    tertiaryCta: { label: "View on GitHub", href: "https://git.moleculesai.app/molecule-ai/molecule-core" },
   },
   whatShips: {
     eyebrow: "What Ships in Main",
@@ -532,7 +532,7 @@ export const en: ContentShape = {
       },
       {
         q: "How do I get started?",
-        a: "Read the quickstart at doc.moleculesai.app, then clone git.moleculesai.app/molecule-ai/molecule-monorepo. The README walks through provisioning the first workspace, picking a runtime adapter, and wiring up your first team. Expect to have a running workspace in under ten minutes.",
+        a: "Read the quickstart at doc.moleculesai.app, then clone git.moleculesai.app/molecule-ai/molecule-core. The README walks through provisioning the first workspace, picking a runtime adapter, and wiring up your first team. Expect to have a running workspace in under ten minutes.",
       },
       {
         q: "What does it cost?",
@@ -587,7 +587,7 @@ export const en: ContentShape = {
         title: "Resources",
         links: [
           { label: "GitHub Org", href: "https://git.moleculesai.app/molecule-ai" },
-          { label: "Core Repo", href: "https://git.moleculesai.app/molecule-ai/molecule-monorepo" },
+          { label: "Core Repo", href: "https://git.moleculesai.app/molecule-ai/molecule-core" },
           { label: "MCP Server", href: "https://www.npmjs.com/package/@molecule-ai/mcp-server" },
           { label: "Python SDK", href: "https://pypi.org/project/molecule-ai-sdk" },
         ],
