@@ -12,7 +12,7 @@ export const zh: ContentShape = {
     metaDescription:
       "Molecule AI 是面向异构 AI 智能体团队的 open-core 控制平面。七种运行时、分层内存、技能进化 —— 主分支已发布,采用 BSL 1.1 许可证。",
     github: "https://git.moleculesai.app/molecule-ai",
-    monorepo: "https://git.moleculesai.app/molecule-ai/molecule-monorepo",
+    monorepo: "https://git.moleculesai.app/molecule-ai/molecule-core",
     docs: "https://doc.moleculesai.app",
     app: "https://app.moleculesai.app",
     api: "https://api.moleculesai.app",
@@ -46,7 +46,7 @@ export const zh: ContentShape = {
     ],
     primaryCta: { label: "打开控制台", href: "https://app.moleculesai.app" },
     secondaryCta: { label: "阅读文档", href: "https://doc.moleculesai.app" },
-    tertiaryCta: { label: "查看 GitHub", href: "https://git.moleculesai.app/molecule-ai/molecule-monorepo" },
+    tertiaryCta: { label: "查看 GitHub", href: "https://git.moleculesai.app/molecule-ai/molecule-core" },
   },
   whatShips: {
     eyebrow: "主分支已交付",
@@ -587,7 +587,7 @@ export const zh: ContentShape = {
         title: "资源",
         links: [
           { label: "GitHub 组织", href: "https://git.moleculesai.app/molecule-ai" },
-          { label: "Core 仓库", href: "https://git.moleculesai.app/molecule-ai/molecule-monorepo" },
+          { label: "Core 仓库", href: "https://git.moleculesai.app/molecule-ai/molecule-core" },
           { label: "MCP Server", href: "https://www.npmjs.com/package/@molecule-ai/mcp-server" },
           { label: "Python SDK", href: "https://pypi.org/project/molecule-ai-sdk" },
         ],
