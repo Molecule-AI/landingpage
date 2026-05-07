@@ -1,6 +1,6 @@
 # Molecule-AI Landing Page
 
-The marketing site for [Molecule-AI](https://github.com/Molecule-AI) — the organizing layer for heterogeneous AI agent teams.
+The marketing site for [Molecule-AI](https://git.moleculesai.app/molecule-ai) — the organizing layer for heterogeneous AI agent teams.
 
 Built with [Astro](https://astro.build) and Tailwind CSS v4, optimized for SEO and zero-JS performance.
 

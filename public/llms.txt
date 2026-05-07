@@ -13,8 +13,8 @@ Molecule AI lets engineering teams compose multi-agent systems by treating each 
 - [API](https://api.moleculesai.app): REST + JSON-RPC control plane endpoints.
 
 ## Source code
-- [molecule-monorepo (BSL 1.1)](https://github.com/Molecule-AI/molecule-monorepo): Open-core control plane, runtime adapters, canvas UI, MCP integrations.
-- [Workspace template repos](https://github.com/Molecule-AI): Per-runtime templates (claude-code, codex, hermes, openclaw) used by the provisioner to launch new workspaces.
+- [molecule-monorepo (BSL 1.1)](https://git.moleculesai.app/molecule-ai/molecule-monorepo): Open-core control plane, runtime adapters, canvas UI, MCP integrations.
+- [Workspace template repos](https://git.moleculesai.app/molecule-ai): Per-runtime templates (claude-code, codex, hermes, openclaw) used by the provisioner to launch new workspaces.
 
 ## Concepts
 - **Workspace**: One AI agent + its config, memory scope, and runtime container. A team's workspaces compose into an org tree.
@@ -26,7 +26,7 @@ Molecule AI lets engineering teams compose multi-agent systems by treating each 
 ## Legal
 - [Privacy Policy](https://www.moleculesai.app/legal/privacy): Subprocessors (AWS us-east-2, Railway, Vercel, Neon, WorkOS, Stripe, Sentry, Langfuse), data retention, GDPR/CCPA rights.
 - [Terms of Service](https://www.moleculesai.app/legal/terms): Hosted SaaS terms; self-host governed by BSL 1.1.
-- [License (BSL 1.1)](https://github.com/Molecule-AI/molecule-monorepo/blob/main/LICENSE): Self-host freely except commercial resale as a competing hosted service.
+- [License (BSL 1.1)](https://git.moleculesai.app/molecule-ai/molecule-monorepo/src/branch/main/LICENSE): Self-host freely except commercial resale as a competing hosted service.
 
 ## Optional
 - [Status page](https://status.moleculesai.app): Uptime + incident history for the hosted SaaS.

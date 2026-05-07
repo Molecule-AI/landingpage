@@ -11,8 +11,8 @@ export const zh: ContentShape = {
       "Molecule AI 是面向异构 AI 智能体团队的 open-core 控制平面。工作空间即组织角色,组织架构即拓扑,治理开箱即用 —— 七种运行时、分层内存、技能进化、零锁定。",
     metaDescription:
       "Molecule AI 是面向异构 AI 智能体团队的 open-core 控制平面。七种运行时、分层内存、技能进化 —— 主分支已发布,采用 BSL 1.1 许可证。",
-    github: "https://github.com/Molecule-AI",
-    monorepo: "https://github.com/Molecule-AI/molecule-monorepo",
+    github: "https://git.moleculesai.app/molecule-ai",
+    monorepo: "https://git.moleculesai.app/molecule-ai/molecule-monorepo",
     docs: "https://doc.moleculesai.app",
     app: "https://app.moleculesai.app",
     api: "https://api.moleculesai.app",
@@ -46,7 +46,7 @@ export const zh: ContentShape = {
     ],
     primaryCta: { label: "打开控制台", href: "https://app.moleculesai.app" },
     secondaryCta: { label: "阅读文档", href: "https://doc.moleculesai.app" },
-    tertiaryCta: { label: "查看 GitHub", href: "https://github.com/Molecule-AI/molecule-monorepo" },
+    tertiaryCta: { label: "查看 GitHub", href: "https://git.moleculesai.app/molecule-ai/molecule-monorepo" },
   },
   whatShips: {
     eyebrow: "主分支已交付",
@@ -532,7 +532,7 @@ export const zh: ContentShape = {
       },
       {
         q: "如何开始?",
-        a: "先看 doc.moleculesai.app 上的 Quickstart,然后 clone github.com/Molecule-AI/molecule-monorepo。README 会引导你开通第一个工作空间、选择一个运行时适配器、组建第一支团队。预计 10 分钟内就能跑起一个工作空间。",
+        a: "先看 doc.moleculesai.app 上的 Quickstart,然后 clone git.moleculesai.app/molecule-ai/molecule-core。README 会引导你开通第一个工作空间、选择一个运行时适配器、组建第一支团队。预计 10 分钟内就能跑起一个工作空间。",
       },
       {
         q: "价格是怎样的?",
@@ -586,8 +586,8 @@ export const zh: ContentShape = {
       {
         title: "资源",
         links: [
-          { label: "GitHub 组织", href: "https://github.com/Molecule-AI" },
-          { label: "Core 仓库", href: "https://github.com/Molecule-AI/molecule-monorepo" },
+          { label: "GitHub 组织", href: "https://git.moleculesai.app/molecule-ai" },
+          { label: "Core 仓库", href: "https://git.moleculesai.app/molecule-ai/molecule-monorepo" },
           { label: "MCP Server", href: "https://www.npmjs.com/package/@molecule-ai/mcp-server" },
           { label: "Python SDK", href: "https://pypi.org/project/molecule-ai-sdk" },
         ],
@@ -605,8 +605,8 @@ export const zh: ContentShape = {
           { label: "当下价值", href: "#why-now" },
           { label: "应用场景", href: "#use-cases" },
           { label: "常见问题", href: "#faq" },
-          { label: "Issues", href: "https://github.com/Molecule-AI/molecule-monorepo/issues" },
-          { label: "讨论区", href: "https://github.com/Molecule-AI/molecule-monorepo/discussions" },
+          { label: "Issues", href: "https://git.moleculesai.app/molecule-ai/molecule-core/issues" },
+          { label: "Issue 跟踪", href: "https://git.moleculesai.app/molecule-ai/molecule-core/issues" },
         ],
       },
     ],
