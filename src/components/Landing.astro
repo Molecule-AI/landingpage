@@ -1877,6 +1877,8 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     font-size: 13px;
     white-space: nowrap;
     transition: all 0.2s ease;
+    /* Suppress browser default focus ring — WCAG ring via :focus-visible below */
+    outline: none;
   }
   /* Hover-state on inactive tabs — color brightens to --ink + faint
      bg tint so the user can see the tab is interactive before
@@ -2056,6 +2058,10 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
   :root[data-theme] .v2-usecase-diagram-toggle:hover {
     color: var(--ink);
     border-color: var(--accent);
+  }
+  :root[data-theme] .v2-usecase-diagram-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
   :root[data-theme] .v2-usecase-diagram-stage {
     flex: 1;
