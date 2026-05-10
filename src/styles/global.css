@@ -1233,6 +1233,12 @@ main[tabindex="-1"]:focus {
     background 220ms ease,
     color 220ms ease,
     border-color 220ms ease;
+  /* WCAG 2.4.7: ring only on keyboard focus, suppress on pointer */
+  outline: none;
+}
+.mol-tab:focus-visible {
+  outline: 2px solid var(--color-mint);
+  outline-offset: 2px;
 }
 
 .mol-tab:hover {
