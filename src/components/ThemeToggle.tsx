@@ -97,7 +97,7 @@ function ThemeButton({
       aria-checked={active}
       aria-label={label}
       onClick={() => onPick(value)}
-      className={`group inline-flex h-7 w-7 items-center justify-center rounded transition-colors ${
+      className={`group inline-flex h-7 w-7 items-center justify-center rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-mint)]/50 focus-visible:ring-offset-1 focus-visible:ring-offset-[color:var(--color-ink-soft)] ${
         active
           ? "bg-[color:var(--color-mint)]/15 text-[color:var(--color-mint)]"
           : "text-[color:var(--color-fg-muted)] hover:text-[color:var(--color-fg)]"
