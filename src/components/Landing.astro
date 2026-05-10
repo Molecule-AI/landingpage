@@ -1146,6 +1146,10 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     transition: border-color 0.12s ease, color 0.12s ease;
   }
   :root[data-theme] .v2-locale > summary::-webkit-details-marker { display: none; }
+  :root[data-theme] .v2-locale > summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
   :root[data-theme] .v2-locale > summary:hover { border-color: var(--ink); color: var(--ink); }
   :root[data-theme] .v2-locale[open] > summary { border-color: var(--ink); color: var(--ink); }
   :root[data-theme] .v2-locale-globe { opacity: 0.75; }
@@ -1223,6 +1227,10 @@ const useCaseSvgAlt: Record<"en" | "zh" | "es" | "fr" | "ja", string> = {
     transition: border-color 0.12s ease, color 0.12s ease;
   }
   :root[data-theme] .v2-nav-mobile > summary::-webkit-details-marker { display: none; }
+  :root[data-theme] .v2-nav-mobile > summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
   :root[data-theme] .v2-nav-mobile > summary:hover { border-color: var(--ink); color: var(--ink); }
   :root[data-theme] .v2-nav-mobile[open] > summary { border-color: var(--ink); color: var(--ink); }
   :root[data-theme] .v2-nav-mobile-icon { display: block; }
